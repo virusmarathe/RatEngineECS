@@ -1,7 +1,5 @@
 #include "Window.h"
 
-Window* window = NULL;
-
 Window::Window() : m_hwnd(NULL), m_running(false)
 {
 }
@@ -17,13 +15,16 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 		case WM_CREATE:
 		{
 			// event when window is created
+			Window* window = (Window*)((LPCREATESTRUCT)lparam)->lpCreateParams;
+			SetWindowLongPtr(hwnd, GWLP_USERDATA, (LONG_PTR)window);
 			window->onCreate();
 			break;
 		}
 		case WM_DESTROY:
 		{
-			window->onDestroy();
 			// event when window is destroyed
+			Window* window = (Window*)GetWindowLongPtr(hwnd, GWLP_USERDATA);
+			window->onDestroy();
 			PostQuitMessage(0);
 			break;
 		}
@@ -31,9 +32,9 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 		{
 			return DefWindowProc(hwnd, msg, wparam, lparam);
 		}
-
-		return NULL;
 	}
+
+	return NULL;
 }
 
 bool Window::init()
@@ -57,11 +58,6 @@ bool Window::init()
 		return false;
 	}
 
-	if (!window)
-	{
-		window = this;
-	}
-
 	m_hwnd = CreateWindowEx(WS_EX_OVERLAPPEDWINDOW,
 							wc.lpszClassName,
 							L"Rat Game",
@@ -73,7 +69,7 @@ bool Window::init()
 							NULL,
 							NULL,
 							NULL,
-							NULL);
+							this);
 
 	if (!m_hwnd)
 	{
@@ -99,7 +95,7 @@ bool Window::broadcast()
 		DispatchMessage(&msg);
 	}
 
-	window->onUpdate();
+	this->onUpdate();
 	Sleep(0);
 
 	return false;

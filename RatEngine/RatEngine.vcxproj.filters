@@ -7,6 +7,15 @@
     <Filter Include="Game">
       <UniqueIdentifier>{31a737eb-978a-4995-8aa0-1c92ef283031}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\WindowSystem">
+      <UniqueIdentifier>{c0c613fa-b004-43c7-9238-e74fd1dd505a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\GraphicsEngine">
+      <UniqueIdentifier>{2e2885ca-3000-439f-83a9-dbeed1a9e466}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\GraphicsEngine\SwapChain">
+      <UniqueIdentifier>{e3811515-1015-407f-a988-9426e259790e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Game\AppWindow.cpp">
@@ -16,7 +25,13 @@
       <Filter>Game</Filter>
     </ClCompile>
     <ClCompile Include="Source\Engine\Window.cpp">
-      <Filter>Engine</Filter>
+      <Filter>Engine\WindowSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Engine\GraphicsEngine.cpp">
+      <Filter>Engine\GraphicsEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Engine\SwapChain.cpp">
+      <Filter>Engine\GraphicsEngine\SwapChain</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -24,7 +39,13 @@
       <Filter>Game</Filter>
     </ClInclude>
     <ClInclude Include="Source\Engine\Window.h">
-      <Filter>Engine</Filter>
+      <Filter>Engine\WindowSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Engine\GraphicsEngine.h">
+      <Filter>Engine\GraphicsEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Engine\SwapChain.h">
+      <Filter>Engine\GraphicsEngine\SwapChain</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

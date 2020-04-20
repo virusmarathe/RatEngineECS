@@ -19,11 +19,15 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Engine\GraphicsEngine.cpp" />
+    <ClCompile Include="Source\Engine\SwapChain.cpp" />
     <ClCompile Include="Source\Engine\Window.cpp" />
     <ClCompile Include="Source\Game\AppWindow.cpp" />
     <ClCompile Include="Source\Game\main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Engine\GraphicsEngine.h" />
+    <ClInclude Include="Source\Engine\SwapChain.h" />
     <ClInclude Include="Source\Engine\Window.h" />
     <ClInclude Include="Source\Game\AppWindow.h" />
   </ItemGroup>
@@ -101,6 +105,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>d3d11.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">

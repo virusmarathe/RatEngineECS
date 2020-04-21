@@ -1,7 +1,7 @@
 #include "SwapChain.h"
 #include "GraphicsEngine.h"
 
-SwapChain::SwapChain() : m_DXGISwapChain(NULL)
+SwapChain::SwapChain() : m_DXGISwapChain(NULL), m_RenderTargetView(NULL)
 {
 }
 
@@ -35,6 +35,28 @@ bool SwapChain::init(HWND hwnd, UINT width, UINT height)
 		return false;
 	}
 
+	ID3D11Texture2D* buffer;
+	result = m_DXGISwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (void**)&buffer);
+
+	if (FAILED(result))
+	{
+		return false;
+	}
+
+	result = device->CreateRenderTargetView(buffer, NULL, &m_RenderTargetView);
+	buffer->Release();
+
+	if (FAILED(result))
+	{
+		return false;
+	}
+
+	return true;
+}
+
+bool SwapChain::present(bool vsync)
+{
+	m_DXGISwapChain->Present(vsync, NULL);
 	return true;
 }
 

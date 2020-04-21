@@ -30,26 +30,17 @@ bool SwapChain::init(HWND hwnd, UINT width, UINT height)
 	// create the swap chain for the window indicated by the HWND parameter
 	HRESULT result = GraphicsEngine::get()->m_DXGIFactory->CreateSwapChain(device, &desc, &m_DXGISwapChain);
 
-	if (FAILED(result))
-	{
-		return false;
-	}
+	if (FAILED(result))	return false;
 
 	ID3D11Texture2D* buffer;
 	result = m_DXGISwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (void**)&buffer);
 
-	if (FAILED(result))
-	{
-		return false;
-	}
+	if (FAILED(result))	return false;
 
 	result = device->CreateRenderTargetView(buffer, NULL, &m_RenderTargetView);
 	buffer->Release();
 
-	if (FAILED(result))
-	{
-		return false;
-	}
+	if (FAILED(result))	return false;
 
 	return true;
 }

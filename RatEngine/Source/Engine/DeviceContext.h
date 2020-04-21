@@ -2,6 +2,7 @@
 #include <d3d11.h>
 
 class SwapChain;
+class VertexBuffer;
 
 class DeviceContext
 {
@@ -9,7 +10,10 @@ public:
 	DeviceContext(ID3D11DeviceContext* context);
 	~DeviceContext();
 
-	bool clearRenderTargetColor(SwapChain* swapChain, float r, float g, float b, float a);
+	void clearRenderTargetColor(SwapChain* swapChain, float r, float g, float b, float a);
+	void setVertexBuffer(VertexBuffer* vbuffer);
+	void drawTriangleList(UINT vertexCount, UINT startVertexIndex);
+	void setViewportSize(FLOAT width, FLOAT height);
 
 	bool release();
 

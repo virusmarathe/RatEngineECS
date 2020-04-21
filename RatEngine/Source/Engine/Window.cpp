@@ -98,7 +98,7 @@ bool Window::broadcast()
 		DispatchMessage(&msg);
 	}
 
-	Sleep(0);
+	Sleep(20);
 
 	return false;
 }

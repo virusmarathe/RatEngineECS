@@ -23,6 +23,7 @@
     <ClCompile Include="Source\Engine\GraphicsEngine.cpp" />
     <ClCompile Include="Source\Engine\SwapChain.cpp" />
     <ClCompile Include="Source\Engine\VertexBuffer.cpp" />
+    <ClCompile Include="Source\Engine\VertexShader.cpp" />
     <ClCompile Include="Source\Engine\Window.cpp" />
     <ClCompile Include="Source\Game\AppWindow.cpp" />
     <ClCompile Include="Source\Game\main.cpp" />
@@ -32,8 +33,17 @@
     <ClInclude Include="Source\Engine\GraphicsEngine.h" />
     <ClInclude Include="Source\Engine\SwapChain.h" />
     <ClInclude Include="Source\Engine\VertexBuffer.h" />
+    <ClInclude Include="Source\Engine\VertexShader.h" />
     <ClInclude Include="Source\Engine\Window.h" />
     <ClInclude Include="Source\Game\AppWindow.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Source\Shaders\VertexShader.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+    </FxCompile>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

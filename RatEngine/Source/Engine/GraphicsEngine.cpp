@@ -2,13 +2,15 @@
 #include "SwapChain.h"
 #include "DeviceContext.h"
 #include "VertexBuffer.h"
+#include "VertexShader.h"
 #include <d3dcompiler.h>
 
 #pragma warning(disable: 26812)
 
 GraphicsEngine::GraphicsEngine() : m_DeviceContext(NULL), m_D3DDevice(NULL), m_FeatureLevel(D3D_FEATURE_LEVEL_11_0),
-									m_DXGIAdapter(NULL), m_DXGIDevice(NULL), m_DXGIFactory(NULL), m_VSBlob(NULL), m_PSBlob(NULL),
-									m_VertexShader(NULL), m_PixelShader(NULL), m_ImmediateDeviceContext(NULL)
+									m_DXGIAdapter(NULL), m_DXGIDevice(NULL), m_DXGIFactory(NULL), m_PSBlob(NULL),
+									m_VertexShader(NULL), m_PixelShader(NULL), m_ImmediateDeviceContext(NULL),
+									m_VertexShaderBlob(NULL)
 {
 }
 
@@ -56,7 +58,6 @@ bool GraphicsEngine::release()
 	if (m_VertexShader) m_VertexShader->Release();
 	if (m_PixelShader) m_PixelShader->Release();
 
-	if (m_VSBlob) m_VSBlob->Release();
 	if (m_PSBlob) m_PSBlob->Release();
 
 	m_DXGIDevice->Release();
@@ -79,27 +80,55 @@ VertexBuffer* GraphicsEngine::createVertexBuffer()
 	return new VertexBuffer();
 }
 
+VertexShader* GraphicsEngine::createVertexShader(const void* shaderByteCode, SIZE_T byteCodeSize)
+{
+	VertexShader* shader = new VertexShader();
+	if (!shader->init(shaderByteCode, byteCodeSize))
+	{
+		shader->release();
+		return nullptr;
+	}
+
+	return shader;
+}
+
+bool GraphicsEngine::compileVertexShader(LPCWSTR fileName, LPCSTR entryPointName, void ** shaderByteCode, SIZE_T* byteCodeSize)
+{
+	ID3DBlob* errBlob = nullptr;
+	HRESULT result = D3DCompileFromFile(fileName, nullptr, nullptr, entryPointName, "vs_5_0", 0, 0, &m_VertexShaderBlob, &errBlob);
+
+	if (FAILED(result))
+	{
+		errBlob->Release();
+		return false;
+	}
+
+	*shaderByteCode = m_VertexShaderBlob->GetBufferPointer();
+	*byteCodeSize = m_VertexShaderBlob->GetBufferSize();
+
+	return true;
+}
+
+void GraphicsEngine::releaseCompiledShader()
+{
+	if (m_VertexShaderBlob)
+	{
+		m_VertexShaderBlob->Release();
+	}
+}
+
 bool GraphicsEngine::createShaders()
 {
 	ID3DBlob* errBlob = nullptr;
-	D3DCompileFromFile(L"Source/Shaders/shader.fx", nullptr, nullptr, "vsmain", "vs_5_0", NULL, NULL, &m_VSBlob, &errBlob);
 	D3DCompileFromFile(L"Source/Shaders/shader.fx", nullptr, nullptr, "psmain", "ps_5_0", NULL, NULL, &m_PSBlob, &errBlob);
-	m_D3DDevice->CreateVertexShader(m_VSBlob->GetBufferPointer(), m_VSBlob->GetBufferSize(), nullptr, &m_VertexShader);
 	m_D3DDevice->CreatePixelShader(m_PSBlob->GetBufferPointer(), m_PSBlob->GetBufferSize(), nullptr, &m_PixelShader);
 	return true;
 }
 
 bool GraphicsEngine::setShaders()
 {
-	m_ImmediateDeviceContext->VSSetShader(m_VertexShader, nullptr, 0);
 	m_ImmediateDeviceContext->PSSetShader(m_PixelShader, nullptr, 0);
 	return false;
-}
-
-void GraphicsEngine::getShaderBufferAndSize(void** bytecode, UINT* size)
-{
-	*bytecode = this->m_VSBlob->GetBufferPointer();
-	*size = (UINT)this->m_VSBlob->GetBufferSize();
 }
 
 GraphicsEngine* GraphicsEngine::get()

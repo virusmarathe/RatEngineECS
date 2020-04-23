@@ -4,6 +4,7 @@
 #include "VertexBuffer.h"
 #include "VertexShader.h"
 #include "PixelShader.h"
+#include "ConstantBuffer.h"
 #include <d3dcompiler.h>
 
 #pragma warning(disable: 26812)
@@ -73,6 +74,11 @@ SwapChain* GraphicsEngine::createSwapChain()
 VertexBuffer* GraphicsEngine::createVertexBuffer()
 {
 	return new VertexBuffer();
+}
+
+ConstantBuffer* GraphicsEngine::createConstantBuffer()
+{
+	return new ConstantBuffer();
 }
 
 VertexShader* GraphicsEngine::createVertexShader(const void* shaderByteCode, SIZE_T byteCodeSize)

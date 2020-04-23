@@ -5,6 +5,7 @@ class DeviceContext;
 class VertexBuffer;
 class VertexShader;
 class PixelShader;
+class ConstantBuffer;
 
 class GraphicsEngine
 {
@@ -21,9 +22,12 @@ public:
 	SwapChain* createSwapChain();
 	DeviceContext* getImmediateDeviceContext() { return m_DeviceContext; }
 	VertexBuffer* createVertexBuffer();
+	ConstantBuffer* createConstantBuffer();
+
 	VertexShader* createVertexShader(const void* shaderByteCode, SIZE_T byteCodeSize);
-	bool compileVertexShader(LPCWSTR fileName, LPCSTR entryPointName, void** shaderByteCode, SIZE_T* byteCodeSize);
 	PixelShader* createPixelShader(const void* shaderByteCode, SIZE_T byteCodeSize);
+
+	bool compileVertexShader(LPCWSTR fileName, LPCSTR entryPointName, void** shaderByteCode, SIZE_T* byteCodeSize);
 	bool compilePixelShader(LPCWSTR fileName, LPCSTR entryPointName, void** shaderByteCode, SIZE_T* byteCodeSize);
 
 	void releaseCompiledShader();
@@ -48,5 +52,6 @@ private:
 	friend class VertexBuffer;
 	friend class VertexShader;
 	friend class PixelShader;
+	friend class ConstantBuffer;
 };
 

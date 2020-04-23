@@ -1,4 +1,5 @@
 #include "AppWindow.h"
+#include <Windows.h>
 
 struct vector3
 {
@@ -13,10 +14,19 @@ struct vector4
 struct vertex
 {
 	vector3 position;
+	vector3 position1;
 	vector4 color;
+	vector4 color1;
 };
 
-AppWindow::AppWindow() : Window(), m_SwapChain(NULL), m_VertexBuffer(NULL), m_VertexShader(NULL), m_PixelShader(NULL)
+_declspec(align(16))
+struct constant
+{
+	unsigned int m_Time;
+};
+
+AppWindow::AppWindow() : Window(), m_SwapChain(NULL), m_VertexBuffer(NULL), m_VertexShader(NULL), m_PixelShader(NULL),
+						 m_ConstantBuffer(NULL)
 {
 }
 
@@ -33,10 +43,10 @@ void AppWindow::onCreate()
 
 	vertex list[] =
 	{
-		{-0.5f, -0.5f, 0, 1.0f, 0.0f, 0.0f, 1.0f},
-		{-0.5f,  0.5f, 0, 0.0f, 1.0f, 0.0f, 1.0f},
-		{ 0.5f, -0.5f, 0, 0.0f, 0.0f, 1.0f, 1.0f},
-		{ 0.5f,  0.5f, 0, 1.0f, 1.0f, 1.0f, 1.0f}
+		{-0.5f, -0.5f, 0,		-0.32f, -0.11f, 0,	1.0f,  0.0f, 0.0f, 1.0f,	0.4f,  1.0f, 0.0f, 1.0f},
+		{-0.5f,  0.5f, 0,		-0.11f, 0.78f, 0,	0.0f, 1.0f, 0.0f, 1.0f,		0.0f,  0.3f, 1.0f, 1.0f},
+		{ 0.5f, -0.5f, 0,		0.75f, -0.75f, 0,	0.0f, 0.0f, 1.0f, 1.0f,		0.2f,  0.0f, 0.4f, 1.0f},
+		{ 0.5f,  0.5f, 0,		0.88f, 0.88f, 0,	1.0f, 1.0f, 1.0f, 1.0f,		1.0f,  1.0f, 1.0f, 1.0f}
 	};
 	m_VertexBuffer = GraphicsEngine::get()->createVertexBuffer();
 	UINT listSize = ARRAYSIZE(list);
@@ -52,18 +62,35 @@ void AppWindow::onCreate()
 	m_PixelShader = GraphicsEngine::get()->createPixelShader(shaderByteCode, shaderSize);
 
 	GraphicsEngine::get()->releaseCompiledShader();
+
+	constant data;
+	data.m_Time = 0;
+
+	m_ConstantBuffer = GraphicsEngine::get()->createConstantBuffer();
+	m_ConstantBuffer->load(&data, sizeof(constant));
 }
 
 void AppWindow::onUpdate()
 {
-	GraphicsEngine::get()->getImmediateDeviceContext()->clearRenderTargetColor(m_SwapChain, 0.1f, 0.1f, 0.6f, 1);
+	DeviceContext* context = GraphicsEngine::get()->getImmediateDeviceContext();
+
+	context->clearRenderTargetColor(m_SwapChain, 0.1f, 0.1f, 0.6f, 1);
 
 	RECT rc = this->getClientWindowRect();
-	GraphicsEngine::get()->getImmediateDeviceContext()->setViewportSize((FLOAT)(rc.right - rc.left), (FLOAT)(rc.bottom - rc.top));
-	GraphicsEngine::get()->getImmediateDeviceContext()->setVertexShader(m_VertexShader);
-	GraphicsEngine::get()->getImmediateDeviceContext()->setPixelShader(m_PixelShader);
-	GraphicsEngine::get()->getImmediateDeviceContext()->setVertexBuffer(m_VertexBuffer);
-	GraphicsEngine::get()->getImmediateDeviceContext()->drawTriangleStrip(m_VertexBuffer->getNumVertices(), 0);
+	context->setViewportSize((FLOAT)(rc.right - rc.left), (FLOAT)(rc.bottom - rc.top));
+
+	constant data;
+	data.m_Time = GetTickCount();
+
+	m_ConstantBuffer->update(context, &data);
+
+	context->setConstantBuffer(m_PixelShader, m_ConstantBuffer);
+	context->setConstantBuffer(m_VertexShader, m_ConstantBuffer);
+
+	context->setVertexShader(m_VertexShader);
+	context->setPixelShader(m_PixelShader);
+	context->setVertexBuffer(m_VertexBuffer);
+	context->drawTriangleStrip(m_VertexBuffer->getNumVertices(), 0);
 
 	m_SwapChain->present(false);
 }

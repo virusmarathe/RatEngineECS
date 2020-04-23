@@ -5,12 +5,18 @@ struct vector3
 	float x, y, z;
 };
 
+struct vector4
+{
+	float r, g, b, a;
+};
+
 struct vertex
 {
 	vector3 position;
+	vector4 color;
 };
 
-AppWindow::AppWindow() : Window(), m_SwapChain(NULL), m_VertexBuffer(NULL), m_VertexShader(NULL)
+AppWindow::AppWindow() : Window(), m_SwapChain(NULL), m_VertexBuffer(NULL), m_VertexShader(NULL), m_PixelShader(NULL)
 {
 }
 
@@ -27,21 +33,24 @@ void AppWindow::onCreate()
 
 	vertex list[] =
 	{
-		{-0.5f, -0.5f, 0},
-		{-0.5f,  0.5f, 0},
-		{ 0.5f, -0.5f, 0},
-		{ 0.5f,  0.5f, 0}
+		{-0.5f, -0.5f, 0, 1.0f, 0.0f, 0.0f, 1.0f},
+		{-0.5f,  0.5f, 0, 0.0f, 1.0f, 0.0f, 1.0f},
+		{ 0.5f, -0.5f, 0, 0.0f, 0.0f, 1.0f, 1.0f},
+		{ 0.5f,  0.5f, 0, 1.0f, 1.0f, 1.0f, 1.0f}
 	};
 	m_VertexBuffer = GraphicsEngine::get()->createVertexBuffer();
 	UINT listSize = ARRAYSIZE(list);
 
-	GraphicsEngine::get()->createShaders();
 	void* shaderByteCode = nullptr;
 	SIZE_T shaderSize = 0;
 
-	GraphicsEngine::get()->compileVertexShader(L"Source/Shaders/VertexShader.hlsl", "main", &shaderByteCode, &shaderSize);
+	GraphicsEngine::get()->compileVertexShader(L"Source/Shaders/VertexShader.hlsl", "vsmain", &shaderByteCode, &shaderSize);
 	m_VertexShader = GraphicsEngine::get()->createVertexShader(shaderByteCode, shaderSize);
 	m_VertexBuffer->load(list, sizeof(vertex), listSize, shaderByteCode, shaderSize);
+
+	GraphicsEngine::get()->compilePixelShader(L"Source/Shaders/PixelShader.hlsl", "psmain", &shaderByteCode, &shaderSize);
+	m_PixelShader = GraphicsEngine::get()->createPixelShader(shaderByteCode, shaderSize);
+
 	GraphicsEngine::get()->releaseCompiledShader();
 }
 
@@ -51,8 +60,8 @@ void AppWindow::onUpdate()
 
 	RECT rc = this->getClientWindowRect();
 	GraphicsEngine::get()->getImmediateDeviceContext()->setViewportSize((FLOAT)(rc.right - rc.left), (FLOAT)(rc.bottom - rc.top));
-	GraphicsEngine::get()->setShaders();
 	GraphicsEngine::get()->getImmediateDeviceContext()->setVertexShader(m_VertexShader);
+	GraphicsEngine::get()->getImmediateDeviceContext()->setPixelShader(m_PixelShader);
 	GraphicsEngine::get()->getImmediateDeviceContext()->setVertexBuffer(m_VertexBuffer);
 	GraphicsEngine::get()->getImmediateDeviceContext()->drawTriangleStrip(m_VertexBuffer->getNumVertices(), 0);
 
@@ -64,6 +73,7 @@ void AppWindow::onDestroy()
 	Window::onDestroy();
 	m_VertexBuffer->release();
 	m_VertexShader->release();
+	m_PixelShader->release();
 	m_SwapChain->release();
 	GraphicsEngine::get()->release();
 }

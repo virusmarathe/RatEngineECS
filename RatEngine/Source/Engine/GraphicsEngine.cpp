@@ -3,14 +3,14 @@
 #include "DeviceContext.h"
 #include "VertexBuffer.h"
 #include "VertexShader.h"
+#include "PixelShader.h"
 #include <d3dcompiler.h>
 
 #pragma warning(disable: 26812)
 
 GraphicsEngine::GraphicsEngine() : m_DeviceContext(NULL), m_D3DDevice(NULL), m_FeatureLevel(D3D_FEATURE_LEVEL_11_0),
-									m_DXGIAdapter(NULL), m_DXGIDevice(NULL), m_DXGIFactory(NULL), m_PSBlob(NULL),
-									m_VertexShader(NULL), m_PixelShader(NULL), m_ImmediateDeviceContext(NULL),
-									m_VertexShaderBlob(NULL)
+									m_DXGIAdapter(NULL), m_DXGIDevice(NULL), m_DXGIFactory(NULL),
+									m_ImmediateDeviceContext(NULL), m_VertexShaderBlob(NULL), m_PixelShaderBlob(NULL)
 {
 }
 
@@ -55,11 +55,6 @@ bool GraphicsEngine::init()
 
 bool GraphicsEngine::release()
 {
-	if (m_VertexShader) m_VertexShader->Release();
-	if (m_PixelShader) m_PixelShader->Release();
-
-	if (m_PSBlob) m_PSBlob->Release();
-
 	m_DXGIDevice->Release();
 	m_DXGIAdapter->Release();
 	m_DXGIFactory->Release();
@@ -109,26 +104,45 @@ bool GraphicsEngine::compileVertexShader(LPCWSTR fileName, LPCSTR entryPointName
 	return true;
 }
 
+PixelShader* GraphicsEngine::createPixelShader(const void* shaderByteCode, SIZE_T byteCodeSize)
+{
+	PixelShader* shader = new PixelShader();
+	if (!shader->init(shaderByteCode, byteCodeSize))
+	{
+		shader->release();
+		return nullptr;
+	}
+	return shader;
+}
+
+bool GraphicsEngine::compilePixelShader(LPCWSTR fileName, LPCSTR entryPointName, void** shaderByteCode, SIZE_T* byteCodeSize)
+{
+	ID3DBlob* errBlob = nullptr;
+	HRESULT result = D3DCompileFromFile(fileName, nullptr, nullptr, entryPointName, "ps_5_0", 0, 0, &m_PixelShaderBlob, &errBlob);
+
+	if (FAILED(result))
+	{
+		errBlob->Release();
+		return false;
+	}
+
+	*shaderByteCode = m_PixelShaderBlob->GetBufferPointer();
+	*byteCodeSize = m_PixelShaderBlob->GetBufferSize();
+
+	return true;
+}
+
 void GraphicsEngine::releaseCompiledShader()
 {
 	if (m_VertexShaderBlob)
 	{
 		m_VertexShaderBlob->Release();
 	}
-}
 
-bool GraphicsEngine::createShaders()
-{
-	ID3DBlob* errBlob = nullptr;
-	D3DCompileFromFile(L"Source/Shaders/shader.fx", nullptr, nullptr, "psmain", "ps_5_0", NULL, NULL, &m_PSBlob, &errBlob);
-	m_D3DDevice->CreatePixelShader(m_PSBlob->GetBufferPointer(), m_PSBlob->GetBufferSize(), nullptr, &m_PixelShader);
-	return true;
-}
-
-bool GraphicsEngine::setShaders()
-{
-	m_ImmediateDeviceContext->PSSetShader(m_PixelShader, nullptr, 0);
-	return false;
+	if (m_PixelShaderBlob)
+	{
+		m_PixelShaderBlob->Release();
+	}
 }
 
 GraphicsEngine* GraphicsEngine::get()

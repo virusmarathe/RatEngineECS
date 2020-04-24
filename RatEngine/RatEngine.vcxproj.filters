@@ -34,6 +34,9 @@
     <Filter Include="Engine\GraphicsEngine\ConstantBuffer">
       <UniqueIdentifier>{84fb7bfe-4e4b-44a3-85b7-600296c0dac5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\Math">
+      <UniqueIdentifier>{eef8468a-a717-436f-951f-b782723d52e0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Game\AppWindow.cpp">
@@ -94,6 +97,12 @@
     </ClInclude>
     <ClInclude Include="Source\Engine\ConstantBuffer.h">
       <Filter>Engine\GraphicsEngine\ConstantBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Engine\Vector3.h">
+      <Filter>Engine\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Engine\Matrix4x4.h">
+      <Filter>Engine\Math</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

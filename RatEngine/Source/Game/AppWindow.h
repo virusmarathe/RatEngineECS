@@ -14,6 +14,8 @@ public:
 	AppWindow();
 	~AppWindow();
 
+	void updateQuadPosition();
+
 	// Inherited via Window
 	virtual void onCreate() override;
 
@@ -28,5 +30,11 @@ private:
 	VertexShader* m_VertexShader;
 	PixelShader* m_PixelShader;
 	ConstantBuffer* m_ConstantBuffer;
+
+	DWORD m_PrevFrameTime;
+	float m_DeltaTime;
+	float m_LerpTimer;
+	float m_ScaleLerpTimer;
+	float m_LerpDuration;
 };
 

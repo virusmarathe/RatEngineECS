@@ -34,8 +34,10 @@
     <ClInclude Include="Source\Engine\ConstantBuffer.h" />
     <ClInclude Include="Source\Engine\DeviceContext.h" />
     <ClInclude Include="Source\Engine\GraphicsEngine.h" />
+    <ClInclude Include="Source\Engine\Matrix4x4.h" />
     <ClInclude Include="Source\Engine\PixelShader.h" />
     <ClInclude Include="Source\Engine\SwapChain.h" />
+    <ClInclude Include="Source\Engine\Vector3.h" />
     <ClInclude Include="Source\Engine\VertexBuffer.h" />
     <ClInclude Include="Source\Engine\VertexShader.h" />
     <ClInclude Include="Source\Engine\Window.h" />

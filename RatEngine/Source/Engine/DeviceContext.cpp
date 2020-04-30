@@ -4,6 +4,7 @@
 #include "VertexShader.h"
 #include "PixelShader.h"
 #include "ConstantBuffer.h"
+#include "IndexBuffer.h"
 
 DeviceContext::DeviceContext(ID3D11DeviceContext* context) : m_DeviceContext(context)
 {
@@ -33,6 +34,12 @@ void DeviceContext::drawTriangleList(UINT vertexCount, UINT startVertexIndex)
 	m_DeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 	m_DeviceContext->Draw(vertexCount, startVertexIndex);
+}
+
+void DeviceContext::drawIndexedTriangleList(UINT indexCount, UINT startVertexIndex, UINT startIndexLocation)
+{
+	m_DeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	m_DeviceContext->DrawIndexed(indexCount, startIndexLocation, startVertexIndex);
 }
 
 void DeviceContext::drawTriangleStrip(UINT vertexCount, UINT startVertexIndex)
@@ -71,6 +78,11 @@ void DeviceContext::setConstantBuffer(VertexShader* vs, ConstantBuffer* constant
 void DeviceContext::setConstantBuffer(PixelShader* ps, ConstantBuffer* constantBuf)
 {
 	m_DeviceContext->PSSetConstantBuffers(0, 1, &constantBuf->m_Buffer);
+}
+
+void DeviceContext::setIndexBuffer(IndexBuffer* iBuffer)
+{
+	m_DeviceContext->IASetIndexBuffer(iBuffer->m_IndexBuffer, DXGI_FORMAT_R32_UINT, 0);
 }
 
 bool DeviceContext::release()

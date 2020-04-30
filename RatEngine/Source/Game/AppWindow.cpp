@@ -52,11 +52,22 @@ void AppWindow::updateQuadPosition()
 	}
 
 	Matrix4x4 temp;
-	data.m_World.setScale(Vector3::lerp(Vector3(0.5f, 0.5f, 0), Vector3(2, 2, 0), (sin(lerpScaleVal) + 1.0f) / 2.0f));
-	temp.setTranslation(Vector3::lerp(Vector3(-1, -1, 0), Vector3(1, 1, 0), lerpVal));
+	//data.m_World.setScale(Vector3::lerp(Vector3(0.5f, 0.5f, 0), Vector3(2, 2, 0), (sin(lerpScaleVal) + 1.0f) / 2.0f));
+	//temp.setTranslation(Vector3::lerp(Vector3(-1, -1, 0), Vector3(1, 1, 0), lerpVal));
+	//data.m_World *= temp;
+	data.m_World.setScale(Vector3(1, 1, 1));
+	temp.setIdentity();
+	temp.setRotationZ(lerpScaleVal);
 	data.m_World *= temp;
+	temp.setIdentity();
+	temp.setRotationY(lerpScaleVal);
+	data.m_World *= temp;
+	temp.setIdentity();
+	temp.setRotationX(lerpScaleVal);
+	data.m_World *= temp;
+
 	data.m_View.setIdentity();
-	data.m_Projection.setOrthoLH((rect.right - rect.left)/400.0f, (rect.bottom - rect.top)/400.0f, -4.0f, 4.0f);
+	data.m_Projection.setOrthoLH((rect.right - rect.left)/300.0f, (rect.bottom - rect.top)/300.0f, -4.0f, 4.0f);
 
 
 	m_ConstantBuffer->update(context, &data);
@@ -71,13 +82,35 @@ void AppWindow::onCreate()
 
 	vertex list[] =
 	{
-		{Vector3(-0.5f, -0.5f, 0),	1.0f,  0.0f, 0.0f, 1.0f,	0.4f,  1.0f, 0.0f, 1.0f},
-		{Vector3(-0.5f,  0.5f, 0),	0.0f, 1.0f, 0.0f, 1.0f,		0.0f,  0.3f, 1.0f, 1.0f},
-		{Vector3(0.5f, -0.5f, 0),	0.0f, 0.0f, 1.0f, 1.0f,		0.2f,  0.0f, 0.4f, 1.0f},
-		{Vector3(0.5f,  0.5f, 0),	1.0f, 1.0f, 1.0f, 1.0f,		1.0f,  1.0f, 1.0f, 1.0f}
+		{Vector3(-0.5f, -0.5f, -0.5f),	1.0f,  0.0f, 0.0f, 1.0f,	0.4f,  1.0f, 0.0f, 1.0f},
+		{Vector3(-0.5f, 0.5f, -0.5f),	0.0f, 1.0f, 0.0f, 1.0f,		0.0f,  0.3f, 1.0f, 1.0f},
+		{Vector3(0.5f, 0.5f, -0.5f),	0.0f, 1.0f, 0.0f, 1.0f,		0.2f,  0.0f, 0.4f, 1.0f},
+		{Vector3(0.5f, -0.5f, -0.5f),	1.0f, 0.0f, 0.0f, 1.0f,		1.0f,  1.0f, 1.0f, 1.0f},
+		{Vector3(0.5f, -0.5f, 0.5f),	1.0f,  0.0f, 0.0f, 1.0f,	0.4f,  1.0f, 0.0f, 1.0f},
+		{Vector3(0.5f, 0.5f, 0.5f),		0.0f, 1.0f, 0.0f, 1.0f,		0.0f,  0.3f, 1.0f, 1.0f},
+		{Vector3(-0.5f, 0.5f, 0.5f),	0.0f, 1.0f, 0.0f, 1.0f,		0.2f,  0.0f, 0.4f, 1.0f},
+		{Vector3(-0.5f, -0.5f, 0.5f),	1.0f, 0.0f, 0.0f, 1.0f,		1.0f,  1.0f, 1.0f, 1.0f}
 	};
 	m_VertexBuffer = GraphicsEngine::get()->createVertexBuffer();
 	UINT listSize = ARRAYSIZE(list);
+
+	UINT indexList[] = 
+	{
+		0, 1 ,2,
+		2, 3, 0,
+		4, 5, 6,
+		6, 7, 4,
+		1, 6, 5,
+		5, 2, 1,
+		7, 0, 3,
+		3, 4, 7,
+		3, 2, 5,
+		5, 4, 3,
+		7, 6, 1,
+		1, 0, 7
+	};
+	m_IndexBuffer = GraphicsEngine::get()->createIndexBuffer();
+	m_IndexBuffer->load(indexList, ARRAYSIZE(indexList));
 
 	void* shaderByteCode = nullptr;
 	SIZE_T shaderSize = 0;
@@ -121,7 +154,8 @@ void AppWindow::onUpdate()
 	context->setVertexShader(m_VertexShader);
 	context->setPixelShader(m_PixelShader);
 	context->setVertexBuffer(m_VertexBuffer);
-	context->drawTriangleStrip(m_VertexBuffer->getNumVertices(), 0);
+	context->setIndexBuffer(m_IndexBuffer);
+	context->drawIndexedTriangleList(m_IndexBuffer->getNumIndices(), 0, 0);
 
 	m_SwapChain->present(false);
 }
@@ -130,6 +164,8 @@ void AppWindow::onDestroy()
 {
 	Window::onDestroy();
 	m_VertexBuffer->release();
+	m_IndexBuffer->release();
+	m_ConstantBuffer->release();
 	m_VertexShader->release();
 	m_PixelShader->release();
 	m_SwapChain->release();

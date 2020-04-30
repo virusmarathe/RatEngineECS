@@ -6,6 +6,7 @@ class VertexBuffer;
 class VertexShader;
 class PixelShader;
 class ConstantBuffer;
+class IndexBuffer;
 
 class GraphicsEngine
 {
@@ -22,6 +23,7 @@ public:
 	SwapChain* createSwapChain();
 	DeviceContext* getImmediateDeviceContext() { return m_DeviceContext; }
 	VertexBuffer* createVertexBuffer();
+	IndexBuffer* createIndexBuffer();
 	ConstantBuffer* createConstantBuffer();
 
 	VertexShader* createVertexShader(const void* shaderByteCode, SIZE_T byteCodeSize);
@@ -53,5 +55,6 @@ private:
 	friend class VertexShader;
 	friend class PixelShader;
 	friend class ConstantBuffer;
+	friend class IndexBuffer;
 };
 

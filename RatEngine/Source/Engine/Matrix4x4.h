@@ -35,6 +35,30 @@ public:
 		mat[2][2] = scale.z;
 	}
 
+	void setRotationX(float theta)
+	{
+		mat[1][1] = cos(theta);
+		mat[1][2] = sin(theta);
+		mat[2][1] = -sin(theta);
+		mat[2][2] = cos(theta);
+	}
+
+	void setRotationY(float theta)
+	{
+		mat[0][0] = cos(theta);
+		mat[0][2] = -sin(theta);
+		mat[2][0] = sin(theta);
+		mat[2][2] = cos(theta);
+	}
+
+	void setRotationZ(float theta)
+	{
+		mat[0][0] = cos(theta);
+		mat[0][1] = sin(theta);
+		mat[1][0] = -sin(theta);
+		mat[1][1] = cos(theta);
+	}
+
 	void operator *=(const Matrix4x4& matrix)
 	{
 		Matrix4x4 out;

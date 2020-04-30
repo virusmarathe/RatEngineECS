@@ -37,6 +37,9 @@
     <Filter Include="Engine\Math">
       <UniqueIdentifier>{eef8468a-a717-436f-951f-b782723d52e0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\GraphicsEngine\IndexBuffer">
+      <UniqueIdentifier>{507f8575-05a4-435b-b5c7-09dd0b1552b2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Game\AppWindow.cpp">
@@ -68,6 +71,9 @@
     </ClCompile>
     <ClCompile Include="Source\Engine\ConstantBuffer.cpp">
       <Filter>Engine\GraphicsEngine\ConstantBuffer</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Engine\IndexBuffer.cpp">
+      <Filter>Engine\GraphicsEngine\IndexBuffer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -103,6 +109,9 @@
     </ClInclude>
     <ClInclude Include="Source\Engine\Matrix4x4.h">
       <Filter>Engine\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Engine\IndexBuffer.h">
+      <Filter>Engine\GraphicsEngine\IndexBuffer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

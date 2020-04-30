@@ -22,6 +22,7 @@
     <ClCompile Include="Source\Engine\ConstantBuffer.cpp" />
     <ClCompile Include="Source\Engine\DeviceContext.cpp" />
     <ClCompile Include="Source\Engine\GraphicsEngine.cpp" />
+    <ClCompile Include="Source\Engine\IndexBuffer.cpp" />
     <ClCompile Include="Source\Engine\PixelShader.cpp" />
     <ClCompile Include="Source\Engine\SwapChain.cpp" />
     <ClCompile Include="Source\Engine\VertexBuffer.cpp" />
@@ -34,6 +35,7 @@
     <ClInclude Include="Source\Engine\ConstantBuffer.h" />
     <ClInclude Include="Source\Engine\DeviceContext.h" />
     <ClInclude Include="Source\Engine\GraphicsEngine.h" />
+    <ClInclude Include="Source\Engine\IndexBuffer.h" />
     <ClInclude Include="Source\Engine\Matrix4x4.h" />
     <ClInclude Include="Source\Engine\PixelShader.h" />
     <ClInclude Include="Source\Engine\SwapChain.h" />

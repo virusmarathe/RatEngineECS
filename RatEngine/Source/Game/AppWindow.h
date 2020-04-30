@@ -8,8 +8,9 @@
 #include "PixelShader.h"
 #include "ConstantBuffer.h"
 #include "IndexBuffer.h"
+#include "InputListener.h"
 
-class AppWindow : public Window
+class AppWindow : public Window, public InputListener
 {
 public:
 	AppWindow();
@@ -24,6 +25,9 @@ public:
 
 	virtual void onDestroy() override;
 
+	// Inherited via InputListener
+	virtual void onKeyDown(int key) override;
+	virtual void onKeyUp(int key) override;
 
 private:
 	SwapChain* m_SwapChain;
@@ -38,5 +42,9 @@ private:
 	float m_LerpTimer;
 	float m_ScaleLerpTimer;
 	float m_LerpDuration;
+
+	float m_XPos = 0;
+	float m_YPos = 0;
+
 };
 

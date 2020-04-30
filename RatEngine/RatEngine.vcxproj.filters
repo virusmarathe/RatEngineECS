@@ -40,6 +40,9 @@
     <Filter Include="Engine\GraphicsEngine\IndexBuffer">
       <UniqueIdentifier>{507f8575-05a4-435b-b5c7-09dd0b1552b2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\InputSystem">
+      <UniqueIdentifier>{04eb68ea-a915-4eeb-b713-bfddfc01370d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Game\AppWindow.cpp">
@@ -74,6 +77,9 @@
     </ClCompile>
     <ClCompile Include="Source\Engine\IndexBuffer.cpp">
       <Filter>Engine\GraphicsEngine\IndexBuffer</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Engine\InputSystem.cpp">
+      <Filter>Engine\InputSystem</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -112,6 +118,12 @@
     </ClInclude>
     <ClInclude Include="Source\Engine\IndexBuffer.h">
       <Filter>Engine\GraphicsEngine\IndexBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Engine\InputSystem.h">
+      <Filter>Engine\InputSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Engine\InputListener.h">
+      <Filter>Engine\InputSystem</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

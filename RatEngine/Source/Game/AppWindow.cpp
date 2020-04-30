@@ -2,6 +2,8 @@
 #include <Windows.h>
 #include "Vector3.h"
 #include "Matrix4x4.h"
+#include "InputSystem.h"
+#include <iostream>
 
 struct vector4
 {
@@ -18,6 +20,8 @@ struct vertex
 _declspec(align(16))
 struct constant
 {
+	constant() :m_Time(0) {}
+
 	Matrix4x4 m_World;
 	Matrix4x4 m_View;
 	Matrix4x4 m_Projection;
@@ -25,11 +29,37 @@ struct constant
 };
 
 AppWindow::AppWindow() : Window(), m_SwapChain(NULL), m_VertexBuffer(NULL), m_VertexShader(NULL), m_PixelShader(NULL),
-						 m_ConstantBuffer(NULL), m_PrevFrameTime(0), m_DeltaTime(0), m_LerpTimer(0), m_LerpDuration(10)
+						 m_ConstantBuffer(NULL), m_PrevFrameTime(0), m_DeltaTime(0), m_LerpTimer(0), m_LerpDuration(10),
+						 m_IndexBuffer(NULL), m_ScaleLerpTimer(0)
 {
 }
 
 AppWindow::~AppWindow()
+{
+}
+
+void AppWindow::onKeyDown(int key)
+{
+	float speed = 1.0f;
+	if (key == 'W')
+	{
+		m_YPos += speed * m_DeltaTime;
+	}
+	else if (key == 'S')
+	{
+		m_YPos -= speed * m_DeltaTime;
+	}
+	if (key == 'A')
+	{
+		m_XPos -= speed * m_DeltaTime;
+	}
+	else if (key == 'D')
+	{
+		m_XPos += speed * m_DeltaTime;
+	}
+}
+
+void AppWindow::onKeyUp(int key)
 {
 }
 
@@ -52,10 +82,8 @@ void AppWindow::updateQuadPosition()
 	}
 
 	Matrix4x4 temp;
-	//data.m_World.setScale(Vector3::lerp(Vector3(0.5f, 0.5f, 0), Vector3(2, 2, 0), (sin(lerpScaleVal) + 1.0f) / 2.0f));
-	//temp.setTranslation(Vector3::lerp(Vector3(-1, -1, 0), Vector3(1, 1, 0), lerpVal));
-	//data.m_World *= temp;
 	data.m_World.setScale(Vector3(1, 1, 1));
+
 	temp.setIdentity();
 	temp.setRotationZ(lerpScaleVal);
 	data.m_World *= temp;
@@ -64,6 +92,9 @@ void AppWindow::updateQuadPosition()
 	data.m_World *= temp;
 	temp.setIdentity();
 	temp.setRotationX(lerpScaleVal);
+	data.m_World *= temp;
+
+	temp.setTranslation(Vector3(m_XPos, m_YPos, 0));
 	data.m_World *= temp;
 
 	data.m_View.setIdentity();
@@ -75,6 +106,8 @@ void AppWindow::updateQuadPosition()
 
 void AppWindow::onCreate()
 {
+	InputSystem::get()->addListener(this);
+
 	GraphicsEngine::get()->init();
 	m_SwapChain = GraphicsEngine::get()->createSwapChain();
 	RECT rc = getClientWindowRect();
@@ -130,11 +163,13 @@ void AppWindow::onCreate()
 	m_ConstantBuffer = GraphicsEngine::get()->createConstantBuffer();
 	m_ConstantBuffer->load(&data, sizeof(constant));
 
-	m_PrevFrameTime = (float)GetTickCount();
+	m_PrevFrameTime = GetTickCount();
 }
 
 void AppWindow::onUpdate()
 {
+	InputSystem::get()->update();
+
 	DWORD curTime = GetTickCount();
 	m_DeltaTime = (curTime - m_PrevFrameTime) / 1000.0f;
 	m_PrevFrameTime = curTime;
@@ -163,6 +198,7 @@ void AppWindow::onUpdate()
 void AppWindow::onDestroy()
 {
 	Window::onDestroy();
+	InputSystem::get()->removeListener(this);
 	m_VertexBuffer->release();
 	m_IndexBuffer->release();
 	m_ConstantBuffer->release();

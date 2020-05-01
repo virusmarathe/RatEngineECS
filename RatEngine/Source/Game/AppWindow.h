@@ -25,9 +25,20 @@ public:
 
 	virtual void onDestroy() override;
 
+	virtual void onFocus() override;
+
+	virtual void onKillFocus() override;
+
 	// Inherited via InputListener
 	virtual void onKeyDown(int key) override;
 	virtual void onKeyUp(int key) override;
+	virtual void onMouseMove(const Point& deltaMousePos) override;
+	virtual void onLeftMouseDown(const Point& mousePos) override;
+	virtual void onLeftMouseUp(const Point& mousePos) override;
+	virtual void onRightMouseDown(const Point& mousePos) override;
+	virtual void onRightMouseUp(const Point& mousePos) override;
+	virtual void onMiddleMouseDown(const Point& mousePos) override;
+	virtual void onMiddleMouseUp(const Point& mousePos) override;
 
 private:
 	SwapChain* m_SwapChain;
@@ -45,6 +56,9 @@ private:
 
 	float m_XPos = 0;
 	float m_YPos = 0;
+	float m_XRot = 0;
+	float m_YRot = 0;
 
+	float m_CubeScale = 1;
 };
 

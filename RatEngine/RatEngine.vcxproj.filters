@@ -125,6 +125,9 @@
     <ClInclude Include="Source\Engine\InputListener.h">
       <Filter>Engine\InputSystem</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Engine\Point.h">
+      <Filter>Engine\Math</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Source\Shaders\VertexShader.hlsl">

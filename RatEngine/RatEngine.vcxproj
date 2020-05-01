@@ -41,6 +41,7 @@
     <ClInclude Include="Source\Engine\InputSystem.h" />
     <ClInclude Include="Source\Engine\Matrix4x4.h" />
     <ClInclude Include="Source\Engine\PixelShader.h" />
+    <ClInclude Include="Source\Engine\Point.h" />
     <ClInclude Include="Source\Engine\SwapChain.h" />
     <ClInclude Include="Source\Engine\Vector3.h" />
     <ClInclude Include="Source\Engine\VertexBuffer.h" />

@@ -1,6 +1,7 @@
 #pragma once
 #include "InputListener.h"
 #include <unordered_set>
+#include "Point.h"
 
 class InputSystem
 {
@@ -18,5 +19,7 @@ private:
 	std::unordered_set<InputListener*> m_Listeners;
 	unsigned char m_Keys[256] = {};
 	unsigned char m_LastFrameKeys[256] = {};
+	Point m_OldMousePos;
+	bool m_IsFirstFrame = true;
 };
 

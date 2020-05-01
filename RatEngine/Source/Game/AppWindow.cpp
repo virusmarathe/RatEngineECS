@@ -38,31 +38,6 @@ AppWindow::~AppWindow()
 {
 }
 
-void AppWindow::onKeyDown(int key)
-{
-	float speed = 1.0f;
-	if (key == 'W')
-	{
-		m_YPos += speed * m_DeltaTime;
-	}
-	else if (key == 'S')
-	{
-		m_YPos -= speed * m_DeltaTime;
-	}
-	if (key == 'A')
-	{
-		m_XPos -= speed * m_DeltaTime;
-	}
-	else if (key == 'D')
-	{
-		m_XPos += speed * m_DeltaTime;
-	}
-}
-
-void AppWindow::onKeyUp(int key)
-{
-}
-
 void AppWindow::updateQuadPosition()
 {
 	DeviceContext* context = GraphicsEngine::get()->getImmediateDeviceContext();
@@ -82,16 +57,16 @@ void AppWindow::updateQuadPosition()
 	}
 
 	Matrix4x4 temp;
-	data.m_World.setScale(Vector3(1, 1, 1));
+	data.m_World.setScale(Vector3(m_CubeScale, m_CubeScale, m_CubeScale));
 
 	temp.setIdentity();
-	temp.setRotationZ(lerpScaleVal);
+	temp.setRotationZ(0);
 	data.m_World *= temp;
 	temp.setIdentity();
-	temp.setRotationY(lerpScaleVal);
+	temp.setRotationY(m_YRot);  
 	data.m_World *= temp;
 	temp.setIdentity();
-	temp.setRotationX(lerpScaleVal);
+	temp.setRotationX(m_XRot);
 	data.m_World *= temp;
 
 	temp.setTranslation(Vector3(m_XPos, m_YPos, 0));
@@ -106,8 +81,6 @@ void AppWindow::updateQuadPosition()
 
 void AppWindow::onCreate()
 {
-	InputSystem::get()->addListener(this);
-
 	GraphicsEngine::get()->init();
 	m_SwapChain = GraphicsEngine::get()->createSwapChain();
 	RECT rc = getClientWindowRect();
@@ -198,7 +171,6 @@ void AppWindow::onUpdate()
 void AppWindow::onDestroy()
 {
 	Window::onDestroy();
-	InputSystem::get()->removeListener(this);
 	m_VertexBuffer->release();
 	m_IndexBuffer->release();
 	m_ConstantBuffer->release();
@@ -207,3 +179,75 @@ void AppWindow::onDestroy()
 	m_SwapChain->release();
 	GraphicsEngine::get()->release();
 }
+
+void AppWindow::onFocus()
+{
+	InputSystem::get()->addListener(this);
+}
+
+void AppWindow::onKillFocus()
+{
+	InputSystem::get()->removeListener(this);
+}
+
+#pragma region InputListener
+
+void AppWindow::onKeyDown(int key)
+{
+	float speed = 1.0f;
+	if (key == 'W')
+	{
+		m_YPos += speed * m_DeltaTime;
+	}
+	else if (key == 'S')
+	{
+		m_YPos -= speed * m_DeltaTime;
+	}
+	if (key == 'A')
+	{
+		m_XPos -= speed * m_DeltaTime;
+	}
+	else if (key == 'D')
+	{
+		m_XPos += speed * m_DeltaTime;
+	}
+}
+
+void AppWindow::onKeyUp(int key)
+{
+}
+
+void AppWindow::onMouseMove(const Point& deltaMousePos)
+{
+	m_XRot -= deltaMousePos.Y * m_DeltaTime;
+	m_YRot -= deltaMousePos.X * m_DeltaTime;
+}
+
+void AppWindow::onLeftMouseDown(const Point& mousePos)
+{
+	m_CubeScale += 0.1f;
+}
+
+void AppWindow::onLeftMouseUp(const Point& mousePos)
+{
+}
+
+void AppWindow::onRightMouseDown(const Point& mousePos)
+{
+	m_CubeScale -= 0.1f;
+}
+
+void AppWindow::onRightMouseUp(const Point& mousePos)
+{
+}
+
+void AppWindow::onMiddleMouseDown(const Point& mousePos)
+{
+	m_CubeScale = 1.0f;
+}
+
+void AppWindow::onMiddleMouseUp(const Point& mousePos)
+{
+}
+
+#pragma endregion

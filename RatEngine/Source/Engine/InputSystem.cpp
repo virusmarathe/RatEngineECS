@@ -11,6 +11,23 @@ InputSystem::~InputSystem()
 
 void InputSystem::update()
 {
+	POINT currentMousePos = {};
+	GetCursorPos(&currentMousePos);
+	if (m_IsFirstFrame)
+	{
+		m_OldMousePos = Point(currentMousePos.x, currentMousePos.y);
+		m_IsFirstFrame = false;
+	}
+
+	if (currentMousePos.x != m_OldMousePos.X || currentMousePos.y != m_OldMousePos.Y)
+	{
+		for (const auto& listener: m_Listeners)
+		{
+			listener->onMouseMove(Point(currentMousePos.x - m_OldMousePos.X, currentMousePos.y - m_OldMousePos.Y));
+		}
+	}
+	m_OldMousePos = Point(currentMousePos.x, currentMousePos.y);
+
 	if (GetKeyboardState(m_Keys))
 	{
 		for (unsigned int i = 0; i < 256; i++)
@@ -19,6 +36,12 @@ void InputSystem::update()
 			{
 				for (const auto& listener : m_Listeners)
 				{
+					if (m_LastFrameKeys[i] != m_Keys[i])
+					{
+						if (i == VK_LBUTTON) listener->onLeftMouseDown(Point(currentMousePos.x, currentMousePos.y));
+						else if (i == VK_RBUTTON) listener->onRightMouseDown(Point(currentMousePos.x, currentMousePos.y));
+						else if (i == VK_MBUTTON) listener->onMiddleMouseDown(Point(currentMousePos.x, currentMousePos.y));
+					}
 					listener->onKeyDown(i);
 				}
 			}
@@ -28,6 +51,12 @@ void InputSystem::update()
 				{
 					for (const auto& listener : m_Listeners)
 					{
+						if (m_LastFrameKeys[i] != m_Keys[i])
+						{
+							if (i == VK_LBUTTON) listener->onLeftMouseUp(Point(currentMousePos.x, currentMousePos.y));
+							else if (i == VK_RBUTTON) listener->onRightMouseUp(Point(currentMousePos.x, currentMousePos.y));
+							else if (i == VK_MBUTTON) listener->onMiddleMouseUp(Point(currentMousePos.x, currentMousePos.y));
+						}
 						listener->onKeyUp(i);
 					}
 				}

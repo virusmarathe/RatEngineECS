@@ -1,18 +1,9 @@
 #include "IndexBuffer.h"
-#include "GraphicsEngine.h"
+#include "RenderSystem.h"
+#include <exception>
 
-IndexBuffer::IndexBuffer() : m_IndexBuffer(0), m_NumIndices(0)
+IndexBuffer::IndexBuffer(void* listIndices, UINT numIndices, RenderSystem* system) : m_IndexBuffer(0), m_NumIndices(0), m_RenderSystem(system)
 {
-}
-
-IndexBuffer::~IndexBuffer()
-{
-}
-
-bool IndexBuffer::load(void* listIndices, UINT numIndices)
-{
-	if (m_IndexBuffer) m_IndexBuffer->Release();
-
 	D3D11_BUFFER_DESC buffDesc;
 	buffDesc.Usage = D3D11_USAGE_DEFAULT; // can be written or read by gpu
 	buffDesc.ByteWidth = 4 * numIndices;
@@ -25,17 +16,12 @@ bool IndexBuffer::load(void* listIndices, UINT numIndices)
 
 	m_NumIndices = numIndices;
 
-	HRESULT result = GraphicsEngine::get()->m_D3DDevice->CreateBuffer(&buffDesc, &initData, &m_IndexBuffer);
+	HRESULT result = m_RenderSystem->m_D3DDevice->CreateBuffer(&buffDesc, &initData, &m_IndexBuffer);
 
-	if (FAILED(result)) return false;
-
-	return true;
+	if (FAILED(result)) throw std::exception("IndexBuffer not created successfully");
 }
 
-bool IndexBuffer::release()
+IndexBuffer::~IndexBuffer()
 {
-	m_IndexBuffer->Release();
-
-	delete this;
-	return true;
+	if (m_IndexBuffer) m_IndexBuffer->Release();
 }

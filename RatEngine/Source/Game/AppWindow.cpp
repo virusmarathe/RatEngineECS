@@ -39,7 +39,7 @@ AppWindow::~AppWindow()
 
 void AppWindow::update()
 {
-	DeviceContext* context = GraphicsEngine::get()->getImmediateDeviceContext();
+	DeviceContext* context = GraphicsEngine::get()->getRenderSystem()->getImmediateDeviceContext();
 	constant data;
 	RECT rect = getClientWindowRect();
 	data.m_Time = GetTickCount();
@@ -78,9 +78,8 @@ void AppWindow::update()
 void AppWindow::onCreate()
 {
 	GraphicsEngine::get()->init();
-	m_SwapChain = GraphicsEngine::get()->createSwapChain();
 	RECT rc = getClientWindowRect();
-	m_SwapChain->init(m_hwnd, rc.right - rc.left, rc.bottom - rc.top);
+	m_SwapChain = GraphicsEngine::get()->getRenderSystem()->createSwapChain(m_hwnd, rc.right - rc.left, rc.bottom - rc.top);
 
 	InputSystem::get()->showCursor(false);
 
@@ -98,7 +97,6 @@ void AppWindow::onCreate()
 		{Vector3(-0.5f, 0.5f, 0.5f),	0.0f, 1.0f, 0.0f, 1.0f,		0.2f,  0.0f, 0.4f, 1.0f},
 		{Vector3(-0.5f, -0.5f, 0.5f),	1.0f, 0.0f, 0.0f, 1.0f,		1.0f,  1.0f, 1.0f, 1.0f}
 	};
-	m_VertexBuffer = GraphicsEngine::get()->createVertexBuffer();
 	UINT listSize = ARRAYSIZE(list);
 
 	UINT indexList[] = 
@@ -116,26 +114,24 @@ void AppWindow::onCreate()
 		7, 6, 1,
 		1, 0, 7
 	};
-	m_IndexBuffer = GraphicsEngine::get()->createIndexBuffer();
-	m_IndexBuffer->load(indexList, ARRAYSIZE(indexList));
+	m_IndexBuffer = GraphicsEngine::get()->getRenderSystem()->createIndexBuffer(indexList, ARRAYSIZE(indexList));
 
 	void* shaderByteCode = nullptr;
 	SIZE_T shaderSize = 0;
 
-	GraphicsEngine::get()->compileVertexShader(L"Source/Shaders/VertexShader.hlsl", "vsmain", &shaderByteCode, &shaderSize);
-	m_VertexShader = GraphicsEngine::get()->createVertexShader(shaderByteCode, shaderSize);
-	m_VertexBuffer->load(list, sizeof(vertex), listSize, shaderByteCode, shaderSize);
+	GraphicsEngine::get()->getRenderSystem()->compileVertexShader(L"Source/Shaders/VertexShader.hlsl", "vsmain", &shaderByteCode, &shaderSize);
+	m_VertexBuffer = GraphicsEngine::get()->getRenderSystem()->createVertexBuffer(list, sizeof(vertex), listSize, shaderByteCode, shaderSize);
+	m_VertexShader = GraphicsEngine::get()->getRenderSystem()->createVertexShader(shaderByteCode, shaderSize);
 
-	GraphicsEngine::get()->compilePixelShader(L"Source/Shaders/PixelShader.hlsl", "psmain", &shaderByteCode, &shaderSize);
-	m_PixelShader = GraphicsEngine::get()->createPixelShader(shaderByteCode, shaderSize);
+	GraphicsEngine::get()->getRenderSystem()->compilePixelShader(L"Source/Shaders/PixelShader.hlsl", "psmain", &shaderByteCode, &shaderSize);
+	m_PixelShader = GraphicsEngine::get()->getRenderSystem()->createPixelShader(shaderByteCode, shaderSize);
 
-	GraphicsEngine::get()->releaseCompiledShader();
+	GraphicsEngine::get()->getRenderSystem()->releaseCompiledShader();
 
 	constant data;
 	data.m_Time = 0;
 
-	m_ConstantBuffer = GraphicsEngine::get()->createConstantBuffer();
-	m_ConstantBuffer->load(&data, sizeof(constant));
+	m_ConstantBuffer = GraphicsEngine::get()->getRenderSystem()->createConstantBuffer(&data, sizeof(constant));
 
 	m_PrevFrameTime = GetTickCount();
 }
@@ -148,7 +144,7 @@ void AppWindow::onUpdate()
 	m_DeltaTime = (curTime - m_PrevFrameTime) / 1000.0f;
 	m_PrevFrameTime = curTime;
 
-	DeviceContext* context = GraphicsEngine::get()->getImmediateDeviceContext();
+	DeviceContext* context = GraphicsEngine::get()->getRenderSystem()->getImmediateDeviceContext();
 
 	context->clearRenderTargetColor(m_SwapChain, 0.1f, 0.1f, 0.6f, 1);
 
@@ -172,12 +168,12 @@ void AppWindow::onUpdate()
 void AppWindow::onDestroy()
 {
 	Window::onDestroy();
-	m_VertexBuffer->release();
-	m_IndexBuffer->release();
-	m_ConstantBuffer->release();
-	m_VertexShader->release();
-	m_PixelShader->release();
-	m_SwapChain->release();
+	delete m_VertexBuffer;
+	delete m_IndexBuffer;
+	delete m_ConstantBuffer;
+	delete m_VertexShader;
+	delete m_PixelShader;
+	delete m_SwapChain;
 	GraphicsEngine::get()->release();
 }
 
@@ -230,8 +226,8 @@ void AppWindow::onKeyUp(int key)
 void AppWindow::onMouseMove(const Point& mousePos)
 {
 	RECT rect = getClientWindowRect();
-	int xCenter = (rect.right + rect.left) / 2.0f;
-	int yCenter = (rect.bottom - rect.top) / 2.0f;
+	int xCenter = (int)((rect.right + rect.left) / 2.0f);
+	int yCenter = (int)((rect.bottom - rect.top) / 2.0f);
 
 	m_XRot += (mousePos.Y - yCenter) * m_DeltaTime * 0.2f;
 	m_YRot += (mousePos.X - xCenter) * m_DeltaTime * 0.2f;

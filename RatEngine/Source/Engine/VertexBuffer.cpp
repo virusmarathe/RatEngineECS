@@ -1,19 +1,10 @@
 #include "VertexBuffer.h"
-#include "GraphicsEngine.h"
+#include "RenderSystem.h"
+#include <exception>
 
-VertexBuffer::VertexBuffer() : m_VertexSize(0), m_NumVertices(0), m_VertexBuffer(NULL), m_InputLayout(NULL)
+VertexBuffer::VertexBuffer(void* listVertices, UINT sizeVertex, UINT numVertices, void* shaderByteCode, UINT shaderByteSize, RenderSystem* system) :
+	m_VertexSize(0), m_NumVertices(0), m_VertexBuffer(NULL), m_InputLayout(NULL), m_RenderSystem(system)
 {
-}
-
-VertexBuffer::~VertexBuffer()
-{
-}
-
-bool VertexBuffer::load(void* listVertices, UINT sizeVertex, UINT numVertices, void * shaderByteCode, UINT shaderByteSize)
-{
-	if (m_VertexBuffer) m_VertexBuffer->Release();
-	if (m_InputLayout) m_InputLayout->Release();
-
 	D3D11_BUFFER_DESC buffDesc;
 	buffDesc.Usage = D3D11_USAGE_DEFAULT; // can be written or read by gpu
 	buffDesc.ByteWidth = sizeVertex * numVertices;
@@ -27,11 +18,11 @@ bool VertexBuffer::load(void* listVertices, UINT sizeVertex, UINT numVertices, v
 	m_VertexSize = sizeVertex;
 	m_NumVertices = numVertices;
 
-	HRESULT result = GraphicsEngine::get()->m_D3DDevice->CreateBuffer(&buffDesc, &initData, &m_VertexBuffer);
+	HRESULT result = m_RenderSystem->m_D3DDevice->CreateBuffer(&buffDesc, &initData, &m_VertexBuffer);
 
-	if (FAILED(result)) return false;
+	if (FAILED(result))	throw std::exception("VertexBuffer not created successfully");
 
-	D3D11_INPUT_ELEMENT_DESC layout[] = 
+	D3D11_INPUT_ELEMENT_DESC layout[] =
 	{
 		// SEMANTIC NAME - SEMANTIC INDEX - FORMAT - INPUT SLOT - ALIGNED BYTE OFFSET - INPUT SLOT CLASS - INSTANCE DATA STEP RATE
 		{"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0},
@@ -41,19 +32,13 @@ bool VertexBuffer::load(void* listVertices, UINT sizeVertex, UINT numVertices, v
 
 	UINT sizeLayout = ARRAYSIZE(layout);
 
-	result = GraphicsEngine::get()->m_D3DDevice->CreateInputLayout(layout, sizeLayout, shaderByteCode, shaderByteSize, &m_InputLayout);
+	result = m_RenderSystem->m_D3DDevice->CreateInputLayout(layout, sizeLayout, shaderByteCode, shaderByteSize, &m_InputLayout);
 
-	if (FAILED(result)) return false;
-
-	return true;
+	if (FAILED(result))	throw std::exception("VertexBuffer::CreateInputLayout not created successfully");
 }
 
-bool VertexBuffer::release()
+VertexBuffer::~VertexBuffer()
 {
-	m_InputLayout->Release();
-	m_VertexBuffer->Release();
-
-	delete this;
-
-	return true;
+	if (m_InputLayout) m_InputLayout->Release();
+	if (m_VertexBuffer) m_VertexBuffer->Release();
 }

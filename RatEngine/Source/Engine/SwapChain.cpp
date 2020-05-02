@@ -1,17 +1,11 @@
 #include "SwapChain.h"
-#include "GraphicsEngine.h"
+#include "RenderSystem.h"
+#include <exception>
 
-SwapChain::SwapChain() : m_DXGISwapChain(NULL), m_RenderTargetView(NULL)
+SwapChain::SwapChain(HWND hwnd, UINT width, UINT height, RenderSystem* system) : 
+	m_DXGISwapChain(NULL), m_RenderTargetView(NULL), m_RenderSystem(system)
 {
-}
-
-SwapChain::~SwapChain()
-{
-}
-
-bool SwapChain::init(HWND hwnd, UINT width, UINT height)
-{
-	ID3D11Device* device = GraphicsEngine::get()->m_D3DDevice;
+	ID3D11Device* device = m_RenderSystem->m_D3DDevice;
 
 	DXGI_SWAP_CHAIN_DESC desc;
 	ZeroMemory(&desc, sizeof(desc));
@@ -28,32 +22,29 @@ bool SwapChain::init(HWND hwnd, UINT width, UINT height)
 	desc.Windowed = TRUE;
 
 	// create the swap chain for the window indicated by the HWND parameter
-	HRESULT result = GraphicsEngine::get()->m_DXGIFactory->CreateSwapChain(device, &desc, &m_DXGISwapChain);
+	HRESULT result = m_RenderSystem->m_DXGIFactory->CreateSwapChain(device, &desc, &m_DXGISwapChain);
 
-	if (FAILED(result))	return false;
+	if (FAILED(result))	throw std::exception("SwapChain not created successfully");
 
 	ID3D11Texture2D* buffer;
 	result = m_DXGISwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (void**)&buffer);
 
-	if (FAILED(result))	return false;
+	if (FAILED(result))	throw std::exception("SwapChain::GetBuffer not created successfully");
 
 	result = device->CreateRenderTargetView(buffer, NULL, &m_RenderTargetView);
 	buffer->Release();
 
-	if (FAILED(result))	return false;
+	if (FAILED(result))	throw std::exception("SwapChain::CreateRenderTargetView not created successfully");
+}
 
-	return true;
+SwapChain::~SwapChain()
+{
+	if (m_RenderTargetView) m_RenderTargetView->Release();
+	if (m_DXGISwapChain) m_DXGISwapChain->Release();
 }
 
 bool SwapChain::present(bool vsync)
 {
 	m_DXGISwapChain->Present(vsync, NULL);
-	return true;
-}
-
-bool SwapChain::release()
-{
-	m_DXGISwapChain->Release();
-	delete this;
 	return true;
 }

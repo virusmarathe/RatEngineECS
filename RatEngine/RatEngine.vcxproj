@@ -25,6 +25,7 @@
     <ClCompile Include="Source\Engine\IndexBuffer.cpp" />
     <ClCompile Include="Source\Engine\InputSystem.cpp" />
     <ClCompile Include="Source\Engine\PixelShader.cpp" />
+    <ClCompile Include="Source\Engine\RenderSystem.cpp" />
     <ClCompile Include="Source\Engine\SwapChain.cpp" />
     <ClCompile Include="Source\Engine\VertexBuffer.cpp" />
     <ClCompile Include="Source\Engine\VertexShader.cpp" />
@@ -42,6 +43,8 @@
     <ClInclude Include="Source\Engine\Matrix4x4.h" />
     <ClInclude Include="Source\Engine\PixelShader.h" />
     <ClInclude Include="Source\Engine\Point.h" />
+    <ClInclude Include="Source\Engine\Prerequisites.h" />
+    <ClInclude Include="Source\Engine\RenderSystem.h" />
     <ClInclude Include="Source\Engine\SwapChain.h" />
     <ClInclude Include="Source\Engine\Vector3.h" />
     <ClInclude Include="Source\Engine\Vector4.h" />

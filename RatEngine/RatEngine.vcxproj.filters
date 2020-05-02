@@ -13,35 +13,38 @@
     <Filter Include="Engine\GraphicsEngine">
       <UniqueIdentifier>{2e2885ca-3000-439f-83a9-dbeed1a9e466}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\GraphicsEngine\SwapChain">
-      <UniqueIdentifier>{e3811515-1015-407f-a988-9426e259790e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\GraphicsEngine\DeviceContext">
-      <UniqueIdentifier>{2b07dbd3-5e88-4c44-b4a5-efa180082190}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\GraphicsEngine\VertexBuffer">
-      <UniqueIdentifier>{58d17551-589f-4bd1-996e-1500c86e50fb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\GraphicsEngine\VertexShader">
-      <UniqueIdentifier>{c014d688-31eb-4464-aac3-fda15de4552c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Game\Shaders">
       <UniqueIdentifier>{b136aaf2-0e75-4a42-94db-c869140803f1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\GraphicsEngine\PixelShader">
-      <UniqueIdentifier>{83cb771f-b103-4651-885f-6fc661b04112}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\GraphicsEngine\ConstantBuffer">
-      <UniqueIdentifier>{84fb7bfe-4e4b-44a3-85b7-600296c0dac5}</UniqueIdentifier>
     </Filter>
     <Filter Include="Engine\Math">
       <UniqueIdentifier>{eef8468a-a717-436f-951f-b782723d52e0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\GraphicsEngine\IndexBuffer">
-      <UniqueIdentifier>{507f8575-05a4-435b-b5c7-09dd0b1552b2}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Engine\InputSystem">
       <UniqueIdentifier>{04eb68ea-a915-4eeb-b713-bfddfc01370d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\GraphicsEngine\RenderSystem">
+      <UniqueIdentifier>{a666b564-452e-49bf-badc-946837b4f36b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\GraphicsEngine\RenderSystem\VertexShader">
+      <UniqueIdentifier>{c014d688-31eb-4464-aac3-fda15de4552c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\GraphicsEngine\RenderSystem\PixelShader">
+      <UniqueIdentifier>{83cb771f-b103-4651-885f-6fc661b04112}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\GraphicsEngine\RenderSystem\SwapChain">
+      <UniqueIdentifier>{e3811515-1015-407f-a988-9426e259790e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\GraphicsEngine\RenderSystem\VertexBuffer">
+      <UniqueIdentifier>{58d17551-589f-4bd1-996e-1500c86e50fb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\GraphicsEngine\RenderSystem\IndexBuffer">
+      <UniqueIdentifier>{507f8575-05a4-435b-b5c7-09dd0b1552b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\GraphicsEngine\RenderSystem\DeviceContext">
+      <UniqueIdentifier>{2b07dbd3-5e88-4c44-b4a5-efa180082190}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\GraphicsEngine\RenderSystem\ConstantBuffer">
+      <UniqueIdentifier>{84fb7bfe-4e4b-44a3-85b7-600296c0dac5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -58,28 +61,31 @@
       <Filter>Engine\GraphicsEngine</Filter>
     </ClCompile>
     <ClCompile Include="Source\Engine\SwapChain.cpp">
-      <Filter>Engine\GraphicsEngine\SwapChain</Filter>
+      <Filter>Engine\GraphicsEngine\RenderSystem\SwapChain</Filter>
     </ClCompile>
     <ClCompile Include="Source\Engine\DeviceContext.cpp">
-      <Filter>Engine\GraphicsEngine\DeviceContext</Filter>
+      <Filter>Engine\GraphicsEngine\RenderSystem\DeviceContext</Filter>
     </ClCompile>
     <ClCompile Include="Source\Engine\VertexBuffer.cpp">
-      <Filter>Engine\GraphicsEngine\VertexBuffer</Filter>
+      <Filter>Engine\GraphicsEngine\RenderSystem\VertexBuffer</Filter>
     </ClCompile>
     <ClCompile Include="Source\Engine\VertexShader.cpp">
-      <Filter>Engine\GraphicsEngine\VertexShader</Filter>
+      <Filter>Engine\GraphicsEngine\RenderSystem\VertexShader</Filter>
     </ClCompile>
     <ClCompile Include="Source\Engine\PixelShader.cpp">
-      <Filter>Engine\GraphicsEngine\PixelShader</Filter>
+      <Filter>Engine\GraphicsEngine\RenderSystem\PixelShader</Filter>
     </ClCompile>
     <ClCompile Include="Source\Engine\ConstantBuffer.cpp">
-      <Filter>Engine\GraphicsEngine\ConstantBuffer</Filter>
+      <Filter>Engine\GraphicsEngine\RenderSystem\ConstantBuffer</Filter>
     </ClCompile>
     <ClCompile Include="Source\Engine\IndexBuffer.cpp">
-      <Filter>Engine\GraphicsEngine\IndexBuffer</Filter>
+      <Filter>Engine\GraphicsEngine\RenderSystem\IndexBuffer</Filter>
     </ClCompile>
     <ClCompile Include="Source\Engine\InputSystem.cpp">
       <Filter>Engine\InputSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Engine\RenderSystem.cpp">
+      <Filter>Engine\GraphicsEngine\RenderSystem</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -93,22 +99,22 @@
       <Filter>Engine\GraphicsEngine</Filter>
     </ClInclude>
     <ClInclude Include="Source\Engine\SwapChain.h">
-      <Filter>Engine\GraphicsEngine\SwapChain</Filter>
+      <Filter>Engine\GraphicsEngine\RenderSystem\SwapChain</Filter>
     </ClInclude>
     <ClInclude Include="Source\Engine\DeviceContext.h">
-      <Filter>Engine\GraphicsEngine\DeviceContext</Filter>
+      <Filter>Engine\GraphicsEngine\RenderSystem\DeviceContext</Filter>
     </ClInclude>
     <ClInclude Include="Source\Engine\VertexBuffer.h">
-      <Filter>Engine\GraphicsEngine\VertexBuffer</Filter>
+      <Filter>Engine\GraphicsEngine\RenderSystem\VertexBuffer</Filter>
     </ClInclude>
     <ClInclude Include="Source\Engine\VertexShader.h">
-      <Filter>Engine\GraphicsEngine\VertexShader</Filter>
+      <Filter>Engine\GraphicsEngine\RenderSystem\VertexShader</Filter>
     </ClInclude>
     <ClInclude Include="Source\Engine\PixelShader.h">
-      <Filter>Engine\GraphicsEngine\PixelShader</Filter>
+      <Filter>Engine\GraphicsEngine\RenderSystem\PixelShader</Filter>
     </ClInclude>
     <ClInclude Include="Source\Engine\ConstantBuffer.h">
-      <Filter>Engine\GraphicsEngine\ConstantBuffer</Filter>
+      <Filter>Engine\GraphicsEngine\RenderSystem\ConstantBuffer</Filter>
     </ClInclude>
     <ClInclude Include="Source\Engine\Vector3.h">
       <Filter>Engine\Math</Filter>
@@ -117,7 +123,7 @@
       <Filter>Engine\Math</Filter>
     </ClInclude>
     <ClInclude Include="Source\Engine\IndexBuffer.h">
-      <Filter>Engine\GraphicsEngine\IndexBuffer</Filter>
+      <Filter>Engine\GraphicsEngine\RenderSystem\IndexBuffer</Filter>
     </ClInclude>
     <ClInclude Include="Source\Engine\InputSystem.h">
       <Filter>Engine\InputSystem</Filter>
@@ -130,6 +136,12 @@
     </ClInclude>
     <ClInclude Include="Source\Engine\Vector4.h">
       <Filter>Engine\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Engine\RenderSystem.h">
+      <Filter>Engine\GraphicsEngine\RenderSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Engine\Prerequisites.h">
+      <Filter>Engine\GraphicsEngine</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

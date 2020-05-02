@@ -23,7 +23,7 @@ void InputSystem::update()
 	{
 		for (const auto& listener: m_Listeners)
 		{
-			listener->onMouseMove(Point(currentMousePos.x - m_OldMousePos.X, currentMousePos.y - m_OldMousePos.Y));
+			listener->onMouseMove(Point(currentMousePos.x, currentMousePos.y));
 		}
 	}
 	m_OldMousePos = Point(currentMousePos.x, currentMousePos.y);
@@ -75,6 +75,16 @@ void InputSystem::addListener(InputListener* listener)
 void InputSystem::removeListener(InputListener* listener)
 {
 	m_Listeners.erase(listener);
+}
+
+void InputSystem::setCursorPosition(const Point& pos)
+{
+	SetCursorPos(pos.X, pos.Y);
+}
+
+void InputSystem::showCursor(bool show)
+{
+	ShowCursor(show);
 }
 
 InputSystem* InputSystem::get()

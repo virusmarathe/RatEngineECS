@@ -9,6 +9,7 @@
 #include "ConstantBuffer.h"
 #include "IndexBuffer.h"
 #include "InputListener.h"
+#include "Matrix4x4.h"
 
 class AppWindow : public Window, public InputListener
 {
@@ -16,7 +17,7 @@ public:
 	AppWindow();
 	~AppWindow();
 
-	void updateQuadPosition();
+	void update();
 
 	// Inherited via Window
 	virtual void onCreate() override;
@@ -32,7 +33,7 @@ public:
 	// Inherited via InputListener
 	virtual void onKeyDown(int key) override;
 	virtual void onKeyUp(int key) override;
-	virtual void onMouseMove(const Point& deltaMousePos) override;
+	virtual void onMouseMove(const Point& mousePos) override;
 	virtual void onLeftMouseDown(const Point& mousePos) override;
 	virtual void onLeftMouseUp(const Point& mousePos) override;
 	virtual void onRightMouseDown(const Point& mousePos) override;
@@ -50,15 +51,12 @@ private:
 
 	DWORD m_PrevFrameTime;
 	float m_DeltaTime;
-	float m_LerpTimer;
-	float m_ScaleLerpTimer;
-	float m_LerpDuration;
 
-	float m_XPos = 0;
-	float m_YPos = 0;
 	float m_XRot = 0;
 	float m_YRot = 0;
 
-	float m_CubeScale = 1;
+	Matrix4x4 m_CameraTransform;
+	float m_ForwardDirection = 0.0f;
+	float m_RightDirection = 0.0f;
 };
 

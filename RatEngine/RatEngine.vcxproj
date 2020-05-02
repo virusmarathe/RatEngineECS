@@ -44,6 +44,7 @@
     <ClInclude Include="Source\Engine\Point.h" />
     <ClInclude Include="Source\Engine\SwapChain.h" />
     <ClInclude Include="Source\Engine\Vector3.h" />
+    <ClInclude Include="Source\Engine\Vector4.h" />
     <ClInclude Include="Source\Engine\VertexBuffer.h" />
     <ClInclude Include="Source\Engine\VertexShader.h" />
     <ClInclude Include="Source\Engine\Window.h" />

@@ -5,21 +5,20 @@
 
 class GraphicsEngine
 {
-public:
+private:
 	GraphicsEngine();
 	~GraphicsEngine();
 
-	// Initialize the Grpahics Engine and DirectX 11 Device
-	bool init();
-
-	// Release the resources loaded
-	bool release();
-
+public:
 	RenderSystem* getRenderSystem() { return m_RenderSystem; }
 
 	static GraphicsEngine* get();
+	static void create();
+	static void release();
+
 
 private:
 	RenderSystem* m_RenderSystem;
+	static GraphicsEngine* m_GraphicsEngine;
 };
 

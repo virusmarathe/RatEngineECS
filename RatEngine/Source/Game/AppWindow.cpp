@@ -77,7 +77,6 @@ void AppWindow::update()
 
 void AppWindow::onCreate()
 {
-	GraphicsEngine::get()->init();
 	RECT rc = getClientWindowRect();
 	m_SwapChain = GraphicsEngine::get()->getRenderSystem()->createSwapChain(m_hwnd, rc.right - rc.left, rc.bottom - rc.top);
 
@@ -229,8 +228,9 @@ void AppWindow::onMouseMove(const Point& mousePos)
 	int xCenter = (int)((rect.right + rect.left) / 2.0f);
 	int yCenter = (int)((rect.bottom - rect.top) / 2.0f);
 
-	m_XRot += (mousePos.Y - yCenter) * m_DeltaTime * 0.2f;
-	m_YRot += (mousePos.X - xCenter) * m_DeltaTime * 0.2f;
+	float sensitivity = 0.001f;
+	m_XRot += (mousePos.Y - yCenter) * sensitivity;
+	m_YRot += (mousePos.X - xCenter) * sensitivity;
 
 	InputSystem::get()->setCursorPosition(Point(xCenter, yCenter));
 }

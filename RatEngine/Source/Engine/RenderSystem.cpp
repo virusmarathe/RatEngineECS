@@ -7,20 +7,13 @@
 #include "ConstantBuffer.h"
 #include "IndexBuffer.h"
 #include <d3dcompiler.h>
+#include <exception>
 
 #pragma warning(disable: 26812)
 
 RenderSystem::RenderSystem() : m_DeviceContext(NULL), m_D3DDevice(NULL), m_FeatureLevel(D3D_FEATURE_LEVEL_11_0),
 m_DXGIAdapter(NULL), m_DXGIDevice(NULL), m_DXGIFactory(NULL),
 m_ImmediateDeviceContext(NULL), m_VertexShaderBlob(NULL), m_PixelShaderBlob(NULL)
-{
-}
-
-RenderSystem::~RenderSystem()
-{
-}
-
-bool RenderSystem::init()
 {
 	D3D_DRIVER_TYPE driverTypes[] =
 	{
@@ -44,18 +37,16 @@ bool RenderSystem::init()
 		if (SUCCEEDED(result)) break;
 	}
 
-	if (FAILED(result))	return false;
+	if (FAILED(result))	throw std::exception("RenderSystem::D3D11CreateDevice not found");
 
 	m_DeviceContext = new DeviceContext(m_ImmediateDeviceContext, this);
 
 	m_D3DDevice->QueryInterface(__uuidof(IDXGIDevice), (void**)&m_DXGIDevice);
 	m_DXGIDevice->GetParent(__uuidof(IDXGIAdapter), (void**)&m_DXGIAdapter);
 	m_DXGIAdapter->GetParent(__uuidof(IDXGIFactory), (void**)&m_DXGIFactory);
-
-	return true;
 }
 
-bool RenderSystem::release()
+RenderSystem::~RenderSystem()
 {
 	m_DXGIDevice->Release();
 	m_DXGIAdapter->Release();
@@ -64,8 +55,6 @@ bool RenderSystem::release()
 	delete m_DeviceContext;
 
 	m_D3DDevice->Release();
-
-	return true;
 }
 
 SwapChain* RenderSystem::createSwapChain(HWND hwnd, UINT width, UINT height)
@@ -80,7 +69,7 @@ SwapChain* RenderSystem::createSwapChain(HWND hwnd, UINT width, UINT height)
 	return sc;
 }
 
-VertexBuffer* RenderSystem::createVertexBuffer(void* listVertices, UINT sizeVertex, UINT numVertices, void* shaderByteCode, UINT shaderByteSize)
+VertexBuffer* RenderSystem::createVertexBuffer(void* listVertices, UINT sizeVertex, UINT numVertices, void* shaderByteCode, SIZE_T shaderByteSize)
 {
 	VertexBuffer* vb = NULL;
 	try

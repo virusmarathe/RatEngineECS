@@ -110,7 +110,7 @@ bool Window::broadcast()
 		DispatchMessage(&msg);
 	}
 
-	Sleep(2);
+	Sleep(1);
 
 	return false;
 }

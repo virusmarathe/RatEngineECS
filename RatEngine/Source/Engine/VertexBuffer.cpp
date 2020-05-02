@@ -2,7 +2,7 @@
 #include "RenderSystem.h"
 #include <exception>
 
-VertexBuffer::VertexBuffer(void* listVertices, UINT sizeVertex, UINT numVertices, void* shaderByteCode, UINT shaderByteSize, RenderSystem* system) :
+VertexBuffer::VertexBuffer(void* listVertices, UINT sizeVertex, UINT numVertices, void* shaderByteCode, SIZE_T shaderByteSize, RenderSystem* system) :
 	m_VertexSize(0), m_NumVertices(0), m_VertexBuffer(NULL), m_InputLayout(NULL), m_RenderSystem(system)
 {
 	D3D11_BUFFER_DESC buffDesc;

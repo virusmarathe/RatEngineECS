@@ -1,32 +1,39 @@
 #include "GraphicsEngine.h"
 #include "RenderSystem.h"
+#include <exception>
 
 #pragma warning(disable: 26812)
 
+GraphicsEngine* GraphicsEngine::m_GraphicsEngine = NULL;
+
 GraphicsEngine::GraphicsEngine() : m_RenderSystem(NULL)
 {
+	try
+	{
+		m_RenderSystem = new RenderSystem();
+	}
+	catch (...) { throw std::exception("GraphicsEngine::RenderSystem not created successfully"); }
 }
 
 GraphicsEngine::~GraphicsEngine()
 {
-}
-
-bool GraphicsEngine::init()
-{
-	m_RenderSystem = new RenderSystem();
-	m_RenderSystem->init();
-	return true;
-}
-
-bool GraphicsEngine::release()
-{
-	m_RenderSystem->release();
+	GraphicsEngine::m_GraphicsEngine = NULL;
 	delete m_RenderSystem;
-	return true;
 }
 
 GraphicsEngine* GraphicsEngine::get()
 {
-	static GraphicsEngine engine;
-	return &engine;
+	return m_GraphicsEngine;
+}
+
+void GraphicsEngine::create()
+{
+	if (GraphicsEngine::m_GraphicsEngine) throw std::exception("Graphics Engine is a singleton. create() should only be called once.");
+	GraphicsEngine::m_GraphicsEngine = new GraphicsEngine();
+}
+
+void GraphicsEngine::release()
+{
+	if (!GraphicsEngine::m_GraphicsEngine) return;
+	delete GraphicsEngine::m_GraphicsEngine;
 }

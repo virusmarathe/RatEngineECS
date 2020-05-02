@@ -5,7 +5,7 @@
 class VertexBuffer
 {
 public:
-	VertexBuffer(void* listVertices, UINT sizeVertex, UINT numVertices, void* shaderByteCode, UINT shaderByteSize, RenderSystem* system);
+	VertexBuffer(void* listVertices, UINT sizeVertex, UINT numVertices, void* shaderByteCode, SIZE_T shaderByteSize, RenderSystem* system);
 	~VertexBuffer();
 
 	UINT getNumVertices() { return m_NumVertices; }

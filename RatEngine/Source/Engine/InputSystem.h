@@ -5,10 +5,11 @@
 
 class InputSystem
 {
-public:
+private:
 	InputSystem();
 	~InputSystem();
 
+public:
 	void update();
 	void addListener(InputListener* listener);
 	void removeListener(InputListener* listener);
@@ -18,6 +19,8 @@ public:
 	void showCursor(bool show);
 
 	static InputSystem* get();
+	static void create();
+	static void release();
 
 private:
 	std::unordered_set<InputListener*> m_Listeners;
@@ -25,5 +28,6 @@ private:
 	unsigned char m_LastFrameKeys[256] = {};
 	Point m_OldMousePos;
 	bool m_IsFirstFrame = true;
+	static InputSystem* m_InputSystem;
 };
 

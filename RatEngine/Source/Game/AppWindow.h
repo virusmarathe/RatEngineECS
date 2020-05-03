@@ -49,6 +49,8 @@ private:
 	ConstantBuffer* m_ConstantBuffer;
 	IndexBuffer* m_IndexBuffer;
 
+	TexturePointer m_WoodTexture;
+
 	DWORD m_PrevFrameTime;
 	float m_DeltaTime;
 

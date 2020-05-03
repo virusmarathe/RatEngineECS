@@ -18,6 +18,9 @@ public:
 	void setVertexShader(VertexShader* vs);
 	void setPixelShader(PixelShader* ps);
 
+	void setTexture(VertexShader* vs, const TexturePointer& texture);
+	void setTexture(PixelShader* ps, const TexturePointer& texture);
+
 	void setConstantBuffer(VertexShader* vs, ConstantBuffer * constantBuf);
 	void setConstantBuffer(PixelShader* ps, ConstantBuffer * constantBuf);
 

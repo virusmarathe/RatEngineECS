@@ -6,18 +6,25 @@
 
 GraphicsEngine* GraphicsEngine::m_GraphicsEngine = NULL;
 
-GraphicsEngine::GraphicsEngine() : m_RenderSystem(NULL)
+GraphicsEngine::GraphicsEngine() : m_RenderSystem(NULL), m_TextureManager(NULL)
 {
 	try
 	{
 		m_RenderSystem = new RenderSystem();
 	}
 	catch (...) { throw std::exception("GraphicsEngine::RenderSystem not created successfully"); }
+
+	try
+	{
+		m_TextureManager = new TextureManager();
+	}
+	catch (...) { throw std::exception("GraphicsEngine::TextureManager not created successfully"); }
 }
 
 GraphicsEngine::~GraphicsEngine()
 {
 	GraphicsEngine::m_GraphicsEngine = NULL;
+	delete m_TextureManager;
 	delete m_RenderSystem;
 }
 

@@ -22,7 +22,7 @@ public:
 	void setHWND(HWND hwnd) { m_hwnd = hwnd; }
 
 	// events
-	virtual void onCreate() = 0;
+	virtual void onCreate();
 	virtual void onUpdate() = 0;
 	virtual void onDestroy();
 	virtual void onFocus();

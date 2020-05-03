@@ -46,6 +46,12 @@
     <Filter Include="Engine\GraphicsEngine\RenderSystem\ConstantBuffer">
       <UniqueIdentifier>{84fb7bfe-4e4b-44a3-85b7-600296c0dac5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\GraphicsEngine\ResourceManager">
+      <UniqueIdentifier>{676f22e2-f944-43cf-832e-7a44c18dadeb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\GraphicsEngine\ResourceManager\TextureManager">
+      <UniqueIdentifier>{c11ec21f-e47b-48e4-a61a-1dc8116e0362}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Game\AppWindow.cpp">
@@ -86,6 +92,18 @@
     </ClCompile>
     <ClCompile Include="Source\Engine\RenderSystem.cpp">
       <Filter>Engine\GraphicsEngine\RenderSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Engine\ResourceManager.cpp">
+      <Filter>Engine\GraphicsEngine\ResourceManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Engine\Resource.cpp">
+      <Filter>Engine\GraphicsEngine\ResourceManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Engine\TextureManager.cpp">
+      <Filter>Engine\GraphicsEngine\ResourceManager\TextureManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Engine\Texture.cpp">
+      <Filter>Engine\GraphicsEngine\ResourceManager\TextureManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -142,6 +160,21 @@
     </ClInclude>
     <ClInclude Include="Source\Engine\Prerequisites.h">
       <Filter>Engine\GraphicsEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Engine\ResourceManager.h">
+      <Filter>Engine\GraphicsEngine\ResourceManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Engine\Resource.h">
+      <Filter>Engine\GraphicsEngine\ResourceManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Engine\TextureManager.h">
+      <Filter>Engine\GraphicsEngine\ResourceManager\TextureManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Engine\Texture.h">
+      <Filter>Engine\GraphicsEngine\ResourceManager\TextureManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Engine\Vector2.h">
+      <Filter>Engine\Math</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

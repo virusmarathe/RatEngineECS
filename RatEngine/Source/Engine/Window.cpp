@@ -135,6 +135,11 @@ RECT Window::getClientWindowRect()
 	return rc;
 }
 
+void Window::onCreate()
+{
+	CoInitializeEx(NULL, COINIT_MULTITHREADED);
+}
+
 void Window::onDestroy()
 {
 	m_running = false;

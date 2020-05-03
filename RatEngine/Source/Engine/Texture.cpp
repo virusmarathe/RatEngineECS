@@ -18,7 +18,7 @@ Texture::Texture(const wchar_t* fullPath) : Resource(fullPath)
 	D3D11_SHADER_RESOURCE_VIEW_DESC desc = {};
 	desc.Format = imageData.GetMetadata().format;
 	desc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
-	desc.Texture2D.MipLevels = imageData.GetMetadata().mipLevels;
+	desc.Texture2D.MipLevels = (UINT)imageData.GetMetadata().mipLevels;
 	desc.Texture2D.MostDetailedMip = 0;
 
 	result = GraphicsEngine::get()->getRenderSystem()->m_D3DDevice->CreateShaderResourceView(m_Texture, &desc, &m_ShaderResourceView);

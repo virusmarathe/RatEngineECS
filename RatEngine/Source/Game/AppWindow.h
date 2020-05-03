@@ -50,6 +50,7 @@ private:
 	IndexBuffer* m_IndexBuffer;
 
 	TexturePointer m_WoodTexture;
+	MeshPointer m_TeapotMesh;
 
 	DWORD m_PrevFrameTime;
 	float m_DeltaTime;

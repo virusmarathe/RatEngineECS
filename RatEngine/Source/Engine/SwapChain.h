@@ -13,6 +13,7 @@ public:
 private:
 	IDXGISwapChain* m_DXGISwapChain;
 	ID3D11RenderTargetView* m_RenderTargetView;
+	ID3D11DepthStencilView* m_DepthStencilView;
 	RenderSystem* m_RenderSystem;
 
 	friend class DeviceContext;

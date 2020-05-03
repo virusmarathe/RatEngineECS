@@ -3,7 +3,7 @@
 #include <exception>
 
 SwapChain::SwapChain(HWND hwnd, UINT width, UINT height, RenderSystem* system) : 
-	m_DXGISwapChain(NULL), m_RenderTargetView(NULL), m_RenderSystem(system)
+	m_DXGISwapChain(NULL), m_RenderTargetView(NULL), m_RenderSystem(system), m_DepthStencilView(NULL)
 {
 	ID3D11Device* device = m_RenderSystem->m_D3DDevice;
 
@@ -35,6 +35,29 @@ SwapChain::SwapChain(HWND hwnd, UINT width, UINT height, RenderSystem* system) :
 	buffer->Release();
 
 	if (FAILED(result))	throw std::exception("SwapChain::CreateRenderTargetView not created successfully");
+
+	D3D11_TEXTURE2D_DESC texDesc = {};
+	texDesc.Width = width;
+	texDesc.Height = height;
+	texDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+	texDesc.Usage = D3D11_USAGE_DEFAULT;
+	texDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+	texDesc.MipLevels = 1;
+	texDesc.SampleDesc.Count = 1;
+	texDesc.SampleDesc.Quality = 0;
+	texDesc.MiscFlags = 0;
+	texDesc.ArraySize = 1;
+	texDesc.CPUAccessFlags = 0;
+
+	result = device->CreateTexture2D(&texDesc, nullptr, &buffer);
+	
+	if (FAILED(result))	throw std::exception("SwapChain::CreateTexture2D depth buffer not created successfully");
+
+	result = device->CreateDepthStencilView(buffer, NULL, &m_DepthStencilView);
+	buffer->Release();
+
+	if (FAILED(result))	throw std::exception("SwapChain::CreateDepthStencilView not created successfully");
+
 }
 
 SwapChain::~SwapChain()

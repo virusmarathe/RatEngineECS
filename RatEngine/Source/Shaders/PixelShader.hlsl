@@ -5,7 +5,7 @@ struct PS_INPUT
 {
 	float4 pos : SV_POSITION;
 	float2 texcoord : TEXCOORD0;
-	float4 color : COLOR;
+	//float4 color : COLOR;
 };
 
 cbuffer constant : register(b0)
@@ -18,5 +18,5 @@ cbuffer constant : register(b0)
 
 float4 psmain(PS_INPUT input) : SV_TARGET
 {
-	return Texture.Sample(TextureSampler, input.texcoord) * input.color;
+	return Texture.Sample(TextureSampler, input.texcoord * 0.5f);// *input.color;
 }

@@ -5,6 +5,7 @@
 #include "Matrix4x4.h"
 #include "InputSystem.h"
 #include <iostream>
+#include "Mesh.h"
 
 struct vector4
 {
@@ -85,7 +86,8 @@ void AppWindow::onCreate()
 
 	InputSystem::get()->showCursor(false);
 
-	m_WoodTexture = GraphicsEngine::get()->getTextureManager()->createTextureFromFile(L"Assets/Textures/wood.jpg");
+	m_WoodTexture = GraphicsEngine::get()->getTextureManager()->createTextureFromFile(L"Assets/Textures/brick.png");
+	m_TeapotMesh = GraphicsEngine::get()->getMeshManager()->createMeshFromFile(L"Assets/Meshes/teapot.obj");
 
 	m_CameraTransform.setIdentity();
 	m_CameraTransform.setTranslation(Vector3(0, 0, -2));
@@ -206,16 +208,16 @@ void AppWindow::onUpdate()
 	update();
 
 	context->setConstantBuffer(m_PixelShader, m_ConstantBuffer);
-	context->setConstantBuffer(m_VertexShader, m_ConstantBuffer);
+	context->setConstantBuffer(m_TeapotMesh->getVertexShader(), m_ConstantBuffer);
 
-	context->setVertexShader(m_VertexShader);
+	context->setVertexShader(m_TeapotMesh->getVertexShader());
 	context->setPixelShader(m_PixelShader);
 
 	context->setTexture(m_PixelShader, m_WoodTexture);
 
-	context->setVertexBuffer(m_VertexBuffer);
-	context->setIndexBuffer(m_IndexBuffer);
-	context->drawIndexedTriangleList(m_IndexBuffer->getNumIndices(), 0, 0);
+	context->setVertexBuffer(m_TeapotMesh->getVertexBuffer());
+	context->setIndexBuffer(m_TeapotMesh->getIndexBuffer());
+	context->drawIndexedTriangleList(m_TeapotMesh->getIndexBuffer()->getNumIndices(), 0, 0);
 
 	m_SwapChain->present(false);
 }

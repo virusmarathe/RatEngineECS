@@ -14,6 +14,9 @@ class ResourceManager;
 class Resource;
 class TextureManager;
 class Texture;
+class MeshManager;
+class Mesh;
 
 typedef std::shared_ptr<Resource> ResourcePointer;
 typedef std::shared_ptr<Texture> TexturePointer;
+typedef std::shared_ptr<Mesh> MeshPointer;

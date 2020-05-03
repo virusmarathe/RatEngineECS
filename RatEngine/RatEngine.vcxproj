@@ -24,6 +24,8 @@
     <ClCompile Include="Source\Engine\GraphicsEngine.cpp" />
     <ClCompile Include="Source\Engine\IndexBuffer.cpp" />
     <ClCompile Include="Source\Engine\InputSystem.cpp" />
+    <ClCompile Include="Source\Engine\Mesh.cpp" />
+    <ClCompile Include="Source\Engine\MeshManager.cpp" />
     <ClCompile Include="Source\Engine\PixelShader.cpp" />
     <ClCompile Include="Source\Engine\RenderSystem.cpp" />
     <ClCompile Include="Source\Engine\Resource.cpp" />
@@ -45,6 +47,8 @@
     <ClInclude Include="Source\Engine\InputListener.h" />
     <ClInclude Include="Source\Engine\InputSystem.h" />
     <ClInclude Include="Source\Engine\Matrix4x4.h" />
+    <ClInclude Include="Source\Engine\Mesh.h" />
+    <ClInclude Include="Source\Engine\MeshManager.h" />
     <ClInclude Include="Source\Engine\PixelShader.h" />
     <ClInclude Include="Source\Engine\Point.h" />
     <ClInclude Include="Source\Engine\Prerequisites.h" />
@@ -63,6 +67,14 @@
     <ClInclude Include="Source\Game\AppWindow.h" />
   </ItemGroup>
   <ItemGroup>
+    <FxCompile Include="Source\Engine\Shaders\VertexPos0Tex0Shader.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </FxCompile>
     <FxCompile Include="Source\Shaders\PixelShader.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
@@ -138,7 +150,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(ProjectDir)Libs\DirectXTex\include\;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)Libs\DirectXTex\include\;$(ProjectDir)Libs\tinyobjloader\include\;$(IncludePath)</IncludePath>
     <LibraryPath>$(ProjectDir)\Libs\DirectXTex\bin;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -146,7 +158,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(ProjectDir)Libs\DirectXTex\include\;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)Libs\DirectXTex\include\;$(ProjectDir)Libs\tinyobjloader\include\;$(IncludePath)</IncludePath>
     <LibraryPath>$(ProjectDir)\Libs\DirectXTex\bin;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -171,6 +183,7 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(ProjectDir)\Source\Engine;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <DisableSpecificWarnings>%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -204,6 +217,7 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(ProjectDir)\Source\Engine;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <DisableSpecificWarnings>%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

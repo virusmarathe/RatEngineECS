@@ -114,35 +114,35 @@ void AppWindow::onCreate()
 
 	vertex list[] =
 	{
-		{position_list[0],	texcoord_list[1],	1.0f,  1.0f, 1.0f, 1.0f},
+		{position_list[0],	texcoord_list[1],	0.2f,  0.2f, 0.2f, 1.0f},
 		{position_list[1],	texcoord_list[0],	1.0f,  1.0f, 1.0f, 1.0f},
 		{position_list[2],	texcoord_list[2],	1.0f,  1.0f, 1.0f, 1.0f},
-		{position_list[3],	texcoord_list[3],	1.0f,  1.0f, 1.0f, 1.0f},
+		{position_list[3],	texcoord_list[3],	0.2f,  0.2f, 0.2f, 1.0f},
 
-		{position_list[4],	texcoord_list[1],	1.0f,  1.0f, 1.0f, 1.0f},
+		{position_list[4],	texcoord_list[1],	0.2f,  0.2f, 0.2f, 1.0f},
 		{position_list[5],	texcoord_list[0],	1.0f,  1.0f, 1.0f, 1.0f},
 		{position_list[6],	texcoord_list[2],	1.0f,  1.0f, 1.0f, 1.0f},
-		{position_list[7],	texcoord_list[3],	1.0f,  1.0f, 1.0f, 1.0f},
+		{position_list[7],	texcoord_list[3],	0.2f,  0.2f, 0.2f, 1.0f},
 
 		{position_list[1],	texcoord_list[1],	1.0f,  1.0f, 1.0f, 1.0f},
 		{position_list[6],	texcoord_list[0],	1.0f,  1.0f, 1.0f, 1.0f},
 		{position_list[5],	texcoord_list[2],	1.0f,  1.0f, 1.0f, 1.0f},
 		{position_list[2],	texcoord_list[3],	1.0f,  1.0f, 1.0f, 1.0f},
 
-		{position_list[7],	texcoord_list[1],	1.0f,  1.0f, 1.0f, 1.0f},
-		{position_list[0],	texcoord_list[0],	1.0f,  1.0f, 1.0f, 1.0f},
-		{position_list[3],	texcoord_list[2],	1.0f,  1.0f, 1.0f, 1.0f},
-		{position_list[4],	texcoord_list[3],	1.0f,  1.0f, 1.0f, 1.0f},
+		{position_list[7],	texcoord_list[1],	0.2f,  0.2f, 0.2f, 1.0f},
+		{position_list[0],	texcoord_list[0],	0.2f,  0.2f, 0.2f, 1.0f},
+		{position_list[3],	texcoord_list[2],	0.2f,  0.2f, 0.2f, 1.0f},
+		{position_list[4],	texcoord_list[3],	0.2f,  0.2f, 0.2f, 1.0f},
 
-		{position_list[3],	texcoord_list[1],	1.0f,  1.0f, 1.0f, 1.0f},
+		{position_list[3],	texcoord_list[1],	0.2f,  0.2f, 0.2f, 1.0f},
 		{position_list[2],	texcoord_list[0],	1.0f,  1.0f, 1.0f, 1.0f},
 		{position_list[5],	texcoord_list[2],	1.0f,  1.0f, 1.0f, 1.0f},
-		{position_list[4],	texcoord_list[3],	1.0f,  1.0f, 1.0f, 1.0f},
+		{position_list[4],	texcoord_list[3],	0.2f,  0.2f, 0.2f, 1.0f},
 
-		{position_list[7],	texcoord_list[1],	1.0f,  1.0f, 1.0f, 1.0f},
+		{position_list[7],	texcoord_list[1],	0.2f,  0.2f, 0.2f, 1.0f},
 		{position_list[6],	texcoord_list[0],	1.0f,  1.0f, 1.0f, 1.0f},
 		{position_list[1],	texcoord_list[2],	1.0f,  1.0f, 1.0f, 1.0f},
-		{position_list[0],	texcoord_list[3],	1.0f,  1.0f, 1.0f, 1.0f}
+		{position_list[0],	texcoord_list[3],	0.2f,  0.2f, 0.2f, 1.0f}
 	};
 	UINT listSize = ARRAYSIZE(list);
 

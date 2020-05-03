@@ -69,12 +69,13 @@ SwapChain* RenderSystem::createSwapChain(HWND hwnd, UINT width, UINT height)
 	return sc;
 }
 
-VertexBuffer* RenderSystem::createVertexBuffer(void* listVertices, UINT sizeVertex, UINT numVertices, void* shaderByteCode, SIZE_T shaderByteSize)
+VertexBuffer* RenderSystem::createVertexBuffer(void* listVertices, UINT sizeVertex, UINT numVertices, void* shaderByteCode,
+											   SIZE_T shaderByteSize, D3D11_INPUT_ELEMENT_DESC layout[], UINT layoutSize)
 {
 	VertexBuffer* vb = NULL;
 	try
 	{
-		vb = new VertexBuffer(listVertices, sizeVertex, numVertices, shaderByteCode, shaderByteSize, this);
+		vb = new VertexBuffer(listVertices, sizeVertex, numVertices, shaderByteCode, shaderByteSize, layout, layoutSize, this);
 	}
 	catch (...) {}
 
@@ -168,10 +169,12 @@ void RenderSystem::releaseCompiledShader()
 	if (m_VertexShaderBlob)
 	{
 		m_VertexShaderBlob->Release();
+		m_VertexShaderBlob = nullptr;
 	}
 
 	if (m_PixelShaderBlob)
 	{
 		m_PixelShaderBlob->Release();
+		m_PixelShaderBlob = nullptr;
 	}
 }

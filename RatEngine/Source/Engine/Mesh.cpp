@@ -22,7 +22,7 @@ Mesh::Mesh(const wchar_t* fullPath) : Resource(fullPath)
 
 	if (!err.empty() || !result) throw std::exception("Mesh load had errors");
 
-	std::vector<MeshPos0Tex0> listVertices;
+	std::vector<MeshPos0Tex0Normal0> listVertices;
 	std::vector<unsigned int> listIndices;
 
 	for (size_t s = 0; s < shapes.size(); s++)
@@ -45,7 +45,11 @@ Mesh::Mesh(const wchar_t* fullPath) : Resource(fullPath)
 				tinyobj::real_t tx = attribs.texcoords[(size_t)(index.texcoord_index) * 2 + 0];
 				tinyobj::real_t ty = attribs.texcoords[(size_t)(index.texcoord_index) * 2 + 1];
 
-				listVertices.push_back(MeshPos0Tex0(Vector3(vx, vy, vz), Vector2(tx, ty)));
+				tinyobj::real_t nx = attribs.normals[(size_t)(index.normal_index) * 3 + 0];
+				tinyobj::real_t ny = attribs.normals[(size_t)(index.normal_index) * 3 + 1];
+				tinyobj::real_t nz = attribs.normals[(size_t)(index.normal_index) * 3 + 2];
+
+				listVertices.push_back(MeshPos0Tex0Normal0(Vector3(vx, vy, vz), Vector2(tx, ty), Vector3(nx, ny, nz)));
 				listIndices.push_back((unsigned int)indexOffset + v);
 			}
 
@@ -56,8 +60,19 @@ Mesh::Mesh(const wchar_t* fullPath) : Resource(fullPath)
 	void* shaderByteCode = nullptr;
 	SIZE_T shaderSize = 0;
 
-	GraphicsEngine::get()->getRenderSystem()->compileVertexShader(L"Source/Engine/Shaders/VertexPos0Tex0Shader.hlsl", "vsmain", &shaderByteCode, &shaderSize);
-	m_VertexBuffer = GraphicsEngine::get()->getRenderSystem()->createVertexBuffer(&listVertices[0], (UINT)sizeof(MeshPos0Tex0), (UINT)listVertices.size(), shaderByteCode, shaderSize);
+	D3D11_INPUT_ELEMENT_DESC layout[] =
+	{
+		// SEMANTIC NAME - SEMANTIC INDEX - FORMAT - INPUT SLOT - ALIGNED BYTE OFFSET - INPUT SLOT CLASS - INSTANCE DATA STEP RATE
+		{"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0},
+		{"TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0},
+		{"NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 20, D3D11_INPUT_PER_VERTEX_DATA, 0}
+		//{"COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 20, D3D11_INPUT_PER_VERTEX_DATA, 0}
+	};
+
+	UINT sizeLayout = ARRAYSIZE(layout);
+
+	GraphicsEngine::get()->getRenderSystem()->compileVertexShader(L"Source/Engine/Shaders/VertexPos0Tex0Normal0Shader.hlsl", "vsmain", &shaderByteCode, &shaderSize);
+	m_VertexBuffer = GraphicsEngine::get()->getRenderSystem()->createVertexBuffer(&listVertices[0], (UINT)sizeof(MeshPos0Tex0Normal0), (UINT)listVertices.size(), shaderByteCode, shaderSize, layout, sizeLayout);
 	m_VertexShader = GraphicsEngine::get()->getRenderSystem()->createVertexShader(shaderByteCode, shaderSize);
 	GraphicsEngine::get()->getRenderSystem()->releaseCompiledShader();
 	m_IndexBuffer = GraphicsEngine::get()->getRenderSystem()->createIndexBuffer(&listIndices[0], (UINT)listIndices.size());

@@ -15,6 +15,17 @@ struct MeshPos0Tex0
 	Vector2 m_Texture;
 };
 
+struct MeshPos0Tex0Normal0
+{
+	MeshPos0Tex0Normal0() : m_Position(), m_Texture(), m_Normal(){ }
+	MeshPos0Tex0Normal0(Vector3 position, Vector2 tex, Vector3 normal) : m_Position(position), m_Texture(tex), m_Normal(normal) { }
+	MeshPos0Tex0Normal0(const MeshPos0Tex0Normal0& meshData) : m_Position(meshData.m_Position), m_Texture(meshData.m_Texture), m_Normal(meshData.m_Normal) { }
+
+	Vector3 m_Position;
+	Vector2 m_Texture;
+	Vector3 m_Normal;
+};
+
 class Mesh : public Resource
 {
 public:

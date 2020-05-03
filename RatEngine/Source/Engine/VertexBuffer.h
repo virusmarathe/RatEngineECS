@@ -5,7 +5,8 @@
 class VertexBuffer
 {
 public:
-	VertexBuffer(void* listVertices, UINT sizeVertex, UINT numVertices, void* shaderByteCode, SIZE_T shaderByteSize, RenderSystem* system);
+	VertexBuffer(void* listVertices, UINT sizeVertex, UINT numVertices, void* shaderByteCode, SIZE_T shaderByteSize,
+				 D3D11_INPUT_ELEMENT_DESC layout[], UINT layoutSize, RenderSystem* system);
 	~VertexBuffer();
 
 	UINT getNumVertices() { return m_NumVertices; }

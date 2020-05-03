@@ -1,6 +1,7 @@
 #pragma once
 #pragma once
 #include <ostream>
+#include "Vector3.h"
 
 class Vector4
 {
@@ -14,6 +15,10 @@ public:
 	}
 
 	Vector4(const Vector4& vec) : x(vec.x), y(vec.y), z(vec.z), w(vec.w)
+	{
+	}
+
+	Vector4(const Vector3& vec) : x(vec.x), y(vec.y), z(vec.z), w(0)
 	{
 	}
 

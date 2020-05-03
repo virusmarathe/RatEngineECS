@@ -43,8 +43,6 @@ public:
 
 private:
 	SwapChain* m_SwapChain;
-	VertexBuffer* m_VertexBuffer;
-	VertexShader* m_VertexShader;
 	PixelShader* m_PixelShader;
 	ConstantBuffer* m_ConstantBuffer;
 	IndexBuffer* m_IndexBuffer;
@@ -61,5 +59,6 @@ private:
 	Matrix4x4 m_CameraTransform;
 	float m_ForwardDirection = 0.0f;
 	float m_RightDirection = 0.0f;
+	float m_LightRotY = 0.0f;
 };
 

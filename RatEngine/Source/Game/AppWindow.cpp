@@ -22,15 +22,14 @@ struct vertex
 _declspec(align(16))
 struct constant
 {
-	constant() :m_Time(0) {}
-
 	Matrix4x4 m_World;
 	Matrix4x4 m_View;
 	Matrix4x4 m_Projection;
-	unsigned int m_Time;
+	Vector4 m_LightDirection;
+	Vector3 m_CameraPosition;
 };
 
-AppWindow::AppWindow() : Window(), m_SwapChain(NULL), m_VertexBuffer(NULL), m_VertexShader(NULL), m_PixelShader(NULL),
+AppWindow::AppWindow() : Window(), m_SwapChain(NULL), m_PixelShader(NULL),
 						 m_ConstantBuffer(NULL), m_PrevFrameTime(0), m_DeltaTime(0), m_IndexBuffer(NULL)
 {
 }
@@ -44,10 +43,14 @@ void AppWindow::update()
 	DeviceContext* context = GraphicsEngine::get()->getRenderSystem()->getImmediateDeviceContext();
 	constant data;
 	RECT rect = getClientWindowRect();
-	data.m_Time = GetTickCount();
+
+	Matrix4x4 lightRotationMatrix;
+	lightRotationMatrix.setIdentity();
+	lightRotationMatrix.setRotationY(m_LightRotY);
+	m_LightRotY += 0.707f * m_DeltaTime;
+	data.m_LightDirection = lightRotationMatrix.forward();
 
 	data.m_World.setIdentity();
-
 	Matrix4x4 worldCam;
 	worldCam.setIdentity();
 	Matrix4x4 temp;
@@ -65,6 +68,7 @@ void AppWindow::update()
 	worldCam *= temp;
 
 	m_CameraTransform = worldCam;
+	data.m_CameraPosition = pos;
 
 	worldCam.inverse();
 
@@ -87,95 +91,13 @@ void AppWindow::onCreate()
 	InputSystem::get()->showCursor(false);
 
 	m_WoodTexture = GraphicsEngine::get()->getTextureManager()->createTextureFromFile(L"Assets/Textures/brick.png");
-	m_TeapotMesh = GraphicsEngine::get()->getMeshManager()->createMeshFromFile(L"Assets/Meshes/teapot.obj");
+	m_TeapotMesh = GraphicsEngine::get()->getMeshManager()->createMeshFromFile(L"Assets/Meshes/statue.obj");
 
 	m_CameraTransform.setIdentity();
-	m_CameraTransform.setTranslation(Vector3(0, 0, -2));
-
-	Vector3 position_list[] =
-	{
-		{ Vector3(-0.5f,-0.5f,-0.5f)},
-		{ Vector3(-0.5f,0.5f,-0.5f) },
-		{ Vector3(0.5f,0.5f,-0.5f) },
-		{ Vector3(0.5f,-0.5f,-0.5f)},
-
-		//BACK FACE
-		{ Vector3(0.5f,-0.5f,0.5f) },
-		{ Vector3(0.5f,0.5f,0.5f) },
-		{ Vector3(-0.5f,0.5f,0.5f)},
-		{ Vector3(-0.5f,-0.5f,0.5f) }
-	};
-
-	Vector2 texcoord_list[] =
-	{
-		{ Vector2(0.0f,0.0f) },
-		{ Vector2(0.0f,1.0f) },
-		{ Vector2(1.0f,0.0f) },
-		{ Vector2(1.0f,1.0f) }
-	};
-
-	vertex list[] =
-	{
-		{position_list[0],	texcoord_list[1],	0.2f,  0.2f, 0.2f, 1.0f},
-		{position_list[1],	texcoord_list[0],	1.0f,  1.0f, 1.0f, 1.0f},
-		{position_list[2],	texcoord_list[2],	1.0f,  1.0f, 1.0f, 1.0f},
-		{position_list[3],	texcoord_list[3],	0.2f,  0.2f, 0.2f, 1.0f},
-
-		{position_list[4],	texcoord_list[1],	0.2f,  0.2f, 0.2f, 1.0f},
-		{position_list[5],	texcoord_list[0],	1.0f,  1.0f, 1.0f, 1.0f},
-		{position_list[6],	texcoord_list[2],	1.0f,  1.0f, 1.0f, 1.0f},
-		{position_list[7],	texcoord_list[3],	0.2f,  0.2f, 0.2f, 1.0f},
-
-		{position_list[1],	texcoord_list[1],	1.0f,  1.0f, 1.0f, 1.0f},
-		{position_list[6],	texcoord_list[0],	1.0f,  1.0f, 1.0f, 1.0f},
-		{position_list[5],	texcoord_list[2],	1.0f,  1.0f, 1.0f, 1.0f},
-		{position_list[2],	texcoord_list[3],	1.0f,  1.0f, 1.0f, 1.0f},
-
-		{position_list[7],	texcoord_list[1],	0.2f,  0.2f, 0.2f, 1.0f},
-		{position_list[0],	texcoord_list[0],	0.2f,  0.2f, 0.2f, 1.0f},
-		{position_list[3],	texcoord_list[2],	0.2f,  0.2f, 0.2f, 1.0f},
-		{position_list[4],	texcoord_list[3],	0.2f,  0.2f, 0.2f, 1.0f},
-
-		{position_list[3],	texcoord_list[1],	0.2f,  0.2f, 0.2f, 1.0f},
-		{position_list[2],	texcoord_list[0],	1.0f,  1.0f, 1.0f, 1.0f},
-		{position_list[5],	texcoord_list[2],	1.0f,  1.0f, 1.0f, 1.0f},
-		{position_list[4],	texcoord_list[3],	0.2f,  0.2f, 0.2f, 1.0f},
-
-		{position_list[7],	texcoord_list[1],	0.2f,  0.2f, 0.2f, 1.0f},
-		{position_list[6],	texcoord_list[0],	1.0f,  1.0f, 1.0f, 1.0f},
-		{position_list[1],	texcoord_list[2],	1.0f,  1.0f, 1.0f, 1.0f},
-		{position_list[0],	texcoord_list[3],	0.2f,  0.2f, 0.2f, 1.0f}
-	};
-	UINT listSize = ARRAYSIZE(list);
-
-	UINT indexList[] = 
-	{
-		0, 1 ,2,
-		2, 3, 0,
-		
-		4, 5, 6,
-		6, 7, 4,
-		
-		8, 9, 10,
-		10, 11, 8,
-		
-		12, 13, 14,
-		14, 15, 12,
-		
-		16, 17, 18,
-		18, 19, 16,
-		
-		20, 21, 22,
-		22, 23, 20
-	};
-	m_IndexBuffer = GraphicsEngine::get()->getRenderSystem()->createIndexBuffer(indexList, ARRAYSIZE(indexList));
+	m_CameraTransform.setTranslation(Vector3(0, 0, -1));
 
 	void* shaderByteCode = nullptr;
 	SIZE_T shaderSize = 0;
-
-	GraphicsEngine::get()->getRenderSystem()->compileVertexShader(L"Source/Shaders/VertexShader.hlsl", "vsmain", &shaderByteCode, &shaderSize);
-	m_VertexBuffer = GraphicsEngine::get()->getRenderSystem()->createVertexBuffer(list, sizeof(vertex), listSize, shaderByteCode, shaderSize);
-	m_VertexShader = GraphicsEngine::get()->getRenderSystem()->createVertexShader(shaderByteCode, shaderSize);
 
 	GraphicsEngine::get()->getRenderSystem()->compilePixelShader(L"Source/Shaders/PixelShader.hlsl", "psmain", &shaderByteCode, &shaderSize);
 	m_PixelShader = GraphicsEngine::get()->getRenderSystem()->createPixelShader(shaderByteCode, shaderSize);
@@ -183,8 +105,6 @@ void AppWindow::onCreate()
 	GraphicsEngine::get()->getRenderSystem()->releaseCompiledShader();
 
 	constant data;
-	data.m_Time = 0;
-
 	m_ConstantBuffer = GraphicsEngine::get()->getRenderSystem()->createConstantBuffer(&data, sizeof(constant));
 
 	m_PrevFrameTime = GetTickCount();
@@ -225,10 +145,8 @@ void AppWindow::onUpdate()
 void AppWindow::onDestroy()
 {
 	Window::onDestroy();
-	delete m_VertexBuffer;
 	delete m_IndexBuffer;
 	delete m_ConstantBuffer;
-	delete m_VertexShader;
 	delete m_PixelShader;
 	delete m_SwapChain;
 	GraphicsEngine::get()->release();

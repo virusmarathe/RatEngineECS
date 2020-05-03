@@ -205,5 +205,8 @@
     <FxCompile Include="Source\Engine\Shaders\VertexPos0Tex0Shader.hlsl">
       <Filter>Engine\GraphicsEngine\Shaders</Filter>
     </FxCompile>
+    <FxCompile Include="Source\Engine\Shaders\VertexPos0Tex0Normal0Shader.hlsl">
+      <Filter>Engine\GraphicsEngine\Shaders</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

@@ -10,7 +10,8 @@ public:
 
 	SwapChain* createSwapChain(HWND hwnd, UINT width, UINT height);
 	DeviceContext* getImmediateDeviceContext() { return m_DeviceContext; }
-	VertexBuffer* createVertexBuffer(void* listVertices, UINT sizeVertex, UINT numVertices, void* shaderByteCode, SIZE_T shaderByteSize);
+	VertexBuffer* createVertexBuffer(void* listVertices, UINT sizeVertex, UINT numVertices, void* shaderByteCode, SIZE_T shaderByteSize,
+									 D3D11_INPUT_ELEMENT_DESC layout[], UINT layoutSize);
 	IndexBuffer* createIndexBuffer(void* listIndices, UINT numIndices);
 	ConstantBuffer* createConstantBuffer(void* buffer, UINT bufferSize);
 

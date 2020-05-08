@@ -58,6 +58,9 @@
     <Filter Include="Engine\GraphicsEngine\Shaders">
       <UniqueIdentifier>{23ceace7-505f-4729-8cb6-997f939cc6d7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\ECS">
+      <UniqueIdentifier>{132589dc-0679-42dd-8a6b-897e209507d7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Game\AppWindow.cpp">
@@ -116,6 +119,9 @@
     </ClCompile>
     <ClCompile Include="Source\Engine\Mesh.cpp">
       <Filter>Engine\GraphicsEngine\ResourceManager\MeshManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Engine\ECSComponent.cpp">
+      <Filter>Engine\ECS</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -193,6 +199,9 @@
     </ClInclude>
     <ClInclude Include="Source\Engine\Mesh.h">
       <Filter>Engine\GraphicsEngine\ResourceManager\MeshManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Engine\ECSComponent.h">
+      <Filter>Engine\ECS</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

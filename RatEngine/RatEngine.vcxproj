@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="Source\Engine\ConstantBuffer.cpp" />
     <ClCompile Include="Source\Engine\DeviceContext.cpp" />
+    <ClCompile Include="Source\Engine\ECSComponent.cpp" />
     <ClCompile Include="Source\Engine\GraphicsEngine.cpp" />
     <ClCompile Include="Source\Engine\IndexBuffer.cpp" />
     <ClCompile Include="Source\Engine\InputSystem.cpp" />
@@ -42,6 +43,7 @@
   <ItemGroup>
     <ClInclude Include="Source\Engine\ConstantBuffer.h" />
     <ClInclude Include="Source\Engine\DeviceContext.h" />
+    <ClInclude Include="Source\Engine\ECSComponent.h" />
     <ClInclude Include="Source\Engine\GraphicsEngine.h" />
     <ClInclude Include="Source\Engine\IndexBuffer.h" />
     <ClInclude Include="Source\Engine\InputListener.h" />

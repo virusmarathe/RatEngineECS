@@ -61,6 +61,9 @@
     <Filter Include="Engine\ECS">
       <UniqueIdentifier>{132589dc-0679-42dd-8a6b-897e209507d7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\Utils">
+      <UniqueIdentifier>{1ba2bcfa-33ce-4439-95a9-d157f5098d25}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Game\AppWindow.cpp">
@@ -121,6 +124,12 @@
       <Filter>Engine\GraphicsEngine\ResourceManager\MeshManager</Filter>
     </ClCompile>
     <ClCompile Include="Source\Engine\ECSComponent.cpp">
+      <Filter>Engine\ECS</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Engine\ECS.cpp">
+      <Filter>Engine\ECS</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Engine\ECSSystem.cpp">
       <Filter>Engine\ECS</Filter>
     </ClCompile>
   </ItemGroup>
@@ -202,6 +211,18 @@
     </ClInclude>
     <ClInclude Include="Source\Engine\ECSComponent.h">
       <Filter>Engine\ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Engine\ECSSystem.h">
+      <Filter>Engine\ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Engine\ECS.h">
+      <Filter>Engine\ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Engine\Debug.h">
+      <Filter>Engine\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Engine\RMath.h">
+      <Filter>Engine\Math</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

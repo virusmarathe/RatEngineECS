@@ -1,6 +1,7 @@
 #pragma once
 #include <cstdint>
 #include <vector>
+#include <tuple>
 
 struct BaseECSComponent;
 typedef void* EntityHandle;
@@ -10,8 +11,32 @@ typedef void (*ECSComponentFreeFunction)(BaseECSComponent* comp);
 
 struct BaseECSComponent
 {
-	static uint32_t nextID();
+public:
+	static uint32_t registerComponentType(ECSComponentCreateFunction createFn, ECSComponentFreeFunction freeFn, size_t size);
 	EntityHandle entity = NULL_ENTITY_HANDLE;
+
+	inline static ECSComponentCreateFunction getTypeCreateFunction(uint32_t ID)
+	{
+		return std::get<0>((*componentInfo)[ID]);
+	}
+
+	inline static ECSComponentFreeFunction getTypeFreeFunction(uint32_t ID)
+	{
+		return std::get<1>((*componentInfo)[ID]);
+	}
+
+	inline static size_t getTypeSize(uint32_t ID)
+	{
+		return std::get<2>((*componentInfo)[ID]);
+	}
+
+	inline static bool isTypeValid(uint32_t ID)
+	{
+		return ID < componentInfo->size();
+	}
+
+private:
+	static std::vector<std::tuple<ECSComponentCreateFunction, ECSComponentFreeFunction, size_t>>* componentInfo;
 };
 
 template<typename T>
@@ -41,7 +66,7 @@ void ECSComponentFree(BaseECSComponent* comp)
 }
 
 template<typename T>
-const uint32_t ECSComponent<T>::ID(BaseECSComponent::nextID());
+const uint32_t ECSComponent<T>::ID(BaseECSComponent::registerComponentType(ECSComponentCreate<T>, ECSComponentFree<T>, sizeof(T)));
 
 template<typename T>
 const size_t ECSComponent<T>::SIZE(sizeof(T));

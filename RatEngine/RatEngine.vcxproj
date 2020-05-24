@@ -27,6 +27,7 @@
     <ClCompile Include="Source\Engine\GraphicsEngine.cpp" />
     <ClCompile Include="Source\Engine\IndexBuffer.cpp" />
     <ClCompile Include="Source\Engine\InputSystem.cpp" />
+    <ClCompile Include="Source\Engine\Material.cpp" />
     <ClCompile Include="Source\Engine\Mesh.cpp" />
     <ClCompile Include="Source\Engine\MeshManager.cpp" />
     <ClCompile Include="Source\Engine\PixelShader.cpp" />
@@ -53,6 +54,7 @@
     <ClInclude Include="Source\Engine\IndexBuffer.h" />
     <ClInclude Include="Source\Engine\InputListener.h" />
     <ClInclude Include="Source\Engine\InputSystem.h" />
+    <ClInclude Include="Source\Engine\Material.h" />
     <ClInclude Include="Source\Engine\RMath.h" />
     <ClInclude Include="Source\Engine\Matrix4x4.h" />
     <ClInclude Include="Source\Engine\Mesh.h" />

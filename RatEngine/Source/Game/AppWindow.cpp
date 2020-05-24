@@ -5,7 +5,7 @@
 #include "Matrix4x4.h"
 #include "InputSystem.h"
 #include <iostream>
-#include "Mesh.h"
+#include "Debug.h"
 
 struct vector4
 {
@@ -29,8 +29,7 @@ struct constant
 	Vector3 m_CameraPosition;
 };
 
-AppWindow::AppWindow() : Window(), m_SwapChain(NULL), m_PixelShader(NULL),
-						 m_ConstantBuffer(NULL), m_PrevFrameTime(0), m_DeltaTime(0), m_IndexBuffer(NULL)
+AppWindow::AppWindow() : Window(), m_SwapChain(NULL), m_PrevFrameTime(0), m_DeltaTime(0)
 {
 }
 
@@ -78,7 +77,7 @@ void AppWindow::update()
 	int height = (rect.bottom - rect.top);
 	data.m_Projection.setPerspectiveFovLH(1.5708f, ((float)width) / ((float)height), 0.1f, 100.0f);
 
-	m_ConstantBuffer->update(context, &data);
+	meshRendererSystem.m_ConstantBuffer->update(context, &data);
 }
 
 void AppWindow::onCreate()
@@ -91,23 +90,37 @@ void AppWindow::onCreate()
 	InputSystem::get()->showCursor(false);
 
 	m_WoodTexture = GraphicsEngine::get()->getTextureManager()->createTextureFromFile(L"Assets/Textures/brick.png");
-	m_TeapotMesh = GraphicsEngine::get()->getMeshManager()->createMeshFromFile(L"Assets/Meshes/statue.obj");
 
 	m_CameraTransform.setIdentity();
 	m_CameraTransform.setTranslation(Vector3(0, 0, -1));
+
+	m_PrevFrameTime = GetTickCount();
+
+	MeshRendererComponent comp;
+	TransformComponent trans;
+
+	comp.mesh = GraphicsEngine::get()->getMeshManager()->createMeshFromFile(L"Assets/Meshes/statue.obj");
+	trans.transform.setIdentity();
+	trans.transform.setTranslation(Vector3(0.5f, 0, 0));
+	statue = ecs.makeEntity(trans, comp);
+
+	comp.mesh = GraphicsEngine::get()->getMeshManager()->createMeshFromFile(L"Assets/Meshes/teapot.obj");
+	trans.transform.setIdentity();
+	trans.transform.setTranslation(Vector3(0.5f, 0, 0));
+	teapot = ecs.makeEntity(trans, comp);
+
+	mainSystems.addSystem(meshRendererSystem);
 
 	void* shaderByteCode = nullptr;
 	SIZE_T shaderSize = 0;
 
 	GraphicsEngine::get()->getRenderSystem()->compilePixelShader(L"Source/Shaders/PixelShader.hlsl", "psmain", &shaderByteCode, &shaderSize);
-	m_PixelShader = GraphicsEngine::get()->getRenderSystem()->createPixelShader(shaderByteCode, shaderSize);
+	meshRendererSystem.m_PixelShader = GraphicsEngine::get()->getRenderSystem()->createPixelShader(shaderByteCode, shaderSize);
 
 	GraphicsEngine::get()->getRenderSystem()->releaseCompiledShader();
 
 	constant data;
-	m_ConstantBuffer = GraphicsEngine::get()->getRenderSystem()->createConstantBuffer(&data, sizeof(constant));
-
-	m_PrevFrameTime = GetTickCount();
+	meshRendererSystem.m_ConstantBuffer = GraphicsEngine::get()->getRenderSystem()->createConstantBuffer(&data, sizeof(constant));
 }
 
 void AppWindow::onUpdate()
@@ -126,18 +139,7 @@ void AppWindow::onUpdate()
 	context->setViewportSize((FLOAT)(rc.right - rc.left), (FLOAT)(rc.bottom - rc.top));
 
 	update();
-
-	context->setConstantBuffer(m_PixelShader, m_ConstantBuffer);
-	context->setConstantBuffer(m_TeapotMesh->getVertexShader(), m_ConstantBuffer);
-
-	context->setVertexShader(m_TeapotMesh->getVertexShader());
-	context->setPixelShader(m_PixelShader);
-
-	context->setTexture(m_PixelShader, m_WoodTexture);
-
-	context->setVertexBuffer(m_TeapotMesh->getVertexBuffer());
-	context->setIndexBuffer(m_TeapotMesh->getIndexBuffer());
-	context->drawIndexedTriangleList(m_TeapotMesh->getIndexBuffer()->getNumIndices(), 0, 0);
+	ecs.updateSystems(mainSystems, m_DeltaTime);
 
 	m_SwapChain->present(false);
 }
@@ -145,9 +147,6 @@ void AppWindow::onUpdate()
 void AppWindow::onDestroy()
 {
 	Window::onDestroy();
-	delete m_IndexBuffer;
-	delete m_ConstantBuffer;
-	delete m_PixelShader;
 	delete m_SwapChain;
 	GraphicsEngine::get()->release();
 }

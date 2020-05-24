@@ -64,6 +64,9 @@
     <Filter Include="Engine\Utils">
       <UniqueIdentifier>{1ba2bcfa-33ce-4439-95a9-d157f5098d25}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\GraphicsEngine\RenderSystem\Material">
+      <UniqueIdentifier>{a0643e6b-66ee-4e0d-8714-4dd7d87c1d4d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Game\AppWindow.cpp">
@@ -131,6 +134,9 @@
     </ClCompile>
     <ClCompile Include="Source\Engine\ECSSystem.cpp">
       <Filter>Engine\ECS</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Engine\Material.cpp">
+      <Filter>Engine\GraphicsEngine\RenderSystem\Material</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -223,6 +229,9 @@
     </ClInclude>
     <ClInclude Include="Source\Engine\RMath.h">
       <Filter>Engine\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Engine\Material.h">
+      <Filter>Engine\GraphicsEngine\RenderSystem\Material</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

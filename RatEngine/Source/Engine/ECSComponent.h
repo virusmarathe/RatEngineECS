@@ -51,9 +51,9 @@ struct ECSComponent : public BaseECSComponent
 template<typename Component>
 uint32_t ECSComponentCreate(std::vector<uint8_t>& memory, EntityHandle entity, BaseECSComponent* comp)
 {
-	uint32_t index = memory.size();
+	uint32_t index = (uint32_t)memory.size();
 	memory.resize(index + Component::SIZE);
-	Component* component = new(memory[index]) Component(*(Component*)comp);
+	Component* component = new(&memory[index]) Component(*(Component*)comp);
 	component->entity = entity;
 	return index;
 }
@@ -76,10 +76,3 @@ const ECSComponentCreateFunction ECSComponent<T>::CREATE_FUNCTION(ECSComponentCr
 
 template<typename T>
 const ECSComponentFreeFunction ECSComponent<T>::FREE_FUNCTION(ECSComponentFree<T>);
-
-class TestECSComponent : public ECSComponent<TestECSComponent>
-{
-public:
-	float x;
-	float y;
-};

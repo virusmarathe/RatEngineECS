@@ -67,6 +67,12 @@
     <Filter Include="Engine\GraphicsEngine\RenderSystem\Material">
       <UniqueIdentifier>{a0643e6b-66ee-4e0d-8714-4dd7d87c1d4d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\Systems">
+      <UniqueIdentifier>{3126192c-46ed-4994-a050-8de465b97239}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Components">
+      <UniqueIdentifier>{864a96c0-9356-42c2-9724-994df9155c14}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Game\AppWindow.cpp">
@@ -232,6 +238,15 @@
     </ClInclude>
     <ClInclude Include="Source\Engine\Material.h">
       <Filter>Engine\GraphicsEngine\RenderSystem\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Engine\TransformComponent.h">
+      <Filter>Engine\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Engine\MeshRendererComponent.h">
+      <Filter>Engine\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Engine\StaticMeshRenderingSystem.h">
+      <Filter>Engine\Systems</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

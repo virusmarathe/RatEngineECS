@@ -55,6 +55,7 @@
     <ClInclude Include="Source\Engine\InputListener.h" />
     <ClInclude Include="Source\Engine\InputSystem.h" />
     <ClInclude Include="Source\Engine\Material.h" />
+    <ClInclude Include="Source\Engine\MeshRendererComponent.h" />
     <ClInclude Include="Source\Engine\RMath.h" />
     <ClInclude Include="Source\Engine\Matrix4x4.h" />
     <ClInclude Include="Source\Engine\Mesh.h" />
@@ -65,9 +66,11 @@
     <ClInclude Include="Source\Engine\RenderSystem.h" />
     <ClInclude Include="Source\Engine\Resource.h" />
     <ClInclude Include="Source\Engine\ResourceManager.h" />
+    <ClInclude Include="Source\Engine\StaticMeshRenderingSystem.h" />
     <ClInclude Include="Source\Engine\SwapChain.h" />
     <ClInclude Include="Source\Engine\Texture.h" />
     <ClInclude Include="Source\Engine\TextureManager.h" />
+    <ClInclude Include="Source\Engine\TransformComponent.h" />
     <ClInclude Include="Source\Engine\Vector2.h" />
     <ClInclude Include="Source\Engine\Vector3.h" />
     <ClInclude Include="Source\Engine\Vector4.h" />

@@ -19,16 +19,6 @@ struct vertex
 	vector4 color;
 };
 
-_declspec(align(16))
-struct constant
-{
-	Matrix4x4 m_World;
-	Matrix4x4 m_View;
-	Matrix4x4 m_Projection;
-	Vector4 m_LightDirection;
-	Vector3 m_CameraPosition;
-};
-
 AppWindow::AppWindow() : Window(), m_SwapChain(NULL), m_PrevFrameTime(0), m_DeltaTime(0)
 {
 }
@@ -39,17 +29,12 @@ AppWindow::~AppWindow()
 
 void AppWindow::update()
 {
-	DeviceContext* context = GraphicsEngine::get()->getRenderSystem()->getImmediateDeviceContext();
-	constant data;
-	RECT rect = getClientWindowRect();
-
 	Matrix4x4 lightRotationMatrix;
 	lightRotationMatrix.setIdentity();
 	lightRotationMatrix.setRotationY(m_LightRotY);
 	m_LightRotY += 0.707f * m_DeltaTime;
-	data.m_LightDirection = lightRotationMatrix.forward();
+	meshRendererSystem.m_LightDirection = lightRotationMatrix.forward();
 
-	data.m_World.setIdentity();
 	Matrix4x4 worldCam;
 	worldCam.setIdentity();
 	Matrix4x4 temp;
@@ -67,17 +52,7 @@ void AppWindow::update()
 	worldCam *= temp;
 
 	m_CameraTransform = worldCam;
-	data.m_CameraPosition = pos;
-
-	worldCam.inverse();
-
-	data.m_View = worldCam;
-
-	int width = (rect.right - rect.left);
-	int height = (rect.bottom - rect.top);
-	data.m_Projection.setPerspectiveFovLH(1.5708f, ((float)width) / ((float)height), 0.1f, 100.0f);
-
-	meshRendererSystem.m_ConstantBuffer->update(context, &data);
+	meshRendererSystem.m_CameraTransform = m_CameraTransform;
 }
 
 void AppWindow::onCreate()
@@ -101,12 +76,12 @@ void AppWindow::onCreate()
 
 	comp.mesh = GraphicsEngine::get()->getMeshManager()->createMeshFromFile(L"Assets/Meshes/statue.obj");
 	trans.transform.setIdentity();
-	trans.transform.setTranslation(Vector3(0.5f, 0, 0));
+	trans.transform.setTranslation(Vector3(1.0f, -0.1f, -1.5f));
 	statue = ecs.makeEntity(trans, comp);
 
 	comp.mesh = GraphicsEngine::get()->getMeshManager()->createMeshFromFile(L"Assets/Meshes/teapot.obj");
 	trans.transform.setIdentity();
-	trans.transform.setTranslation(Vector3(0.5f, 0, 0));
+	trans.transform.setTranslation(Vector3(-0.5f, 0, 0));
 	teapot = ecs.makeEntity(trans, comp);
 
 	mainSystems.addSystem(meshRendererSystem);
@@ -121,6 +96,7 @@ void AppWindow::onCreate()
 
 	constant data;
 	meshRendererSystem.m_ConstantBuffer = GraphicsEngine::get()->getRenderSystem()->createConstantBuffer(&data, sizeof(constant));
+	meshRendererSystem.clientWindowRect = rc;
 }
 
 void AppWindow::onUpdate()

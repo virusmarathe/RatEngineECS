@@ -49,9 +49,10 @@ private:
 
 	SwapChain* m_SwapChain;
 
-	TexturePointer m_WoodTexture;
 	EntityHandle teapot;
 	EntityHandle statue;
+	EntityHandle skybox;
+
 	StaticMeshRenderingSystem meshRendererSystem;
 
 	DWORD m_PrevFrameTime;

@@ -21,8 +21,6 @@ cbuffer constant : register(b0)
 
 float4 psmain(PS_INPUT input) : SV_TARGET
 {
-	//Texture.Sample(TextureSampler, input.texcoord * 0.5f);// *input.color;
-
 	float ka = 0.1f;
 	float3 ia = float3(1.0f, 1.0f, 1.0f);
 
@@ -43,5 +41,5 @@ float4 psmain(PS_INPUT input) : SV_TARGET
 
 	float3 finalLight = ambientLight + diffuseLight + specularLight;
 
-	return float4(finalLight, 1.0);
+	return Texture.Sample(TextureSampler, input.texcoord * 0.5f) * float4(finalLight, 1.0);
 }

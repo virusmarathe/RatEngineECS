@@ -44,6 +44,8 @@ m_ImmediateDeviceContext(NULL), m_VertexShaderBlob(NULL), m_PixelShaderBlob(NULL
 	m_D3DDevice->QueryInterface(__uuidof(IDXGIDevice), (void**)&m_DXGIDevice);
 	m_DXGIDevice->GetParent(__uuidof(IDXGIAdapter), (void**)&m_DXGIAdapter);
 	m_DXGIAdapter->GetParent(__uuidof(IDXGIFactory), (void**)&m_DXGIFactory);
+
+	initRasterizerState();
 }
 
 RenderSystem::~RenderSystem()
@@ -177,4 +179,28 @@ void RenderSystem::releaseCompiledShader()
 		m_PixelShaderBlob->Release();
 		m_PixelShaderBlob = nullptr;
 	}
+}
+
+void RenderSystem::setBackCulling(bool val)
+{
+	if (val)
+	{
+		m_ImmediateDeviceContext->RSSetState(m_BackCullRasterizerState);
+	}
+	else
+	{
+		m_ImmediateDeviceContext->RSSetState(m_FrontCullRasterizerState);
+	}
+}
+
+void RenderSystem::initRasterizerState()
+{
+	D3D11_RASTERIZER_DESC desc = {};
+	desc.CullMode = D3D11_CULL_FRONT;
+	desc.DepthClipEnable = true;
+	desc.FillMode = D3D11_FILL_SOLID;
+	m_D3DDevice->CreateRasterizerState(&desc, &m_FrontCullRasterizerState);
+
+	desc.CullMode = D3D11_CULL_BACK;
+	m_D3DDevice->CreateRasterizerState(&desc, &m_BackCullRasterizerState);
 }

@@ -36,6 +36,7 @@ public:
 
 		data.m_World.setIdentity();
 		data.m_World.setTranslation(transformComponent->transform.position());
+		data.m_World.setScale(transformComponent->transform.scale());
 		Matrix4x4 inverseCam = m_CameraTransform;
 		inverseCam.inverse();
 		data.m_View = inverseCam;
@@ -44,15 +45,17 @@ public:
 		int height = (clientWindowRect.bottom - clientWindowRect.top);
 		data.m_Projection.setPerspectiveFovLH(1.5708f, ((float)width) / ((float)height), 0.1f, 100.0f);
 
-		m_ConstantBuffer->update(m_Context, &data);
+		meshRendererComponent->constantBuffer->update(m_Context, &data);
 
-		m_Context->setConstantBuffer(m_PixelShader, m_ConstantBuffer);
-		m_Context->setConstantBuffer(mesh->getVertexShader(), m_ConstantBuffer);
+		GraphicsEngine::get()->getRenderSystem()->setBackCulling(meshRendererComponent->backFaceCulled);
+		
+		m_Context->setConstantBuffer(meshRendererComponent->pixelShader, meshRendererComponent->constantBuffer);
+		m_Context->setConstantBuffer(mesh->getVertexShader(), meshRendererComponent->constantBuffer);
 
 		m_Context->setVertexShader(mesh->getVertexShader());
-		m_Context->setPixelShader(m_PixelShader);
+		m_Context->setPixelShader(meshRendererComponent->pixelShader);
 
-		//m_Context->setTexture(meshRendererSystem.m_PixelShader, m_WoodTexture);
+		m_Context->setTexture(meshRendererComponent->pixelShader, meshRendererComponent->m_Texture);
 
 		m_Context->setVertexBuffer(mesh->getVertexBuffer());
 		m_Context->setIndexBuffer(mesh->getIndexBuffer());
@@ -60,8 +63,6 @@ public:
 	}
 
 	DeviceContext* m_Context;
-	PixelShader* m_PixelShader;
-	ConstantBuffer* m_ConstantBuffer;
 	Vector4 m_LightDirection;
 	Matrix4x4 m_CameraTransform;
 	RECT clientWindowRect;

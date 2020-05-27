@@ -23,6 +23,11 @@ public:
 
 	void releaseCompiledShader();
 
+	void setBackCulling(bool val);
+
+private:
+	void initRasterizerState();
+
 private:
 	ID3D11Device* m_D3DDevice;
 	D3D_FEATURE_LEVEL m_FeatureLevel;
@@ -35,6 +40,9 @@ private:
 
 	ID3DBlob* m_VertexShaderBlob;
 	ID3DBlob* m_PixelShaderBlob;
+
+	ID3D11RasterizerState* m_FrontCullRasterizerState = nullptr;
+	ID3D11RasterizerState* m_BackCullRasterizerState = nullptr;
 
 	friend class SwapChain;
 	friend class VertexBuffer;

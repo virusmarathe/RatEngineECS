@@ -53,6 +53,8 @@ void AppWindow::update()
 
 	m_CameraTransform = worldCam;
 	meshRendererSystem.m_CameraTransform = m_CameraTransform;
+
+	ecs.getComponent<TransformComponent>(skybox)->transform.setTranslation(m_CameraTransform.position());
 }
 
 void AppWindow::onCreate()
@@ -64,8 +66,6 @@ void AppWindow::onCreate()
 
 	InputSystem::get()->showCursor(false);
 
-	m_WoodTexture = GraphicsEngine::get()->getTextureManager()->createTextureFromFile(L"Assets/Textures/brick.png");
-
 	m_CameraTransform.setIdentity();
 	m_CameraTransform.setTranslation(Vector3(0, 0, -1));
 
@@ -75,14 +75,23 @@ void AppWindow::onCreate()
 	TransformComponent trans;
 
 	comp.mesh = GraphicsEngine::get()->getMeshManager()->createMeshFromFile(L"Assets/Meshes/statue.obj");
+	comp.m_Texture = GraphicsEngine::get()->getTextureManager()->createTextureFromFile(L"Assets/Textures/wood.jpg");
 	trans.transform.setIdentity();
 	trans.transform.setTranslation(Vector3(1.0f, -0.1f, -1.5f));
 	statue = ecs.makeEntity(trans, comp);
 
 	comp.mesh = GraphicsEngine::get()->getMeshManager()->createMeshFromFile(L"Assets/Meshes/teapot.obj");
+	comp.m_Texture = GraphicsEngine::get()->getTextureManager()->createTextureFromFile(L"Assets/Textures/brick.png");
 	trans.transform.setIdentity();
-	trans.transform.setTranslation(Vector3(-0.5f, 0, 0));
+	trans.transform.setTranslation(Vector3(-1.5f, 0, 0));
 	teapot = ecs.makeEntity(trans, comp);
+
+	comp.mesh = GraphicsEngine::get()->getMeshManager()->createMeshFromFile(L"Assets/Meshes/sphere.obj");
+	comp.m_Texture = GraphicsEngine::get()->getTextureManager()->createTextureFromFile(L"Assets/Textures/sky.jpg");
+	comp.backFaceCulled = false;
+	trans.transform.setIdentity();
+	trans.transform.setScale(Vector3(100.0f, 100.0f, 100.0f));
+	skybox = ecs.makeEntity(trans, comp);
 
 	mainSystems.addSystem(meshRendererSystem);
 
@@ -90,12 +99,19 @@ void AppWindow::onCreate()
 	SIZE_T shaderSize = 0;
 
 	GraphicsEngine::get()->getRenderSystem()->compilePixelShader(L"Source/Shaders/PixelShader.hlsl", "psmain", &shaderByteCode, &shaderSize);
-	meshRendererSystem.m_PixelShader = GraphicsEngine::get()->getRenderSystem()->createPixelShader(shaderByteCode, shaderSize);
+	ecs.getComponent<MeshRendererComponent>(statue)->pixelShader = GraphicsEngine::get()->getRenderSystem()->createPixelShader(shaderByteCode, shaderSize);
+	ecs.getComponent<MeshRendererComponent>(teapot)->pixelShader = GraphicsEngine::get()->getRenderSystem()->createPixelShader(shaderByteCode, shaderSize);
+
+	GraphicsEngine::get()->getRenderSystem()->compilePixelShader(L"Source/Shaders/UnlitTextureShader.hlsl", "psmain", &shaderByteCode, &shaderSize);
+	ecs.getComponent<MeshRendererComponent>(skybox)->pixelShader = GraphicsEngine::get()->getRenderSystem()->createPixelShader(shaderByteCode, shaderSize);
 
 	GraphicsEngine::get()->getRenderSystem()->releaseCompiledShader();
 
 	constant data;
-	meshRendererSystem.m_ConstantBuffer = GraphicsEngine::get()->getRenderSystem()->createConstantBuffer(&data, sizeof(constant));
+	ecs.getComponent<MeshRendererComponent>(statue)->constantBuffer = GraphicsEngine::get()->getRenderSystem()->createConstantBuffer(&data, sizeof(constant));
+	ecs.getComponent<MeshRendererComponent>(teapot)->constantBuffer = GraphicsEngine::get()->getRenderSystem()->createConstantBuffer(&data, sizeof(constant));
+	ecs.getComponent<MeshRendererComponent>(skybox)->constantBuffer = GraphicsEngine::get()->getRenderSystem()->createConstantBuffer(&data, sizeof(constant));
+
 	meshRendererSystem.clientWindowRect = rc;
 }
 

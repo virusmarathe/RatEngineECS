@@ -73,6 +73,7 @@ void AppWindow::onCreate()
 
 	MeshRendererComponent comp;
 	TransformComponent trans;
+	SimpleMotionComponent motionComp;
 
 	comp.mesh = GraphicsEngine::get()->getMeshManager()->createMeshFromFile(L"Assets/Meshes/statue.obj");
 	comp.m_Texture = GraphicsEngine::get()->getTextureManager()->createTextureFromFile(L"Assets/Textures/wood.jpg");
@@ -84,7 +85,8 @@ void AppWindow::onCreate()
 	comp.m_Texture = GraphicsEngine::get()->getTextureManager()->createTextureFromFile(L"Assets/Textures/brick.png");
 	trans.transform.setIdentity();
 	trans.transform.setTranslation(Vector3(-1.5f, 0, 0));
-	teapot = ecs.makeEntity(trans, comp);
+	motionComp.velocity = Vector3(1.0f, 0.0f, 0.0f);
+	teapot = ecs.makeEntity(trans, comp, motionComp);
 
 	comp.mesh = GraphicsEngine::get()->getMeshManager()->createMeshFromFile(L"Assets/Meshes/sphere.obj");
 	comp.m_Texture = GraphicsEngine::get()->getTextureManager()->createTextureFromFile(L"Assets/Textures/sky.jpg");
@@ -94,6 +96,7 @@ void AppWindow::onCreate()
 	skybox = ecs.makeEntity(trans, comp);
 
 	mainSystems.addSystem(meshRendererSystem);
+	mainSystems.addSystem(simpleMotionSystem);
 
 	void* shaderByteCode = nullptr;
 	SIZE_T shaderSize = 0;
@@ -132,6 +135,18 @@ void AppWindow::onUpdate()
 
 	update();
 	ecs.updateSystems(mainSystems, m_DeltaTime);
+
+	float teapotXPos = ecs.getComponent<TransformComponent>(teapot)->transform.position().x;
+	float teapotXVel = ecs.getComponent<SimpleMotionComponent>(teapot)->velocity.x;
+
+	if (teapotXPos > 2.0f && teapotXVel > 0)
+	{
+		ecs.getComponent<SimpleMotionComponent>(teapot)->velocity = Vector3(-1.0f, 0.0f, 0.0f);
+	}
+	else if (teapotXPos <= -2.0f && teapotXVel < 0)
+	{
+		ecs.getComponent<SimpleMotionComponent>(teapot)->velocity = Vector3(1.0f, 0.0f, 0.0f);
+	}
 
 	m_SwapChain->present(false);
 }

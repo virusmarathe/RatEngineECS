@@ -12,6 +12,8 @@
 #include "Matrix4x4.h"
 #include "ECS.h"
 #include "StaticMeshRenderingSystem.h"
+#include "SimpleMotionSystem.h"
+#include "SimpleMotionComponent.h"
 
 class AppWindow : public Window, public InputListener
 {
@@ -54,6 +56,7 @@ private:
 	EntityHandle skybox;
 
 	StaticMeshRenderingSystem meshRendererSystem;
+	SimpleMotionSystem simpleMotionSystem;
 
 	DWORD m_PrevFrameTime;
 	float m_DeltaTime;

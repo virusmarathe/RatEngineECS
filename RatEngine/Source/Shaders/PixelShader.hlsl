@@ -21,7 +21,7 @@ cbuffer constant : register(b0)
 
 float4 psmain(PS_INPUT input) : SV_TARGET
 {
-	float ka = 0.1f;
+	float ka = 0.2f;
 	float3 ia = float3(1.0f, 1.0f, 1.0f);
 
 	float ambientLight = ka * ia;

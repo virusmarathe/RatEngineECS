@@ -23,7 +23,7 @@ public:
 
 	// events
 	virtual void onCreate();
-	virtual void onUpdate() = 0;
+	virtual void onUpdate();
 	virtual void onDestroy();
 	virtual void onFocus();
 	virtual void onKillFocus();
@@ -31,5 +31,7 @@ public:
 protected:
 	HWND m_hwnd;
 	bool m_running;
+	DWORD m_PrevFrameTime;
+	float m_DeltaTime;
 };
 

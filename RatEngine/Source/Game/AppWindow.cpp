@@ -19,7 +19,7 @@ struct vertex
 	vector4 color;
 };
 
-AppWindow::AppWindow() : Window(), m_SwapChain(NULL), m_PrevFrameTime(0), m_DeltaTime(0)
+AppWindow::AppWindow() : Window(), m_SwapChain(NULL)
 {
 }
 
@@ -68,8 +68,6 @@ void AppWindow::onCreate()
 
 	m_CameraTransform.setIdentity();
 	m_CameraTransform.setTranslation(Vector3(0, 0, -1));
-
-	m_PrevFrameTime = GetTickCount();
 
 	MeshRendererComponent comp;
 	TransformComponent trans;
@@ -120,11 +118,9 @@ void AppWindow::onCreate()
 
 void AppWindow::onUpdate()
 {
-	InputSystem::get()->update();
+	Window::onUpdate();
 
-	DWORD curTime = GetTickCount();
-	m_DeltaTime = (curTime - m_PrevFrameTime) / 1000.0f;
-	m_PrevFrameTime = curTime;
+	InputSystem::get()->update();
 
 	DeviceContext* context = GraphicsEngine::get()->getRenderSystem()->getImmediateDeviceContext();
 
@@ -132,9 +128,6 @@ void AppWindow::onUpdate()
 
 	RECT rc = this->getClientWindowRect();
 	context->setViewportSize((FLOAT)(rc.right - rc.left), (FLOAT)(rc.bottom - rc.top));
-
-	update();
-	ecs.updateSystems(mainSystems, m_DeltaTime);
 
 	float teapotXPos = ecs.getComponent<TransformComponent>(teapot)->transform.position().x;
 	float teapotXVel = ecs.getComponent<SimpleMotionComponent>(teapot)->velocity.x;
@@ -147,6 +140,9 @@ void AppWindow::onUpdate()
 	{
 		ecs.getComponent<SimpleMotionComponent>(teapot)->velocity = Vector3(1.0f, 0.0f, 0.0f);
 	}
+
+	update();
+	ecs.updateSystems(mainSystems, m_DeltaTime);
 
 	m_SwapChain->present(false);
 }

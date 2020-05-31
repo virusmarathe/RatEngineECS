@@ -58,9 +58,6 @@ private:
 	StaticMeshRenderingSystem meshRendererSystem;
 	SimpleMotionSystem simpleMotionSystem;
 
-	DWORD m_PrevFrameTime;
-	float m_DeltaTime;
-
 	float m_XRot = 0;
 	float m_YRot = 0;
 

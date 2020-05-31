@@ -1,6 +1,7 @@
 #include "Window.h"
+#include "Debug.h"
 
-Window::Window() : m_hwnd(NULL), m_running(false)
+Window::Window() : m_hwnd(NULL), m_running(false), m_PrevFrameTime(0), m_DeltaTime(0)
 {
 }
 
@@ -94,24 +95,27 @@ bool Window::init()
 
 	// window is running
 	m_running = true;
+	m_PrevFrameTime = GetTickCount();
 
 	return true;
 }
 
 bool Window::broadcast()
 {
-	MSG msg;
+	DWORD curTime = GetTickCount();
+	m_DeltaTime = (curTime - m_PrevFrameTime) / 1000.0f;
+	m_PrevFrameTime = curTime;
 
 	this->onUpdate();
 
+	MSG msg;
 	while (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE) > 0)
 	{
 		TranslateMessage(&msg);
 		DispatchMessage(&msg);
 	}
 
-	Sleep(1);
-
+	Sleep(2); // TODO: frame rate limiting
 	return false;
 }
 
@@ -138,6 +142,10 @@ RECT Window::getClientWindowRect()
 void Window::onCreate()
 {
 	CoInitializeEx(NULL, COINIT_MULTITHREADED);
+}
+
+void Window::onUpdate()
+{
 }
 
 void Window::onDestroy()

@@ -7,18 +7,6 @@
 #include <iostream>
 #include "Debug.h"
 
-struct vector4
-{
-	float r, g, b, a;
-};
-
-struct vertex
-{
-	Vector3 position;
-	Vector2 texcoord;
-	vector4 color;
-};
-
 AppWindow::AppWindow() : Window(), m_SwapChain(NULL)
 {
 }
@@ -55,6 +43,18 @@ void AppWindow::update()
 	meshRendererSystem.m_CameraTransform = m_CameraTransform;
 
 	ecs.getComponent<TransformComponent>(skybox)->transform.setTranslation(m_CameraTransform.position());
+
+	float teapotXPos = ecs.getComponent<TransformComponent>(teapot)->transform.position().x;
+	float teapotXVel = ecs.getComponent<SimpleMotionComponent>(teapot)->velocity.x;
+
+	if (teapotXPos > 2.0f && teapotXVel > 0)
+	{
+		ecs.getComponent<SimpleMotionComponent>(teapot)->velocity = Vector3(-1.0f, 0.0f, 0.0f);
+	}
+	else if (teapotXPos <= -2.0f && teapotXVel < 0)
+	{
+		ecs.getComponent<SimpleMotionComponent>(teapot)->velocity = Vector3(1.0f, 0.0f, 0.0f);
+	}
 }
 
 void AppWindow::onCreate()
@@ -93,8 +93,8 @@ void AppWindow::onCreate()
 	trans.transform.setScale(Vector3(100.0f, 100.0f, 100.0f));
 	skybox = ecs.makeEntity(trans, comp);
 
-	mainSystems.addSystem(meshRendererSystem);
 	mainSystems.addSystem(simpleMotionSystem);
+	renderingSystems.addSystem(meshRendererSystem);
 
 	void* shaderByteCode = nullptr;
 	SIZE_T shaderSize = 0;
@@ -118,9 +118,8 @@ void AppWindow::onCreate()
 
 void AppWindow::onUpdate()
 {
-	Window::onUpdate();
-
 	InputSystem::get()->update();
+	ecs.updateSystems(mainSystems, m_DeltaTime);
 
 	DeviceContext* context = GraphicsEngine::get()->getRenderSystem()->getImmediateDeviceContext();
 
@@ -128,21 +127,8 @@ void AppWindow::onUpdate()
 
 	RECT rc = this->getClientWindowRect();
 	context->setViewportSize((FLOAT)(rc.right - rc.left), (FLOAT)(rc.bottom - rc.top));
-
-	float teapotXPos = ecs.getComponent<TransformComponent>(teapot)->transform.position().x;
-	float teapotXVel = ecs.getComponent<SimpleMotionComponent>(teapot)->velocity.x;
-
-	if (teapotXPos > 2.0f && teapotXVel > 0)
-	{
-		ecs.getComponent<SimpleMotionComponent>(teapot)->velocity = Vector3(-1.0f, 0.0f, 0.0f);
-	}
-	else if (teapotXPos <= -2.0f && teapotXVel < 0)
-	{
-		ecs.getComponent<SimpleMotionComponent>(teapot)->velocity = Vector3(1.0f, 0.0f, 0.0f);
-	}
-
 	update();
-	ecs.updateSystems(mainSystems, m_DeltaTime);
+	ecs.updateSystems(renderingSystems, m_DeltaTime);
 
 	m_SwapChain->present(false);
 }

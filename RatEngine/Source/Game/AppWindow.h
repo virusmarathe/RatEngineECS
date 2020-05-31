@@ -47,7 +47,9 @@ public:
 
 private:
 	ECS ecs;
+	ECSSystemList inputSystems;
 	ECSSystemList mainSystems;
+	ECSSystemList renderingSystems;
 
 	SwapChain* m_SwapChain;
 

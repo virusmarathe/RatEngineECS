@@ -144,10 +144,6 @@ void Window::onCreate()
 	CoInitializeEx(NULL, COINIT_MULTITHREADED);
 }
 
-void Window::onUpdate()
-{
-}
-
 void Window::onDestroy()
 {
 	m_running = false;

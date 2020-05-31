@@ -23,7 +23,7 @@ public:
 
 	// events
 	virtual void onCreate();
-	virtual void onUpdate();
+	virtual void onUpdate() = 0;
 	virtual void onDestroy();
 	virtual void onFocus();
 	virtual void onKillFocus();

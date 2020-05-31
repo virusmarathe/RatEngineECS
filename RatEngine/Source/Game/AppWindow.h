@@ -14,6 +14,8 @@
 #include "StaticMeshRenderingSystem.h"
 #include "SimpleMotionSystem.h"
 #include "SimpleMotionComponent.h"
+#include "EulerRotatorSystem.h"
+#include "RotateTimerComponent.h"
 
 class AppWindow : public Window, public InputListener
 {
@@ -56,9 +58,11 @@ private:
 	EntityHandle teapot;
 	EntityHandle statue;
 	EntityHandle skybox;
+	EntityHandle directionalLight;
 
 	StaticMeshRenderingSystem meshRendererSystem;
 	SimpleMotionSystem simpleMotionSystem;
+	EulerRotatorSystem eulerRotatorSystem;
 
 	float m_XRot = 0;
 	float m_YRot = 0;

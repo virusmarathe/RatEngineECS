@@ -257,6 +257,12 @@
     <ClInclude Include="Source\Engine\MotionIntegrators.h">
       <Filter>Engine\Systems</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Engine\RotateTimerComponent.h">
+      <Filter>Engine\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Engine\EulerRotatorSystem.h">
+      <Filter>Engine\Systems</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Source\Shaders\VertexShader.hlsl">

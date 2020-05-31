@@ -50,6 +50,7 @@
     <ClInclude Include="Source\Engine\ECS.h" />
     <ClInclude Include="Source\Engine\ECSComponent.h" />
     <ClInclude Include="Source\Engine\ECSSystem.h" />
+    <ClInclude Include="Source\Engine\EulerRotatorSystem.h" />
     <ClInclude Include="Source\Engine\GraphicsEngine.h" />
     <ClInclude Include="Source\Engine\IndexBuffer.h" />
     <ClInclude Include="Source\Engine\InputListener.h" />
@@ -67,6 +68,7 @@
     <ClInclude Include="Source\Engine\RenderSystem.h" />
     <ClInclude Include="Source\Engine\Resource.h" />
     <ClInclude Include="Source\Engine\ResourceManager.h" />
+    <ClInclude Include="Source\Engine\RotateTimerComponent.h" />
     <ClInclude Include="Source\Engine\SimpleMotionComponent.h" />
     <ClInclude Include="Source\Engine\SimpleMotionSystem.h" />
     <ClInclude Include="Source\Engine\StaticMeshRenderingSystem.h" />

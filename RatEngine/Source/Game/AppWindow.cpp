@@ -17,11 +17,7 @@ AppWindow::~AppWindow()
 
 void AppWindow::update()
 {
-	Matrix4x4 lightRotationMatrix;
-	lightRotationMatrix.setIdentity();
-	lightRotationMatrix.setRotationY(m_LightRotY);
-	m_LightRotY += 0.707f * m_DeltaTime;
-	meshRendererSystem.m_LightDirection = lightRotationMatrix.forward();
+	meshRendererSystem.m_LightDirection = ecs.getComponent<TransformComponent>(directionalLight)->transform.forward();
 
 	Matrix4x4 worldCam;
 	worldCam.setIdentity();
@@ -73,11 +69,18 @@ void AppWindow::onCreate()
 	TransformComponent trans;
 	SimpleMotionComponent motionComp;
 
+	RotateTimerComponent rotComp;
+	rotComp.speed = 0.707f;
+	rotComp.rotateEulerAngles = Vector3(0, 1, 0);
+	trans.transform.setIdentity();
+	directionalLight = ecs.makeEntity(trans, rotComp);
+
 	comp.mesh = GraphicsEngine::get()->getMeshManager()->createMeshFromFile(L"Assets/Meshes/statue.obj");
 	comp.m_Texture = GraphicsEngine::get()->getTextureManager()->createTextureFromFile(L"Assets/Textures/wood.jpg");
 	trans.transform.setIdentity();
 	trans.transform.setTranslation(Vector3(1.0f, -0.1f, -1.5f));
-	statue = ecs.makeEntity(trans, comp);
+	rotComp.speed = -2.1f;
+	statue = ecs.makeEntity(trans, comp, rotComp);
 
 	comp.mesh = GraphicsEngine::get()->getMeshManager()->createMeshFromFile(L"Assets/Meshes/teapot.obj");
 	comp.m_Texture = GraphicsEngine::get()->getTextureManager()->createTextureFromFile(L"Assets/Textures/brick.png");
@@ -94,6 +97,7 @@ void AppWindow::onCreate()
 	skybox = ecs.makeEntity(trans, comp);
 
 	mainSystems.addSystem(simpleMotionSystem);
+	mainSystems.addSystem(eulerRotatorSystem);
 	renderingSystems.addSystem(meshRendererSystem);
 
 	void* shaderByteCode = nullptr;
@@ -118,18 +122,19 @@ void AppWindow::onCreate()
 
 void AppWindow::onUpdate()
 {
+	// input
 	InputSystem::get()->update();
+
+	// update
 	ecs.updateSystems(mainSystems, m_DeltaTime);
 
+	// render
 	DeviceContext* context = GraphicsEngine::get()->getRenderSystem()->getImmediateDeviceContext();
-
 	context->clearRenderTargetColor(m_SwapChain, 0.1f, 0.1f, 0.6f, 1);
-
 	RECT rc = this->getClientWindowRect();
 	context->setViewportSize((FLOAT)(rc.right - rc.left), (FLOAT)(rc.bottom - rc.top));
 	update();
 	ecs.updateSystems(renderingSystems, m_DeltaTime);
-
 	m_SwapChain->present(false);
 }
 

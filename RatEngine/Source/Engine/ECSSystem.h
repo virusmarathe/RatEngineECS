@@ -10,6 +10,7 @@ public:
 	};
 	BaseECSSystem() {}
 	virtual void updateComponents(float deltaTime, BaseECSComponent** components) {}
+	virtual void cleanup() {}
 	const std::vector<uint32_t>& getComponentTypes()
 	{
 		return componentTypes;

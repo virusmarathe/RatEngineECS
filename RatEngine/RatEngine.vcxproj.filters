@@ -67,11 +67,11 @@
     <Filter Include="Engine\GraphicsEngine\RenderSystem\Material">
       <UniqueIdentifier>{a0643e6b-66ee-4e0d-8714-4dd7d87c1d4d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\Systems">
-      <UniqueIdentifier>{3126192c-46ed-4994-a050-8de465b97239}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\Components">
+    <Filter Include="Engine\ECSComponents">
       <UniqueIdentifier>{864a96c0-9356-42c2-9724-994df9155c14}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\ECSSystems">
+      <UniqueIdentifier>{3126192c-46ed-4994-a050-8de465b97239}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -143,6 +143,9 @@
     </ClCompile>
     <ClCompile Include="Source\Engine\Material.cpp">
       <Filter>Engine\GraphicsEngine\RenderSystem\Material</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Engine\FlyCamControllerSystem.cpp">
+      <Filter>Engine\ECSSystems</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -240,28 +243,34 @@
       <Filter>Engine\GraphicsEngine\RenderSystem\Material</Filter>
     </ClInclude>
     <ClInclude Include="Source\Engine\TransformComponent.h">
-      <Filter>Engine\Components</Filter>
+      <Filter>Engine\ECSComponents</Filter>
     </ClInclude>
     <ClInclude Include="Source\Engine\MeshRendererComponent.h">
-      <Filter>Engine\Components</Filter>
+      <Filter>Engine\ECSComponents</Filter>
     </ClInclude>
     <ClInclude Include="Source\Engine\StaticMeshRenderingSystem.h">
-      <Filter>Engine\Systems</Filter>
+      <Filter>Engine\ECSSystems</Filter>
     </ClInclude>
     <ClInclude Include="Source\Engine\SimpleMotionComponent.h">
-      <Filter>Engine\Components</Filter>
+      <Filter>Engine\ECSComponents</Filter>
     </ClInclude>
     <ClInclude Include="Source\Engine\SimpleMotionSystem.h">
-      <Filter>Engine\Systems</Filter>
+      <Filter>Engine\ECSSystems</Filter>
     </ClInclude>
     <ClInclude Include="Source\Engine\MotionIntegrators.h">
-      <Filter>Engine\Systems</Filter>
+      <Filter>Engine\ECSSystems</Filter>
     </ClInclude>
     <ClInclude Include="Source\Engine\RotateTimerComponent.h">
-      <Filter>Engine\Components</Filter>
+      <Filter>Engine\ECSComponents</Filter>
     </ClInclude>
     <ClInclude Include="Source\Engine\EulerRotatorSystem.h">
-      <Filter>Engine\Systems</Filter>
+      <Filter>Engine\ECSSystems</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Engine\FlyCamControllerSystem.h">
+      <Filter>Engine\ECSSystems</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Engine\FlyCamComponent.h">
+      <Filter>Engine\ECSComponents</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -19,26 +19,9 @@ void AppWindow::update()
 {
 	meshRendererSystem.m_LightDirection = ecs.getComponent<TransformComponent>(directionalLight)->transform.forward();
 
-	Matrix4x4 worldCam;
-	worldCam.setIdentity();
-	Matrix4x4 temp;
-	temp.setIdentity();
-	temp.setRotationX(m_XRot);
-	worldCam *= temp;
-	temp.setIdentity();
-	temp.setRotationY(m_YRot);
-	worldCam *= temp;
-	float speed = 2.0f;
-	Vector3 pos = m_CameraTransform.position() + worldCam.forward() * (m_ForwardDirection * speed * m_DeltaTime);
-	pos = pos + worldCam.right() * (m_RightDirection * speed * m_DeltaTime);
-	temp.setIdentity();
-	temp.setTranslation(pos);
-	worldCam *= temp;
+	meshRendererSystem.m_CameraTransform = ecs.getComponent<TransformComponent>(camera)->transform;
 
-	m_CameraTransform = worldCam;
-	meshRendererSystem.m_CameraTransform = m_CameraTransform;
-
-	ecs.getComponent<TransformComponent>(skybox)->transform.setTranslation(m_CameraTransform.position());
+	ecs.getComponent<TransformComponent>(skybox)->transform.setTranslation(ecs.getComponent<TransformComponent>(camera)->transform.position());
 
 	float teapotXPos = ecs.getComponent<TransformComponent>(teapot)->transform.position().x;
 	float teapotXVel = ecs.getComponent<SimpleMotionComponent>(teapot)->velocity.x;
@@ -62,14 +45,12 @@ void AppWindow::onCreate()
 
 	InputSystem::get()->showCursor(false);
 
-	m_CameraTransform.setIdentity();
-	m_CameraTransform.setTranslation(Vector3(0, 0, -1));
-
 	MeshRendererComponent comp;
 	TransformComponent trans;
 	SimpleMotionComponent motionComp;
-
 	RotateTimerComponent rotComp;
+	FlyCamComponent flyCamComp;
+
 	rotComp.speed = 0.707f;
 	rotComp.rotateEulerAngles = Vector3(0, 1, 0);
 	trans.transform.setIdentity();
@@ -96,6 +77,12 @@ void AppWindow::onCreate()
 	trans.transform.setScale(Vector3(100.0f, 100.0f, 100.0f));
 	skybox = ecs.makeEntity(trans, comp);
 
+	trans.transform.setIdentity();
+	trans.transform.setTranslation(Vector3(0, 0, -1));
+	flyCamComp.speed = 2.0f;
+	camera = ecs.makeEntity(trans, flyCamComp);
+
+	inputSystems.addSystem(flyCamSystem);
 	mainSystems.addSystem(simpleMotionSystem);
 	mainSystems.addSystem(eulerRotatorSystem);
 	renderingSystems.addSystem(meshRendererSystem);
@@ -118,12 +105,14 @@ void AppWindow::onCreate()
 	ecs.getComponent<MeshRendererComponent>(skybox)->constantBuffer = GraphicsEngine::get()->getRenderSystem()->createConstantBuffer(&data, sizeof(constant));
 
 	meshRendererSystem.clientWindowRect = rc;
+	flyCamSystem.clientWindowRect = rc;
 }
 
 void AppWindow::onUpdate()
 {
 	// input
 	InputSystem::get()->update();
+	ecs.updateSystems(inputSystems, m_DeltaTime);
 
 	// update
 	ecs.updateSystems(mainSystems, m_DeltaTime);
@@ -147,85 +136,10 @@ void AppWindow::onDestroy()
 
 void AppWindow::onFocus()
 {
-	InputSystem::get()->addListener(this);
+	InputSystem::get()->addListener(&flyCamSystem);
 }
 
 void AppWindow::onKillFocus()
 {
-	InputSystem::get()->removeListener(this);
+	InputSystem::get()->removeListener(&flyCamSystem);
 }
-
-#pragma region InputListener
-
-void AppWindow::onKeyDown(int key)
-{
-	float speed = 1.0f;
-	if (key == 'W')
-	{
-		m_ForwardDirection = 1.0f;
-	}
-	else if (key == 'S')
-	{
-		m_ForwardDirection = -1.0f;
-	}
-	if (key == 'A')
-	{
-		m_RightDirection = -1.0f;
-	}
-	else if (key == 'D')
-	{
-		m_RightDirection = 1.0f;
-	}
-}
-
-void AppWindow::onKeyUp(int key)
-{
-	if (m_ForwardDirection != 0 && (key == 'W' || key == 'S'))
-	{
-		m_ForwardDirection = 0.0f;
-	}
-
-	if (m_RightDirection != 0 && (key == 'A' || key == 'D'))
-	{
-		m_RightDirection = 0.0f;
-	}
-}
-
-void AppWindow::onMouseMove(const Point& mousePos)
-{
-	RECT rect = getClientWindowRect();
-	int xCenter = (int)((rect.right + rect.left) / 2.0f);
-	int yCenter = (int)((rect.bottom - rect.top) / 2.0f);
-
-	float sensitivity = 0.001f;
-	m_XRot += (mousePos.Y - yCenter) * sensitivity;
-	m_YRot += (mousePos.X - xCenter) * sensitivity;
-
-	InputSystem::get()->setCursorPosition(Point(xCenter, yCenter));
-}
-
-void AppWindow::onLeftMouseDown(const Point& mousePos)
-{
-}
-
-void AppWindow::onLeftMouseUp(const Point& mousePos)
-{
-}
-
-void AppWindow::onRightMouseDown(const Point& mousePos)
-{
-}
-
-void AppWindow::onRightMouseUp(const Point& mousePos)
-{
-}
-
-void AppWindow::onMiddleMouseDown(const Point& mousePos)
-{
-}
-
-void AppWindow::onMiddleMouseUp(const Point& mousePos)
-{
-}
-
-#pragma endregion

@@ -19,6 +19,7 @@ bool ECSSystemList::removeSystem(BaseECSSystem& system)
 	{
 		if (&system == m_Systems[i])
 		{
+			m_Systems[i]->cleanup();
 			m_Systems.erase(m_Systems.begin() + i);
 			return true;
 		}

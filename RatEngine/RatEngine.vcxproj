@@ -24,6 +24,7 @@
     <ClCompile Include="Source\Engine\ECS.cpp" />
     <ClCompile Include="Source\Engine\ECSComponent.cpp" />
     <ClCompile Include="Source\Engine\ECSSystem.cpp" />
+    <ClCompile Include="Source\Engine\FlyCamControllerSystem.cpp" />
     <ClCompile Include="Source\Engine\GraphicsEngine.cpp" />
     <ClCompile Include="Source\Engine\IndexBuffer.cpp" />
     <ClCompile Include="Source\Engine\InputSystem.cpp" />
@@ -51,6 +52,8 @@
     <ClInclude Include="Source\Engine\ECSComponent.h" />
     <ClInclude Include="Source\Engine\ECSSystem.h" />
     <ClInclude Include="Source\Engine\EulerRotatorSystem.h" />
+    <ClInclude Include="Source\Engine\FlyCamComponent.h" />
+    <ClInclude Include="Source\Engine\FlyCamControllerSystem.h" />
     <ClInclude Include="Source\Engine\GraphicsEngine.h" />
     <ClInclude Include="Source\Engine\IndexBuffer.h" />
     <ClInclude Include="Source\Engine\InputListener.h" />

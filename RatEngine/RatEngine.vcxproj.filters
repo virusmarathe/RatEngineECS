@@ -272,6 +272,12 @@
     <ClInclude Include="Source\Engine\FlyCamComponent.h">
       <Filter>Engine\ECSComponents</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Engine\AttachToParentComponent.h">
+      <Filter>Engine\ECSComponents</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Engine\AttachToParentSystem.h">
+      <Filter>Engine\ECSSystems</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Source\Shaders\VertexShader.hlsl">

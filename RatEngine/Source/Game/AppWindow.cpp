@@ -7,33 +7,12 @@
 #include <iostream>
 #include "Debug.h"
 
-AppWindow::AppWindow() : Window(), m_SwapChain(NULL)
+AppWindow::AppWindow() : Window(), m_SwapChain(NULL), attachParentSystem(&ecs)
 {
 }
 
 AppWindow::~AppWindow()
 {
-}
-
-void AppWindow::update()
-{
-	meshRendererSystem.m_LightDirection = ecs.getComponent<TransformComponent>(directionalLight)->transform.forward();
-
-	meshRendererSystem.m_CameraTransform = ecs.getComponent<TransformComponent>(camera)->transform;
-
-	ecs.getComponent<TransformComponent>(skybox)->transform.setTranslation(ecs.getComponent<TransformComponent>(camera)->transform.position());
-
-	float teapotXPos = ecs.getComponent<TransformComponent>(teapot)->transform.position().x;
-	float teapotXVel = ecs.getComponent<SimpleMotionComponent>(teapot)->velocity.x;
-
-	if (teapotXPos > 2.0f && teapotXVel > 0)
-	{
-		ecs.getComponent<SimpleMotionComponent>(teapot)->velocity = Vector3(-1.0f, 0.0f, 0.0f);
-	}
-	else if (teapotXPos <= -2.0f && teapotXVel < 0)
-	{
-		ecs.getComponent<SimpleMotionComponent>(teapot)->velocity = Vector3(1.0f, 0.0f, 0.0f);
-	}
 }
 
 void AppWindow::onCreate()
@@ -50,11 +29,17 @@ void AppWindow::onCreate()
 	SimpleMotionComponent motionComp;
 	RotateTimerComponent rotComp;
 	FlyCamComponent flyCamComp;
+	AttachToParentComponent attachParentComp;
 
 	rotComp.speed = 0.707f;
 	rotComp.rotateEulerAngles = Vector3(0, 1, 0);
 	trans.transform.setIdentity();
 	directionalLight = ecs.makeEntity(trans, rotComp);
+
+	trans.transform.setIdentity();
+	trans.transform.setTranslation(Vector3(0, 0, -1));
+	flyCamComp.speed = 2.0f;
+	camera = ecs.makeEntity(trans, flyCamComp);
 
 	comp.mesh = GraphicsEngine::get()->getMeshManager()->createMeshFromFile(L"Assets/Meshes/statue.obj");
 	comp.m_Texture = GraphicsEngine::get()->getTextureManager()->createTextureFromFile(L"Assets/Textures/wood.jpg");
@@ -75,16 +60,13 @@ void AppWindow::onCreate()
 	comp.backFaceCulled = false;
 	trans.transform.setIdentity();
 	trans.transform.setScale(Vector3(100.0f, 100.0f, 100.0f));
-	skybox = ecs.makeEntity(trans, comp);
-
-	trans.transform.setIdentity();
-	trans.transform.setTranslation(Vector3(0, 0, -1));
-	flyCamComp.speed = 2.0f;
-	camera = ecs.makeEntity(trans, flyCamComp);
+	attachParentComp.parent = camera;
+	skybox = ecs.makeEntity(trans, comp, attachParentComp);
 
 	inputSystems.addSystem(flyCamSystem);
 	mainSystems.addSystem(simpleMotionSystem);
 	mainSystems.addSystem(eulerRotatorSystem);
+	mainSystems.addSystem(attachParentSystem);
 	renderingSystems.addSystem(meshRendererSystem);
 
 	void* shaderByteCode = nullptr;
@@ -106,6 +88,9 @@ void AppWindow::onCreate()
 
 	meshRendererSystem.clientWindowRect = rc;
 	flyCamSystem.clientWindowRect = rc;
+
+	meshRendererSystem.m_CameraTransform = &ecs.getComponent<TransformComponent>(camera)->transform;
+	meshRendererSystem.m_LightTransform = &ecs.getComponent<TransformComponent>(directionalLight)->transform;
 }
 
 void AppWindow::onUpdate()
@@ -117,12 +102,24 @@ void AppWindow::onUpdate()
 	// update
 	ecs.updateSystems(mainSystems, m_DeltaTime);
 
+	// post update test-stuff
+	float teapotXPos = ecs.getComponent<TransformComponent>(teapot)->transform.position().x;
+	float teapotXVel = ecs.getComponent<SimpleMotionComponent>(teapot)->velocity.x;
+
+	if (teapotXPos > 2.0f && teapotXVel > 0)
+	{
+		ecs.getComponent<SimpleMotionComponent>(teapot)->velocity = Vector3(-1.0f, 0.0f, 0.0f);
+	}
+	else if (teapotXPos <= -2.0f && teapotXVel < 0)
+	{
+		ecs.getComponent<SimpleMotionComponent>(teapot)->velocity = Vector3(1.0f, 0.0f, 0.0f);
+	}
+
 	// render
 	DeviceContext* context = GraphicsEngine::get()->getRenderSystem()->getImmediateDeviceContext();
 	context->clearRenderTargetColor(m_SwapChain, 0.1f, 0.1f, 0.6f, 1);
 	RECT rc = this->getClientWindowRect();
 	context->setViewportSize((FLOAT)(rc.right - rc.left), (FLOAT)(rc.bottom - rc.top));
-	update();
 	ecs.updateSystems(renderingSystems, m_DeltaTime);
 	m_SwapChain->present(false);
 }

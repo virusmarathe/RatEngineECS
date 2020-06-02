@@ -31,12 +31,12 @@ public:
 		MeshPointer mesh = meshRendererComponent->mesh;
 
 		constant data;
-		data.m_LightDirection = m_LightDirection;
-		data.m_CameraPosition = m_CameraTransform.position();
+		data.m_LightDirection = m_LightTransform->forward();
+		data.m_CameraPosition = m_CameraTransform->position();
 
 		data.m_World.setMatrix(transformComponent->transform);
 
-		Matrix4x4 inverseCam = m_CameraTransform;
+		Matrix4x4 inverseCam = *m_CameraTransform;
 		inverseCam.inverse();
 		data.m_View = inverseCam;
 
@@ -62,7 +62,7 @@ public:
 	}
 
 	DeviceContext* m_Context;
-	Vector4 m_LightDirection;
-	Matrix4x4 m_CameraTransform;
+	Matrix4x4* m_LightTransform;
+	Matrix4x4 * m_CameraTransform;
 	RECT clientWindowRect;
 };

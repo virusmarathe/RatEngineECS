@@ -45,6 +45,8 @@
     <ClCompile Include="Source\Game\main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Engine\AttachToParentComponent.h" />
+    <ClInclude Include="Source\Engine\AttachToParentSystem.h" />
     <ClInclude Include="Source\Engine\ConstantBuffer.h" />
     <ClInclude Include="Source\Engine\Debug.h" />
     <ClInclude Include="Source\Engine\DeviceContext.h" />

@@ -18,14 +18,13 @@
 #include "RotateTimerComponent.h"
 #include "FlyCamControllerSystem.h"
 #include "FlyCamComponent.h"
+#include "AttachToParentSystem.h"
 
 class AppWindow : public Window
 {
 public:
 	AppWindow();
 	~AppWindow();
-
-	void update();
 
 	// Inherited via Window
 	virtual void onCreate() override;
@@ -56,5 +55,6 @@ private:
 	SimpleMotionSystem simpleMotionSystem;
 	EulerRotatorSystem eulerRotatorSystem;
 	FlyCamControllerSystem flyCamSystem;
+	AttachToParentSystem attachParentSystem;
 };
 

@@ -71,7 +71,7 @@ Mesh::Mesh(const wchar_t* fullPath) : Resource(fullPath)
 
 	UINT sizeLayout = ARRAYSIZE(layout);
 
-	GraphicsEngine::get()->getRenderSystem()->compileVertexShader(L"Source/Engine/Shaders/VertexPos0Tex0Normal0Shader.hlsl", "vsmain", &shaderByteCode, &shaderSize);
+	GraphicsEngine::get()->getRenderSystem()->compileVertexShader(L"Assets/Shaders/VertexPos0Tex0Normal0Shader.hlsl", "vsmain", &shaderByteCode, &shaderSize);
 	m_VertexBuffer = GraphicsEngine::get()->getRenderSystem()->createVertexBuffer(&listVertices[0], (UINT)sizeof(MeshPos0Tex0Normal0), (UINT)listVertices.size(), shaderByteCode, shaderSize, layout, sizeLayout);
 	m_VertexShader = GraphicsEngine::get()->getRenderSystem()->createVertexShader(shaderByteCode, shaderSize);
 	GraphicsEngine::get()->getRenderSystem()->releaseCompiledShader();

@@ -72,11 +72,17 @@ void AppWindow::onCreate()
 	void* shaderByteCode = nullptr;
 	SIZE_T shaderSize = 0;
 
-	GraphicsEngine::get()->getRenderSystem()->compilePixelShader(L"Source/Shaders/PixelShader.hlsl", "psmain", &shaderByteCode, &shaderSize);
+	if (!GraphicsEngine::get()->getRenderSystem()->compilePixelShader(L"Assets/Shaders/PixelShader.hlsl", "psmain", &shaderByteCode, &shaderSize))
+	{
+		DEBUG_LOG("Shader", LOG_ERROR, "Compile of shader PixelShader.hlsl failed"); // TODO: add shader compile error logging info
+	}
 	ecs.getComponent<MeshRendererComponent>(statue)->pixelShader = GraphicsEngine::get()->getRenderSystem()->createPixelShader(shaderByteCode, shaderSize);
 	ecs.getComponent<MeshRendererComponent>(teapot)->pixelShader = GraphicsEngine::get()->getRenderSystem()->createPixelShader(shaderByteCode, shaderSize);
 
-	GraphicsEngine::get()->getRenderSystem()->compilePixelShader(L"Source/Shaders/UnlitTextureShader.hlsl", "psmain", &shaderByteCode, &shaderSize);
+	if (!GraphicsEngine::get()->getRenderSystem()->compilePixelShader(L"Assets/Shaders/UnlitTextureShader.hlsl", "psmain", &shaderByteCode, &shaderSize))
+	{
+		DEBUG_LOG("Shader", LOG_ERROR, "Compile of shader UnlitTextureShader.hlsl failed"); // TODO: add shader compile error logging info
+	}
 	ecs.getComponent<MeshRendererComponent>(skybox)->pixelShader = GraphicsEngine::get()->getRenderSystem()->createPixelShader(shaderByteCode, shaderSize);
 
 	GraphicsEngine::get()->getRenderSystem()->releaseCompiledShader();

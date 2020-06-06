@@ -13,9 +13,6 @@
     <Filter Include="Engine\GraphicsEngine">
       <UniqueIdentifier>{2e2885ca-3000-439f-83a9-dbeed1a9e466}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Game\Shaders">
-      <UniqueIdentifier>{b136aaf2-0e75-4a42-94db-c869140803f1}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Engine\Math">
       <UniqueIdentifier>{eef8468a-a717-436f-951f-b782723d52e0}</UniqueIdentifier>
     </Filter>
@@ -55,23 +52,23 @@
     <Filter Include="Engine\GraphicsEngine\ResourceManager\MeshManager">
       <UniqueIdentifier>{749bb13b-9400-4215-ab01-d4dfdf5b2c9a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\GraphicsEngine\Shaders">
-      <UniqueIdentifier>{23ceace7-505f-4729-8cb6-997f939cc6d7}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Engine\ECS">
       <UniqueIdentifier>{132589dc-0679-42dd-8a6b-897e209507d7}</UniqueIdentifier>
     </Filter>
     <Filter Include="Engine\Utils">
       <UniqueIdentifier>{1ba2bcfa-33ce-4439-95a9-d157f5098d25}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\GraphicsEngine\RenderSystem\Material">
-      <UniqueIdentifier>{a0643e6b-66ee-4e0d-8714-4dd7d87c1d4d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Engine\ECSComponents">
       <UniqueIdentifier>{864a96c0-9356-42c2-9724-994df9155c14}</UniqueIdentifier>
     </Filter>
     <Filter Include="Engine\ECSSystems">
       <UniqueIdentifier>{3126192c-46ed-4994-a050-8de465b97239}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\GraphicsEngine\ResourceManager\MaterialManager">
+      <UniqueIdentifier>{a0643e6b-66ee-4e0d-8714-4dd7d87c1d4d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders">
+      <UniqueIdentifier>{a9474f68-0432-4f9b-b7d9-52d6a0771bad}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -142,10 +139,13 @@
       <Filter>Engine\ECS</Filter>
     </ClCompile>
     <ClCompile Include="Source\Engine\Material.cpp">
-      <Filter>Engine\GraphicsEngine\RenderSystem\Material</Filter>
+      <Filter>Engine\GraphicsEngine\ResourceManager\MaterialManager</Filter>
     </ClCompile>
     <ClCompile Include="Source\Engine\FlyCamControllerSystem.cpp">
       <Filter>Engine\ECSSystems</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Engine\MaterialManager.cpp">
+      <Filter>Engine\GraphicsEngine\ResourceManager\MaterialManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -240,7 +240,7 @@
       <Filter>Engine\Math</Filter>
     </ClInclude>
     <ClInclude Include="Source\Engine\Material.h">
-      <Filter>Engine\GraphicsEngine\RenderSystem\Material</Filter>
+      <Filter>Engine\GraphicsEngine\ResourceManager\MaterialManager</Filter>
     </ClInclude>
     <ClInclude Include="Source\Engine\TransformComponent.h">
       <Filter>Engine\ECSComponents</Filter>
@@ -278,22 +278,19 @@
     <ClInclude Include="Source\Engine\AttachToParentSystem.h">
       <Filter>Engine\ECSSystems</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Engine\MaterialManager.h">
+      <Filter>Engine\GraphicsEngine\ResourceManager\MaterialManager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="Source\Shaders\VertexShader.hlsl">
-      <Filter>Game\Shaders</Filter>
+    <FxCompile Include="Assets\Shaders\PixelShader.hlsl">
+      <Filter>Shaders</Filter>
     </FxCompile>
-    <FxCompile Include="Source\Shaders\PixelShader.hlsl">
-      <Filter>Game\Shaders</Filter>
+    <FxCompile Include="Assets\Shaders\UnlitTextureShader.hlsl">
+      <Filter>Shaders</Filter>
     </FxCompile>
-    <FxCompile Include="Source\Engine\Shaders\VertexPos0Tex0Shader.hlsl">
-      <Filter>Engine\GraphicsEngine\Shaders</Filter>
-    </FxCompile>
-    <FxCompile Include="Source\Engine\Shaders\VertexPos0Tex0Normal0Shader.hlsl">
-      <Filter>Engine\GraphicsEngine\Shaders</Filter>
-    </FxCompile>
-    <FxCompile Include="Source\Shaders\UnlitTextureShader.hlsl">
-      <Filter>Game\Shaders</Filter>
+    <FxCompile Include="Assets\Shaders\VertexPos0Tex0Normal0Shader.hlsl">
+      <Filter>Shaders</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

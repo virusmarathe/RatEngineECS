@@ -1,9 +1,10 @@
 #pragma once
+#include "Resource.h"
 
-class Material
+class Material : public Resource
 {
 public:
-    Material();
+    Material(const wchar_t* fullPath);
     ~Material();
 };
 

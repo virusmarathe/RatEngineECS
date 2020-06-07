@@ -71,17 +71,25 @@ SwapChain* RenderSystem::createSwapChain(HWND hwnd, UINT width, UINT height)
 	return sc;
 }
 
-VertexBuffer* RenderSystem::createVertexBuffer(void* listVertices, UINT sizeVertex, UINT numVertices, void* shaderByteCode,
-											   SIZE_T shaderByteSize, D3D11_INPUT_ELEMENT_DESC layout[], UINT layoutSize)
+VertexBuffer* RenderSystem::createVertexBuffer(void* listVertices, UINT sizeVertex, UINT numVertices)
 {
 	VertexBuffer* vb = NULL;
 	try
 	{
-		vb = new VertexBuffer(listVertices, sizeVertex, numVertices, shaderByteCode, shaderByteSize, layout, layoutSize, this);
+		vb = new VertexBuffer(listVertices, sizeVertex, numVertices, this);
 	}
 	catch (...) {}
 
 	return vb;
+}
+
+ID3D11InputLayout* RenderSystem::createInputLayout(void* shaderByteCode, SIZE_T shaderByteSize, D3D11_INPUT_ELEMENT_DESC layout[], UINT layoutSize)
+{
+	ID3D11InputLayout* inputLayout = nullptr;
+	HRESULT result = m_D3DDevice->CreateInputLayout(layout, layoutSize, shaderByteCode, shaderByteSize, &inputLayout);
+	if (FAILED(result))	throw std::exception("RenderSystem::createInputLayout not created successfully");
+
+	return inputLayout;
 }
 
 IndexBuffer* RenderSystem::createIndexBuffer(void* listIndices, UINT numIndices)

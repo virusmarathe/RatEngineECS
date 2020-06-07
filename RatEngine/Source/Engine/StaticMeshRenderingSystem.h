@@ -29,6 +29,7 @@ public:
 		MeshRendererComponent* meshRendererComponent = (MeshRendererComponent*)components[1];
 
 		MeshPointer mesh = meshRendererComponent->mesh;
+		MaterialPointer mat = meshRendererComponent->m_Material;
 
 		constant data;
 		data.m_LightDirection = m_LightTransform->forward();
@@ -48,15 +49,18 @@ public:
 
 		GraphicsEngine::get()->getRenderSystem()->setBackCulling(meshRendererComponent->backFaceCulled);
 		
-		m_Context->setConstantBuffer(meshRendererComponent->pixelShader, meshRendererComponent->constantBuffer);
-		m_Context->setConstantBuffer(mesh->getVertexShader(), meshRendererComponent->constantBuffer);
+		// TODO: material->setInputLayout, vertexshader, pixel shader, constantbuffer
 
-		m_Context->setVertexShader(mesh->getVertexShader());
-		m_Context->setPixelShader(meshRendererComponent->pixelShader);
+		m_Context->setConstantBuffer(mat->m_PixelShader, meshRendererComponent->constantBuffer);
+		m_Context->setConstantBuffer(mat->m_VertexShader, meshRendererComponent->constantBuffer);
 
-		m_Context->setTexture(meshRendererComponent->pixelShader, meshRendererComponent->m_Texture);
+		m_Context->setVertexShader(mat->m_VertexShader);
+		m_Context->setPixelShader(mat->m_PixelShader);
+
+		m_Context->setTexture(mat->m_PixelShader, meshRendererComponent->m_Texture);
 
 		m_Context->setVertexBuffer(mesh->getVertexBuffer());
+		m_Context->setInputLayout(mat->m_InputLayout);
 		m_Context->setIndexBuffer(mesh->getIndexBuffer());
 		m_Context->drawIndexedTriangleList(mesh->getIndexBuffer()->getNumIndices(), 0, 0);
 	}

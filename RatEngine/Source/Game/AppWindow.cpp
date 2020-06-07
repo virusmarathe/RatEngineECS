@@ -6,6 +6,7 @@
 #include "InputSystem.h"
 #include <iostream>
 #include "Debug.h"
+#include "Material.h"
 
 AppWindow::AppWindow() : Window(), m_SwapChain(NULL), attachParentSystem(&ecs)
 {
@@ -43,6 +44,7 @@ void AppWindow::onCreate()
 
 	comp.mesh = GraphicsEngine::get()->getMeshManager()->createMeshFromFile(L"Assets/Meshes/statue.obj");
 	comp.m_Texture = GraphicsEngine::get()->getTextureManager()->createTextureFromFile(L"Assets/Textures/wood.jpg");
+	comp.m_Material = GraphicsEngine::get()->getMaterialManager()->createMaterialFromFile(L"Assets/Materials/default.mat");
 	trans.transform.setIdentity();
 	trans.transform.setTranslation(Vector3(1.0f, -0.1f, -1.5f));
 	rotComp.speed = -2.1f;
@@ -50,6 +52,7 @@ void AppWindow::onCreate()
 
 	comp.mesh = GraphicsEngine::get()->getMeshManager()->createMeshFromFile(L"Assets/Meshes/teapot.obj");
 	comp.m_Texture = GraphicsEngine::get()->getTextureManager()->createTextureFromFile(L"Assets/Textures/brick.png");
+	comp.m_Material = GraphicsEngine::get()->getMaterialManager()->createMaterialFromFile(L"Assets/Materials/default.mat");
 	trans.transform.setIdentity();
 	trans.transform.setTranslation(Vector3(-1.5f, 0, 0));
 	motionComp.velocity = Vector3(1.0f, 0.0f, 0.0f);
@@ -57,6 +60,7 @@ void AppWindow::onCreate()
 
 	comp.mesh = GraphicsEngine::get()->getMeshManager()->createMeshFromFile(L"Assets/Meshes/sphere.obj");
 	comp.m_Texture = GraphicsEngine::get()->getTextureManager()->createTextureFromFile(L"Assets/Textures/sky.jpg");
+	comp.m_Material = GraphicsEngine::get()->getMaterialManager()->createMaterialFromFile(L"Assets/Materials/UnlitTexture.mat");
 	comp.backFaceCulled = false;
 	trans.transform.setIdentity();
 	trans.transform.setScale(Vector3(100.0f, 100.0f, 100.0f));
@@ -68,24 +72,6 @@ void AppWindow::onCreate()
 	mainSystems.addSystem(eulerRotatorSystem);
 	mainSystems.addSystem(attachParentSystem);
 	renderingSystems.addSystem(meshRendererSystem);
-
-	void* shaderByteCode = nullptr;
-	SIZE_T shaderSize = 0;
-
-	if (!GraphicsEngine::get()->getRenderSystem()->compilePixelShader(L"Assets/Shaders/PixelShader.hlsl", "psmain", &shaderByteCode, &shaderSize))
-	{
-		DEBUG_LOG("Shader", LOG_ERROR, "Compile of shader PixelShader.hlsl failed"); // TODO: add shader compile error logging info
-	}
-	ecs.getComponent<MeshRendererComponent>(statue)->pixelShader = GraphicsEngine::get()->getRenderSystem()->createPixelShader(shaderByteCode, shaderSize);
-	ecs.getComponent<MeshRendererComponent>(teapot)->pixelShader = GraphicsEngine::get()->getRenderSystem()->createPixelShader(shaderByteCode, shaderSize);
-
-	if (!GraphicsEngine::get()->getRenderSystem()->compilePixelShader(L"Assets/Shaders/UnlitTextureShader.hlsl", "psmain", &shaderByteCode, &shaderSize))
-	{
-		DEBUG_LOG("Shader", LOG_ERROR, "Compile of shader UnlitTextureShader.hlsl failed"); // TODO: add shader compile error logging info
-	}
-	ecs.getComponent<MeshRendererComponent>(skybox)->pixelShader = GraphicsEngine::get()->getRenderSystem()->createPixelShader(shaderByteCode, shaderSize);
-
-	GraphicsEngine::get()->getRenderSystem()->releaseCompiledShader();
 
 	constant data;
 	ecs.getComponent<MeshRendererComponent>(statue)->constantBuffer = GraphicsEngine::get()->getRenderSystem()->createConstantBuffer(&data, sizeof(constant));

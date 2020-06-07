@@ -35,11 +35,9 @@ public:
 
 	VertexBuffer* getVertexBuffer() { return m_VertexBuffer; }
 	IndexBuffer* getIndexBuffer() { return m_IndexBuffer; }
-	VertexShader* getVertexShader() { return m_VertexShader; }
 
 private:
 	VertexBuffer* m_VertexBuffer;
 	IndexBuffer* m_IndexBuffer;
-	VertexShader* m_VertexShader;
 };
 

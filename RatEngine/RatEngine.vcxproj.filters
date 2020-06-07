@@ -70,6 +70,9 @@
     <Filter Include="Shaders">
       <UniqueIdentifier>{a9474f68-0432-4f9b-b7d9-52d6a0771bad}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Materials">
+      <UniqueIdentifier>{1f68a86f-2d40-4ed9-8365-98e9499c89c2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Game\AppWindow.cpp">
@@ -281,6 +284,9 @@
     <ClInclude Include="Source\Engine\MaterialManager.h">
       <Filter>Engine\GraphicsEngine\ResourceManager\MaterialManager</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Engine\StringUtils.h">
+      <Filter>Engine\Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Assets\Shaders\PixelShader.hlsl">
@@ -292,5 +298,13 @@
     <FxCompile Include="Assets\Shaders\VertexPos0Tex0Normal0Shader.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\Materials\default.mat">
+      <Filter>Materials</Filter>
+    </None>
+    <None Include="Assets\Materials\UnlitTexture.mat">
+      <Filter>Materials</Filter>
+    </None>
   </ItemGroup>
 </Project>

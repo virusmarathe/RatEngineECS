@@ -30,7 +30,6 @@ void DeviceContext::setVertexBuffer(VertexBuffer* vbuffer)
 	UINT stride = vbuffer->m_VertexSize;
 	UINT offset = 0;
 	m_DeviceContext->IASetVertexBuffers(0, 1, &vbuffer->m_VertexBuffer, &stride, &offset);
-	m_DeviceContext->IASetInputLayout(vbuffer->m_InputLayout);
 }
 
 void DeviceContext::drawTriangleList(UINT vertexCount, UINT startVertexIndex)
@@ -62,6 +61,11 @@ void DeviceContext::setViewportSize(FLOAT width, FLOAT height)
 	vp.MaxDepth = 1.0f;
 
 	m_DeviceContext->RSSetViewports(1, &vp);
+}
+
+void DeviceContext::setInputLayout(ID3D11InputLayout* inputLayout)
+{
+	m_DeviceContext->IASetInputLayout(inputLayout);
 }
 
 void DeviceContext::setVertexShader(VertexShader* vs)

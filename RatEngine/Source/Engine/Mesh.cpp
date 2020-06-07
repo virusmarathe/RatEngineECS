@@ -57,24 +57,7 @@ Mesh::Mesh(const wchar_t* fullPath) : Resource(fullPath)
 		}
 	}
 
-	void* shaderByteCode = nullptr;
-	SIZE_T shaderSize = 0;
-
-	D3D11_INPUT_ELEMENT_DESC layout[] =
-	{
-		// SEMANTIC NAME - SEMANTIC INDEX - FORMAT - INPUT SLOT - ALIGNED BYTE OFFSET - INPUT SLOT CLASS - INSTANCE DATA STEP RATE
-		{"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0},
-		{"TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0},
-		{"NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 20, D3D11_INPUT_PER_VERTEX_DATA, 0}
-		//{"COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 20, D3D11_INPUT_PER_VERTEX_DATA, 0}
-	};
-
-	UINT sizeLayout = ARRAYSIZE(layout);
-
-	GraphicsEngine::get()->getRenderSystem()->compileVertexShader(L"Assets/Shaders/VertexPos0Tex0Normal0Shader.hlsl", "vsmain", &shaderByteCode, &shaderSize);
-	m_VertexBuffer = GraphicsEngine::get()->getRenderSystem()->createVertexBuffer(&listVertices[0], (UINT)sizeof(MeshPos0Tex0Normal0), (UINT)listVertices.size(), shaderByteCode, shaderSize, layout, sizeLayout);
-	m_VertexShader = GraphicsEngine::get()->getRenderSystem()->createVertexShader(shaderByteCode, shaderSize);
-	GraphicsEngine::get()->getRenderSystem()->releaseCompiledShader();
+	m_VertexBuffer = GraphicsEngine::get()->getRenderSystem()->createVertexBuffer(&listVertices[0], (UINT)sizeof(MeshPos0Tex0Normal0), (UINT)listVertices.size());
 	m_IndexBuffer = GraphicsEngine::get()->getRenderSystem()->createIndexBuffer(&listIndices[0], (UINT)listIndices.size());
 }
 
@@ -82,5 +65,4 @@ Mesh::~Mesh()
 {
 	delete m_VertexBuffer;
 	delete m_IndexBuffer;
-	delete m_VertexShader;
 }

@@ -7,7 +7,7 @@ public:
 	MaterialManager();
 	~MaterialManager();
 
-	MaterialPointer createTextureFromFile(const wchar_t* filePath);
+	MaterialPointer createMaterialFromFile(const wchar_t* filePath);
 
 protected:
 	// Inherited via ResourceManager

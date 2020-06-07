@@ -14,7 +14,7 @@ public:
 	void drawIndexedTriangleList(UINT indexCount, UINT startVertexIndex, UINT startIndexLocation);
 	void drawTriangleStrip(UINT vertexCount, UINT startVertexIndex);
 	void setViewportSize(FLOAT width, FLOAT height);
-
+	void setInputLayout(ID3D11InputLayout* inputLayout);
 	void setVertexShader(VertexShader* vs);
 	void setPixelShader(PixelShader* ps);
 

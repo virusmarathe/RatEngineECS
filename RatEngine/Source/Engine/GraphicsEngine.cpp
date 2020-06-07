@@ -25,11 +25,18 @@ GraphicsEngine::GraphicsEngine() : m_RenderSystem(NULL), m_TextureManager(NULL)
 		m_MeshManager = new MeshManager();
 	}
 	catch (...) { throw std::exception("GraphicsEngine::MeshManager not created successfully"); }
+
+	try
+	{
+		m_MaterialManager = new MaterialManager();
+	}
+	catch (...) { throw std::exception("GraphicsEngine::MaterialManager not created successfully"); }
 }
 
 GraphicsEngine::~GraphicsEngine()
 {
 	GraphicsEngine::m_GraphicsEngine = NULL;
+	delete m_MaterialManager;
 	delete m_MeshManager;
 	delete m_TextureManager;
 	delete m_RenderSystem;

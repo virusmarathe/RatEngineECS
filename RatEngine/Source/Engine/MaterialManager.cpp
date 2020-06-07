@@ -9,7 +9,7 @@ MaterialManager::~MaterialManager()
 {
 }
 
-MaterialPointer MaterialManager::createTextureFromFile(const wchar_t* filePath)
+MaterialPointer MaterialManager::createMaterialFromFile(const wchar_t* filePath)
 {
 	return std::static_pointer_cast<Material>(createResourceFromFile(filePath));
 }

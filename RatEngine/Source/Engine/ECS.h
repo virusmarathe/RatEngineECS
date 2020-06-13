@@ -3,6 +3,27 @@
 #include "ECSSystem.h"
 #include <map>
 
+// TODO: current listener model okay with small # of listeners, could need refactor if many listeners added
+class ECSListener
+{
+public:
+	virtual void onMakeEntity(EntityHandle handle) { }
+	virtual void onRemoveEntity(EntityHandle handle) { }
+	virtual void onAddComponent(EntityHandle handle, uint32_t id) { }
+	virtual void onRemoveComponent(EntityHandle handle, uint32_t id) { }
+
+	const std::vector<uint32_t>& getComponentIDs() { return componentIDs; }
+
+protected:
+	void addComponentID(uint32_t id)
+	{
+		componentIDs.push_back(id);
+	}
+
+private:
+	std::vector<uint32_t> componentIDs;
+};
+
 class ECS
 {
 public:
@@ -100,10 +121,37 @@ public:
 	inline void addComponent(EntityHandle entity, Component* component)
 	{
 		addComponentInternal(entity, handleToEntity(entity), Component::ID, component);
+		// listener callback
+		for (size_t i = 0; i < m_Listeners.size(); i++)
+		{
+			const std::vector<uint32_t> componentIDs = m_Listeners[i]->getComponentIDs();
+			for (size_t j = 0; j < componentIDs.size(); j++)
+			{
+				if (componentIDs[j] == Component::ID)
+				{
+					m_Listeners[i]->onAddComponent(entity, Component::ID);
+					break;
+				}
+			}
+		}
 	}
 	template<class Component>
 	bool removeComponent(EntityHandle entity)
 	{
+		// listener component
+		for (size_t i = 0; i < m_Listeners.size(); i++)
+		{
+			const std::vector<uint32_t> componentIDs = m_Listeners[i]->getComponentIDs();
+			for (size_t j = 0; j < componentIDs.size(); j++)
+			{
+				if (componentIDs[j] == Component::ID)
+				{
+					m_Listeners[i]->onRemoveComponent(entity, Component::ID);
+					break;
+				}
+			}
+		}
+
 		return removeComponentInternal(entity, Component::ID);
 	}
 	template<class Component>
@@ -112,13 +160,19 @@ public:
 		return (Component*)getComponentInternal(handleToEntity(entity), m_Components[Component::ID], Component::ID);
 	}
 
-
 	// System methods
 	void updateSystems(ECSSystemList& systems, float deltaTime);
+
+	// ecs listener methods
+	inline void addListener(ECSListener* listener)
+	{
+		m_Listeners.push_back(listener);
+	}
 
 private:
 	std::map<uint32_t, std::vector<uint8_t>> m_Components;
 	std::vector<std::pair<uint32_t, std::vector<std::pair<uint32_t, uint32_t>>>*> m_Entities;
+	std::vector<ECSListener*> m_Listeners;
 
 	inline std::pair<uint32_t, std::vector<std::pair<uint32_t, uint32_t>>>* handleToRawType(EntityHandle handle)
 	{

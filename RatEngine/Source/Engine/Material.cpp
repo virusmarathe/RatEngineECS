@@ -42,7 +42,7 @@ Material::Material(const wchar_t* fullPath) : Resource(fullPath)
 
 	if (!GraphicsEngine::get()->getRenderSystem()->compileVertexShader(vertexShaderFullPath.c_str(), vertexShaderFunctionName.c_str(), &shaderByteCode, &shaderSize))
 	{
-		DEBUG_LOG("Shader", LOG_ERROR, "Compile of shader %ls failed", vertexShaderFullPath); // TODO: add shader compile error logging info
+		DEBUG_LOG("Shader", LOG_ERROR, "Compile of shader %ls failed", vertexShaderFullPath.c_str()); // TODO: add shader compile error logging info
 	}
 	m_InputLayout = GraphicsEngine::get()->getRenderSystem()->createInputLayout(shaderByteCode, shaderSize, layout, sizeLayout);
 	m_VertexShader = GraphicsEngine::get()->getRenderSystem()->createVertexShader(shaderByteCode, shaderSize);

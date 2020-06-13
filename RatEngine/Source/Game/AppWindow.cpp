@@ -31,6 +31,7 @@ void AppWindow::onCreate()
 	RotateTimerComponent rotComp;
 	FlyCamComponent flyCamComp;
 	AttachToParentComponent attachParentComp;
+	ColliderComponent colliderComp;
 
 	rotComp.speed = 0.707f;
 	rotComp.rotateEulerAngles = Vector3(0, 1, 0);
@@ -48,7 +49,7 @@ void AppWindow::onCreate()
 	trans.transform.setIdentity();
 	trans.transform.setTranslation(Vector3(1.0f, -0.1f, -1.5f));
 	rotComp.speed = -2.1f;
-	statue = ecs.makeEntity(trans, comp, rotComp);
+	statue = ecs.makeEntity(trans, comp, rotComp, colliderComp);
 
 	comp.mesh = GraphicsEngine::get()->getMeshManager()->createMeshFromFile(L"Assets/Meshes/teapot.obj");
 	comp.m_Texture = GraphicsEngine::get()->getTextureManager()->createTextureFromFile(L"Assets/Textures/brick.png");

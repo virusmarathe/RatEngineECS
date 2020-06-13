@@ -19,6 +19,7 @@
 #include "FlyCamControllerSystem.h"
 #include "FlyCamComponent.h"
 #include "AttachToParentSystem.h"
+#include "ColliderComponent.h"
 
 class AppWindow : public Window
 {

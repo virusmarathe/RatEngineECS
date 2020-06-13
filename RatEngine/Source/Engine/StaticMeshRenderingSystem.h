@@ -49,8 +49,6 @@ public:
 
 		GraphicsEngine::get()->getRenderSystem()->setBackCulling(meshRendererComponent->backFaceCulled);
 		
-		// TODO: material->setInputLayout, vertexshader, pixel shader, constantbuffer
-
 		m_Context->setConstantBuffer(mat->m_PixelShader, meshRendererComponent->constantBuffer);
 		m_Context->setConstantBuffer(mat->m_VertexShader, meshRendererComponent->constantBuffer);
 

@@ -73,6 +73,9 @@
     <Filter Include="Materials">
       <UniqueIdentifier>{1f68a86f-2d40-4ed9-8365-98e9499c89c2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\Physics">
+      <UniqueIdentifier>{b1ae9955-421d-43ec-a39b-373abdeb9130}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Game\AppWindow.cpp">
@@ -149,6 +152,12 @@
     </ClCompile>
     <ClCompile Include="Source\Engine\MaterialManager.cpp">
       <Filter>Engine\GraphicsEngine\ResourceManager\MaterialManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Engine\AABB.cpp">
+      <Filter>Engine\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Engine\InteractionWorld.cpp">
+      <Filter>Engine\Physics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -286,6 +295,15 @@
     </ClInclude>
     <ClInclude Include="Source\Engine\StringUtils.h">
       <Filter>Engine\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Engine\ColliderComponent.h">
+      <Filter>Engine\ECSComponents</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Engine\AABB.h">
+      <Filter>Engine\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Engine\InteractionWorld.h">
+      <Filter>Engine\Physics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

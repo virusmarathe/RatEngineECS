@@ -38,12 +38,72 @@ EntityHandle ECS::makeEntity(BaseECSComponent** components, const uint32_t* comp
 
 	newEntity->first = (uint32_t)m_Entities.size();
 	m_Entities.push_back(newEntity);
+
+	// listener callbacks
+	for (size_t i = 0; i < m_Listeners.size(); i++)
+	{
+		const std::vector<uint32_t> compIDs = m_Listeners[i]->getComponentIDs();
+		bool isValid = true;
+		for (size_t j = 0; j < compIDs.size(); j++)
+		{
+			bool hasComponent = false;
+			for (size_t k = 0; k < numComponents; k++)
+			{
+				if (componentIDs[k] == compIDs[j])
+				{
+					hasComponent = true;
+					break;
+				}
+			}
+			if (!hasComponent)
+			{
+				isValid = false;
+				break;
+			}
+		}
+
+		if (isValid)
+		{
+			m_Listeners[i]->onMakeEntity(handle);
+		}
+	}
+
 	return handle;
 }
 
 void ECS::removeEntity(EntityHandle handle)
 {
 	std::vector<std::pair<uint32_t, uint32_t>>& entity = handleToEntity(handle);
+
+	// listener callbacks
+	for (size_t i = 0; i < m_Listeners.size(); i++)
+	{
+		const std::vector<uint32_t> compIDs = m_Listeners[i]->getComponentIDs();
+		bool isValid = true;
+		for (size_t j = 0; j < compIDs.size(); j++)
+		{
+			bool hasComponent = false;
+			for (size_t k = 0; k < entity.size(); k++)
+			{
+				if (entity[k].first == compIDs[j])
+				{
+					hasComponent = true;
+					break;
+				}
+			}
+			if (!hasComponent)
+			{
+				isValid = false;
+				break;
+			}
+		}
+
+		if (isValid)
+		{
+			m_Listeners[i]->onRemoveEntity(handle);
+		}
+	}
+
 	for (size_t i = 0; i < entity.size(); i++)
 	{
 		deleteComponent(entity[i].first, entity[i].second);

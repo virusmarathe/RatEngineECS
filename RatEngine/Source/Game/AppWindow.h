@@ -20,6 +20,7 @@
 #include "FlyCamComponent.h"
 #include "AttachToParentSystem.h"
 #include "ColliderComponent.h"
+#include "InteractionWorld.h"
 
 class AppWindow : public Window
 {
@@ -57,5 +58,6 @@ private:
 	EulerRotatorSystem eulerRotatorSystem;
 	FlyCamControllerSystem flyCamSystem;
 	AttachToParentSystem attachParentSystem;
+	InteractionWorld* m_World;
 };
 

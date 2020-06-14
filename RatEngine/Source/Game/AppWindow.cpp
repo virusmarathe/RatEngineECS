@@ -25,6 +25,9 @@ void AppWindow::onCreate()
 
 	InputSystem::get()->showCursor(false);
 
+	m_World = new InteractionWorld(ecs);
+	ecs.addListener(m_World);
+
 	MeshRendererComponent comp;
 	TransformComponent trans;
 	SimpleMotionComponent motionComp;
@@ -57,7 +60,7 @@ void AppWindow::onCreate()
 	trans.transform.setIdentity();
 	trans.transform.setTranslation(Vector3(-1.5f, 0, 0));
 	motionComp.velocity = Vector3(1.0f, 0.0f, 0.0f);
-	teapot = ecs.makeEntity(trans, comp, motionComp);
+	teapot = ecs.makeEntity(trans, comp, motionComp, colliderComp);
 
 	comp.mesh = GraphicsEngine::get()->getMeshManager()->createMeshFromFile(L"Assets/Meshes/sphere.obj");
 	comp.m_Texture = GraphicsEngine::get()->getTextureManager()->createTextureFromFile(L"Assets/Textures/sky.jpg");
@@ -84,6 +87,8 @@ void AppWindow::onCreate()
 
 	meshRendererSystem.m_CameraTransform = &ecs.getComponent<TransformComponent>(camera)->transform;
 	meshRendererSystem.m_LightTransform = &ecs.getComponent<TransformComponent>(directionalLight)->transform;
+
+	ecs.removeComponent<ColliderComponent>(statue);
 }
 
 void AppWindow::onUpdate()
@@ -95,6 +100,8 @@ void AppWindow::onUpdate()
 	// update
 	ecs.updateSystems(mainSystems, m_DeltaTime);
 
+	m_World->processInteractions(m_DeltaTime);
+	
 	// post update test-stuff
 	float teapotXPos = ecs.getComponent<TransformComponent>(teapot)->transform.position().x;
 	float teapotXVel = ecs.getComponent<SimpleMotionComponent>(teapot)->velocity.x;
@@ -120,6 +127,7 @@ void AppWindow::onUpdate()
 void AppWindow::onDestroy()
 {
 	Window::onDestroy();
+	delete m_World;
 	delete m_SwapChain;
 	GraphicsEngine::get()->release();
 }

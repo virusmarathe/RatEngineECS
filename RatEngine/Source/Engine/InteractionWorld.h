@@ -17,6 +17,12 @@ public:
 	virtual void onAddComponent(EntityHandle handle, uint32_t id);
 	virtual void onRemoveComponent(EntityHandle handle, uint32_t id);
 
+	void processInteractions(float deltaTime);
+
+private:
+	void removeEntities();
+	int findHighestVarianceAxis(); // for sort and sweep collision
+
 private:
 	ECS& m_ECS;
 	std::vector<EntityHandle> m_Entities;

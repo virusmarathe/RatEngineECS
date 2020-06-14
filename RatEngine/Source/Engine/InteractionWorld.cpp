@@ -35,3 +35,34 @@ void InteractionWorld::onRemoveComponent(EntityHandle handle, uint32_t id)
 		m_EntitesToRemove.push_back(handle);
 	}
 }
+
+void InteractionWorld::processInteractions(float deltaTime)
+{
+	removeEntities();
+	int axis = findHighestVarianceAxis();
+}
+
+void InteractionWorld::removeEntities()
+{
+	for (EntityHandle toRemoveEntity : m_EntitesToRemove)
+	{
+		for (int i = 0; i < m_Entities.size(); i++)
+		{
+			if (m_Entities[i] == toRemoveEntity)
+			{
+				EntityHandle temp = m_Entities[i];
+				m_Entities[i] = m_Entities[m_Entities.size() - 1];
+				m_Entities[m_Entities.size() - 1] = temp;
+				m_Entities.pop_back();
+				break;
+			}
+		}
+	}
+
+	m_EntitesToRemove.clear();
+}
+
+int InteractionWorld::findHighestVarianceAxis()
+{
+	return 0;
+}
